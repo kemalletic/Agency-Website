@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import type { Locale } from '../i18n';
 import Header from './Header.astro';
+import Hero from './Hero.astro';
 
 interface Props {
   lang: Locale;
@@ -12,5 +13,7 @@ const { lang } = Astro.props;
 
 <Base lang={lang}>
   <Header lang={lang} />
-  <main id="main"></main>
+  <main id="main">
+    <Hero lang={lang} />
+  </main>
 </Base>
