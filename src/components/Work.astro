@@ -30,10 +30,10 @@ const newTab = { target: '_blank', rel: 'noopener' };
       const extra = link.external ? newTab : {};
       return (
         <article class={`pj pj--${p.id}`} aria-labelledby={`pj-${p.id}`}>
-          <a class="pj-card" href={link.href} aria-label={p.cardLabel} {...extra}>
+          <a class="pj-card" href={link.href} aria-label={p.cardLabel} data-reveal="clip" {...extra}>
             <Art />
           </a>
-          <div class="pj-info">
+          <div class="pj-info" data-reveal="fade-up" data-reveal-delay="0.1">
             <span class="pj-num">{pad2(i + 1)}</span>
             <h3 id={`pj-${p.id}`} class="pj-name">
               {p.name}
@@ -69,7 +69,7 @@ const newTab = { target: '_blank', rel: 'noopener' };
       );
     })
   }
-  <a class="pj-next" href="#contact">
+  <a class="pj-next" href="#contact" data-reveal="fade-up">
     <span class="pj-num">{pad2(t.work.projects.length + 1)}</span>
     <span class="pj-next-title">{t.work.next.title}</span>
     <span class="pj-next-body">{t.work.next.body}<br />{t.work.next.start} {site.bookingFrom[lang]}</span>

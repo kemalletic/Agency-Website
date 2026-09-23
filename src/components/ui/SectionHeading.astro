@@ -10,19 +10,28 @@ const { id, title, count, intro } = Astro.props;
 ---
 
 <div class="sh">
-  <h2 id={id} class="sh-title">{title}<span class="sh-count" aria-hidden="true">({count})</span></h2>
-  <p class="sh-intro">{intro}</p>
+  <h2 id={id} class="sh-title" data-reveal="lines">{title}<span class="sh-count" aria-hidden="true">({count})</span></h2>
+  <p class="sh-intro" data-reveal="fade-up" data-reveal-delay="0.15">{intro}</p>
+  <span class="sh-rule" data-reveal="rule" aria-hidden="true"></span>
 </div>
 
 <style>
   .sh {
+    position: relative;
     display: grid;
     grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
     column-gap: var(--gutter);
     row-gap: 20px;
     align-items: end;
     padding-bottom: 36px;
-    border-bottom: 1px solid var(--ink);
+  }
+  .sh-rule {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 1px;
+    background: var(--ink);
   }
   .sh-title {
     grid-column: 1 / -1;

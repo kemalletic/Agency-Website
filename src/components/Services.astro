@@ -21,7 +21,7 @@ const art = { web: ServiceWeb, apps: ServiceApps, systems: ServiceFlow } as cons
       t.services.items.map((item, i) => {
         const Art = art[item.id];
         return (
-          <details class="svc" name="services" open={i === 0} data-service={item.id}>
+          <details class="svc" name="services" open={i === 0} data-service={item.id} data-reveal="fade-up" data-reveal-delay={String(i * 0.08)}>
             <summary class="svc-summary">
               <span class="svc-num">{pad2(i + 1)}</span>
               <h3 class="svc-title">{item.title}</h3>

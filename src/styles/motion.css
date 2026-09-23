@@ -3,6 +3,20 @@
   opacity: 0;
 }
 
+/* SplitText wraps with <span>s (valid inside headings and paragraphs); give them the boxes transforms and clipping need. */
+.split-line-mask,
+.split-line {
+  display: block;
+}
+.split-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+.split-char-mask,
+.split-char {
+  display: inline-block;
+}
+
 /* SplitText masks clip; give descenders room without moving the layout. */
 .split-line-mask,
 .split-char-mask {

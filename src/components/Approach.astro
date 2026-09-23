@@ -13,15 +13,15 @@ const t = getDictionary(lang);
 
 <section id="approach" class="approach container" aria-labelledby="approach-label">
   <div class="approach-grid">
-    <figure class="approach-figure">
+    <figure class="approach-figure" data-reveal="figure">
       <div class="approach-stage" data-stage="approach" role="img" aria-label={t.approach.diagramAlt}>
         <ApproachDiagram lang={lang} />
       </div>
       <figcaption class="fig-caption"><span class="fig-num">{t.approach.fig}</span> — {t.approach.caption}</figcaption>
     </figure>
     <div class="approach-text">
-      <h2 id="approach-label" class="label">{t.approach.label}</h2>
-      <p class="approach-lead">
+      <h2 id="approach-label" class="label" data-reveal="fade">{t.approach.label}</h2>
+      <p class="approach-lead" data-reveal="fade-up">
         {
           t.approach.lead.map((seg) =>
             typeof seg === 'string' ? seg
@@ -30,7 +30,7 @@ const t = getDictionary(lang);
           )
         }
       </p>
-      <p class="approach-body">{t.approach.body}</p>
+      <p class="approach-body" data-reveal="fade-up" data-reveal-delay="0.12">{t.approach.body}</p>
     </div>
   </div>
 </section>

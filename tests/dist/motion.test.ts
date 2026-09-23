@@ -21,3 +21,28 @@ describe.each(pages)('$path motion hooks', ({ path }) => {
     }
   });
 });
+
+describe.each(pages)('$path reveal markup', ({ path }) => {
+  const doc = loadPage(path);
+  const reveal = (sel: string) => doc.querySelector(sel)?.getAttribute('data-reveal');
+
+  it('splits every section heading into lines and draws its rule', () => {
+    for (const id of ['services-title', 'work-title', 'process-title', 'studio-title']) {
+      expect(reveal(`#${id}`), id).toBe('lines');
+      expect(doc.querySelector(`#${id}`)?.parentElement?.querySelector('.sh-rule')?.getAttribute('data-reveal'), id).toBe('rule');
+    }
+  });
+
+  it('opens the project cards with a clip', () => {
+    expect(Array.from(doc.querySelectorAll('.pj-card')).map((c) => c.getAttribute('data-reveal'))).toEqual(['clip', 'clip']);
+  });
+
+  it('builds the contact title from characters', () => {
+    expect(reveal('#contact-title')).toBe('chars');
+  });
+
+  it('animates the hero with CSS words, not with data-reveal', () => {
+    expect(doc.querySelectorAll('#top [data-reveal]')).toHaveLength(0);
+    expect(doc.querySelectorAll('.hero-title .hero-word').length).toBeGreaterThan(5);
+  });
+});
