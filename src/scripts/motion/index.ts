@@ -4,6 +4,7 @@ import { SplitText } from 'gsap/SplitText';
 import { initHeader } from './header';
 import { initSmoothScroll } from './lenis';
 import { initReveals } from './reveal';
+import { initServices } from './services';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 ScrollTrigger.config({ ignoreMobileResize: true });
@@ -15,6 +16,7 @@ async function boot(): Promise<void> {
   const root = document.documentElement;
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   initHeader({ allowHide: !reduced });
+  initServices({ animated: !reduced });
 
   const mm = gsap.matchMedia();
   mm.add('(prefers-reduced-motion: no-preference)', () => {

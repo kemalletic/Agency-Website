@@ -58,8 +58,8 @@ const bars = [
     <g class="app-chart">
       <rect x="378" y="150" width="136" height="120" rx="12" fill="#fbfaf8" stroke="#d9d5ce" />
       <rect x="394" y="166" width="50" height="6" rx="3" fill="#8c8983" />
-      {bars.map((b) => <rect x={b.x} y={b.y} width="12" height={b.h} rx="3" fill="#cfcbc4" />)}
-      <rect class="acc" x="484" y="178" width="12" height="76" rx="3" />
+      {bars.map((b) => <rect class="app-bar" x={b.x} y={b.y} width="12" height={b.h} rx="3" fill="#cfcbc4" />)}
+      <rect class="acc app-bar" x="484" y="178" width="12" height="76" rx="3" />
     </g>
   </svg>
 </div>

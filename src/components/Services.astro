@@ -33,24 +33,26 @@ const art = { web: ServiceWeb, apps: ServiceApps, systems: ServiceFlow } as cons
                 </svg>
               </span>
             </summary>
-            <div class="svc-panel">
-              <div class="svc-text">
-                <p class="svc-body">{item.body}</p>
-                <div class="svc-meta">
-                  <span class="label">{t.services.bring}</span>
-                  <span class="svc-bring">{item.bring}</span>
+            <div class="svc-collapse">
+              <div class="svc-panel">
+                <div class="svc-text">
+                  <p class="svc-body">{item.body}</p>
+                  <div class="svc-meta">
+                    <span class="label">{t.services.bring}</span>
+                    <span class="svc-bring">{item.bring}</span>
+                  </div>
+                  <div class="svc-meta svc-meta--list">
+                    <span class="label">{t.services.includes}</span>
+                    <ul class="svc-chips">
+                      {item.includes.map((x) => (
+                        <li>{x}</li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
-                <div class="svc-meta svc-meta--list">
-                  <span class="label">{t.services.includes}</span>
-                  <ul class="svc-chips">
-                    {item.includes.map((x) => (
-                      <li>{x}</li>
-                    ))}
-                  </ul>
+                <div class="svc-art">
+                  <Art lang={lang} />
                 </div>
-              </div>
-              <div class="svc-art">
-                <Art lang={lang} />
               </div>
             </div>
           </details>
@@ -135,6 +137,9 @@ const art = { web: ServiceWeb, apps: ServiceApps, systems: ServiceFlow } as cons
     .svc-summary:hover .svc-icon {
       border-color: var(--ink);
     }
+  }
+  .svc-collapse {
+    overflow: clip;
   }
   .svc-panel {
     display: grid;
