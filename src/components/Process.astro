@@ -1,5 +1,6 @@
 ---
 import { getDictionary, pad2, type Locale } from '../i18n';
+import { PROCESS_BARS, barLength, type ProcessBar } from '../lib/process';
 import SectionHeading from './ui/SectionHeading.astro';
 
 interface Props {
@@ -9,27 +10,10 @@ interface Props {
 const { lang } = Astro.props;
 const t = getDictionary(lang);
 
-/** Timeline geometry in % of the track width (1 unit = 11.4286 %, go-live at 7.5 units). */
-const GO_LIVE = 85.714;
-
-interface Bar {
-  start: number;
-  end: number | null;
-  tone: 'outline' | 'solid' | 'accent';
-  demos?: number[];
-  outAlign?: 'start' | 'end' | 'edge';
-}
-
-const bars: Bar[] = [
-  { start: 0, end: 11.429, tone: 'outline' },
-  { start: 8.571, end: 28.571, tone: 'outline' },
-  { start: 22.857, end: 77.143, tone: 'solid', demos: [34.286, 45.714, 57.143, 68.571] },
-  { start: 77.143, end: GO_LIVE, tone: 'solid', outAlign: 'end' },
-  { start: GO_LIVE, end: null, tone: 'accent', outAlign: 'edge' },
-];
-
-const barStyle = (bar: Bar) =>
-  bar.end === null ? `--start: ${bar.start}%` : `--start: ${bar.start}%; --len: ${(bar.end - bar.start).toFixed(3)}%`;
+const barStyle = (bar: ProcessBar) => {
+  const len = barLength(bar);
+  return len === null ? `--start: ${bar.start}%` : `--start: ${bar.start}%; --len: ${len}%`;
+};
 ---
 
 <section id="process" class="process" aria-labelledby="process-title">
@@ -44,35 +28,43 @@ const barStyle = (bar: Bar) =>
           <span class="label proc-axis-ongoing">{t.process.axis.ongoing}</span>
         </div>
       </div>
-      <ol class="proc-list">
-        {
-          t.process.stages.map((stage, i) => {
-            const bar = bars[i]!;
-            return (
-              <li class="proc-row">
-                <div class="proc-info">
-                  <span class="proc-num">{pad2(i + 1)}</span>
-                  <div>
-                    <h3 class="proc-title">{stage.title}</h3>
-                    <p class="proc-body">{stage.body}</p>
+      <div class="proc-chart">
+        <ol class="proc-list">
+          {
+            t.process.stages.map((stage, i) => {
+              const bar = PROCESS_BARS[i]!;
+              return (
+                <li class="proc-row">
+                  <div class="proc-info">
+                    <span class="proc-num">{pad2(i + 1)}</span>
+                    <div>
+                      <h3 class="proc-title">{stage.title}</h3>
+                      <p class="proc-body">{stage.body}</p>
+                    </div>
                   </div>
-                </div>
-                <div class="proc-lane">
-                  <div class="proc-track" aria-hidden="true">
-                    <span class={`proc-bar proc-bar--${bar.tone}`} style={barStyle(bar)} />
-                    {bar.demos?.map((x) => (
-                      <span class="proc-demo" style={`--x: ${x}%`} />
-                    ))}
+                  <div class="proc-lane">
+                    <div class="proc-track" aria-hidden="true">
+                      <span class={`proc-bar proc-bar--${bar.tone}`} style={barStyle(bar)} />
+                      {bar.demos?.map((x) => (
+                        <span class="proc-demo" style={`--x: ${x}%`} />
+                      ))}
+                    </div>
+                    <p class={`proc-out proc-out--${bar.outAlign ?? 'start'}`} style={`--start: ${bar.start}%`}>
+                      <span class="proc-out-label">{t.process.out}</span> {stage.out}
+                    </p>
                   </div>
-                  <p class={`proc-out proc-out--${bar.outAlign ?? 'start'}`} style={`--start: ${bar.start}%`}>
-                    <span class="proc-out-label">{t.process.out}</span> {stage.out}
-                  </p>
-                </div>
-              </li>
-            );
-          })
-        }
-      </ol>
+                </li>
+              );
+            })
+          }
+        </ol>
+        <div class="proc-overlay" aria-hidden="true">
+          <div class="proc-overlay-lane">
+            <span class="proc-golive-solid"></span>
+            <span class="proc-cursor"><span class="proc-cursor-dot"></span></span>
+          </div>
+        </div>
+      </div>
       <figcaption class="fig-caption proc-caption">
         <span class="fig-num">{t.process.fig}</span> — {t.process.captionBefore}{' '}
         <span class="proc-pill"><span class="visually-hidden">{t.process.pillAlt}</span></span>{' '}
@@ -326,6 +318,52 @@ const barStyle = (bar: Bar) =>
   @media (min-width: 80rem) {
     .proc-axis-ongoing {
       display: block;
+    }
+  }
+  .proc-chart {
+    position: relative;
+  }
+  .proc-overlay {
+    display: none;
+  }
+  @media (min-width: 64rem) {
+    .proc-overlay {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: var(--gutter);
+      pointer-events: none;
+    }
+    .proc-overlay-lane {
+      position: relative;
+      grid-column: 5 / span 8;
+    }
+    .proc-golive-solid {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 85.714%;
+      border-left: 1px solid var(--ink);
+      opacity: 0;
+    }
+    .proc-cursor {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 1px;
+      background: var(--ink);
+      opacity: 0;
+    }
+    .proc-cursor-dot {
+      position: absolute;
+      top: -4px;
+      left: -3.5px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--ink);
     }
   }
 </style>

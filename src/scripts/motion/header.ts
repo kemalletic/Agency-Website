@@ -9,8 +9,11 @@ export function initHeader({ allowHide }: { allowHide: boolean }): () => void {
   let hidden = false;
 
   const update = (y: number): void => {
-    const locked = !allowHide || header.matches(':focus-within') || Boolean(menu?.open);
-    hidden = nextHeaderHidden({ y, lastY, hidden, locked });
+    const focused = header.matches(':focus-within');
+    const locked = !allowHide || focused || Boolean(menu?.open);
+    // A pinned set piece (html.is-pinned) keeps the header away, even on scroll-up, unless it has focus.
+    const pinned = allowHide && !focused && document.documentElement.classList.contains('is-pinned');
+    hidden = pinned || nextHeaderHidden({ y, lastY, hidden, locked });
     lastY = y;
     header.dataset.solid = String(headerIsSolid(y));
     header.dataset.hidden = String(hidden);
