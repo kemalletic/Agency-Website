@@ -33,6 +33,14 @@ export function initRings(): () => void {
   const grid = document.querySelector<HTMLElement>('#approach .approach-grid');
   if (!grid) return () => {};
 
+  // Software rendering (and three.js' download) is not worth it: decide before pinning or importing anything.
+  const canvas = document.createElement('canvas');
+  const context = canvas.getContext('webgl2', { alpha: true, antialias: true, failIfMajorPerformanceCaveat: true });
+  if (!context) {
+    root.dataset.rings = 'off';
+    return () => {};
+  }
+
   const wide = window.matchMedia('(min-width: 64rem)');
   const pin = ScrollTrigger.create({
     trigger: grid,
@@ -69,7 +77,7 @@ export function initRings(): () => void {
     if (done) return;
     const intro = root.dataset.rings === 'pending';
     import('../rings/index')
-      .then(({ startRings }) => startRings({ pin, intro, onLost: () => giveUp() }))
+      .then(({ startRings }) => startRings({ pin, intro, canvas, context, onLost: () => giveUp() }))
       .then((started) => {
         if (done) {
           started.dispose();

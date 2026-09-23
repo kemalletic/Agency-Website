@@ -17,6 +17,9 @@ export interface RingsOptions {
   intro: boolean;
   /** Called once if the GPU drops the WebGL context. */
   onLost: () => void;
+  /** Canvas with a WebGL2 context already created by the loader (who checked it is fast enough). */
+  canvas: HTMLCanvasElement;
+  context: WebGL2RenderingContext;
 }
 
 export interface RingsHandle {
@@ -32,7 +35,7 @@ const FOLLOW = 14;
 const breathe = (): Promise<void> => new Promise((resolve) => setTimeout(resolve, 0));
 
 /** Starts the live rings; resolves after the first frame is on the canvas, rejects if WebGL is unsuitable. */
-export async function startRings({ pin, intro, onLost }: RingsOptions): Promise<RingsHandle> {
+export async function startRings({ pin, intro, onLost, canvas, context }: RingsOptions): Promise<RingsHandle> {
   const heroStage = document.querySelector<HTMLElement>('[data-stage="hero"]');
   const approachStage = document.querySelector<HTMLElement>('[data-stage="approach"]');
   const section = document.getElementById('approach');
@@ -41,12 +44,8 @@ export async function startRings({ pin, intro, onLost }: RingsOptions): Promise<
 
   const low = window.matchMedia('(max-width: 47.99rem), (pointer: coarse)').matches;
   const coarse = window.matchMedia('(pointer: coarse)').matches;
-  const canvas = document.createElement('canvas');
   canvas.className = 'rings-canvas';
   canvas.setAttribute('aria-hidden', 'true');
-  // Asking for the context ourselves keeps software rendering (and three's console error) out: posters beat a slideshow.
-  const context = canvas.getContext('webgl2', { alpha: true, antialias: true, failIfMajorPerformanceCaveat: true });
-  if (!context) throw new Error('rings: no fast WebGL2');
   const renderer = new WebGLRenderer({ canvas, context, antialias: true, alpha: true });
   const rings = await createRingsScene(renderer, tokenColors(), low ? QUALITY.low : QUALITY.high, breathe).catch((error: unknown) => {
     renderer.dispose();
