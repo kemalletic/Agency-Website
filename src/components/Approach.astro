@@ -1,0 +1,96 @@
+---
+import { getDictionary, type Locale } from '../i18n';
+import ApproachDiagram from './art/ApproachDiagram.astro';
+import RingDot from './ui/RingDot.astro';
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const t = getDictionary(lang);
+---
+
+<section id="approach" class="approach container" aria-labelledby="approach-label">
+  <div class="approach-grid">
+    <figure class="approach-figure">
+      <div class="approach-stage" data-stage="approach" role="img" aria-label={t.approach.diagramAlt}>
+        <ApproachDiagram lang={lang} />
+      </div>
+      <figcaption class="fig-caption"><span class="fig-num">{t.approach.fig}</span> — {t.approach.caption}</figcaption>
+    </figure>
+    <div class="approach-text">
+      <h2 id="approach-label" class="label">{t.approach.label}</h2>
+      <p class="approach-lead">
+        {
+          t.approach.lead.map((seg) =>
+            typeof seg === 'string' ? seg
+            : 'ring' in seg ? <span class="hl" data-ring={seg.ring}><RingDot ring={seg.ring} />{seg.text}</span>
+            : <span class="mark" data-mark={seg.mark}>{seg.text}</span>,
+          )
+        }
+      </p>
+      <p class="approach-body">{t.approach.body}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .approach {
+    padding-block: var(--section-y);
+  }
+  .approach-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+    column-gap: var(--gutter);
+    row-gap: 56px;
+    align-items: center;
+  }
+  .approach-figure {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: min(100%, 26rem);
+  }
+  .approach-figure .fig-caption {
+    max-width: 24rem;
+  }
+  .approach-text {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    grid-column: 1 / -1;
+  }
+  .approach-lead {
+    font-size: var(--fs-lead);
+    font-weight: 300;
+    line-height: 1.14;
+    letter-spacing: -0.032em;
+    text-wrap: pretty;
+  }
+  .hl {
+    cursor: default;
+    white-space: nowrap;
+  }
+  .approach-body {
+    max-width: 29.5rem;
+    font-size: var(--fs-body-l);
+    line-height: 1.6;
+    color: var(--muted);
+    text-wrap: pretty;
+  }
+  @media (min-width: 64rem) {
+    .approach-figure {
+      grid-column: 1 / span 5;
+      justify-self: stretch;
+      width: auto;
+      margin-left: -8px;
+    }
+    .approach-text {
+      grid-column: 7 / span 6;
+      gap: 40px;
+    }
+  }
+</style>

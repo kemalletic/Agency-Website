@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import type { Locale } from '../i18n';
+import Approach from './Approach.astro';
 import Header from './Header.astro';
 import Hero from './Hero.astro';
 
@@ -15,5 +16,6 @@ const { lang } = Astro.props;
   <Header lang={lang} />
   <main id="main">
     <Hero lang={lang} />
+    <Approach lang={lang} />
   </main>
 </Base>

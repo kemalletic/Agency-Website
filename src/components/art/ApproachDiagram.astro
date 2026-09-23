@@ -1,0 +1,139 @@
+---
+import { getDictionary, type Locale, type RingKey } from '../../i18n';
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const t = getDictionary(lang);
+
+interface Stroke {
+  r: number;
+  opacity: number;
+  width: number;
+}
+interface Ring {
+  key: RingKey;
+  cx: number;
+  cy: number;
+  shade: Stroke;
+  shine: Stroke;
+}
+
+const rings: Ring[] = [
+  { key: 'design', cx: 0, cy: -73.9, shade: { r: 125.2, opacity: 0.07, width: 5.72 }, shine: { r: 114.28, opacity: 0.9, width: 3.12 } },
+  { key: 'engineering', cx: -64, cy: 36.95, shade: { r: 126.24, opacity: 0.18, width: 3.12 }, shine: { r: 114.8, opacity: 0.15, width: 3.64 } },
+  { key: 'automation', cx: 64, cy: 36.95, shade: { r: 126.24, opacity: 0.18, width: 3.12 }, shine: { r: 114.8, opacity: 0.2, width: 3.64 } },
+];
+
+// Each ring passes over one neighbour at two crossings; these patches redraw it on top there.
+const patches = [
+  { ring: 0, cx: -119.91, cy: -69.23 },
+  { ring: 0, cx: 55.91, cy: 32.28 },
+  { ring: 1, cx: 0, cy: 138.46 },
+  { ring: 1, cx: 0, cy: -64.56 },
+  { ring: 2, cx: 119.91, cy: -69.23 },
+  { ring: 2, cx: -55.91, cy: 32.28 },
+];
+
+const labels: Array<{ key: RingKey; x: number; y1: number; y2: number; ty: number }> = [
+  { key: 'design', x: 0, y1: -211.9, y2: -236.9, ty: -245.18 },
+  { key: 'engineering', x: -64, y1: 174.95, y2: 199.95, ty: 214.21 },
+  { key: 'automation', x: 64, y1: 174.95, y2: 199.95, ty: 214.21 },
+];
+---
+
+<svg class="diagram" viewBox="-212 -258.98 424 481.01" aria-hidden="true">
+  <defs>
+    {
+      patches.map((p, i) => (
+        <mask id={`approach-x${i}`}>
+          <circle cx={p.cx} cy={p.cy} r="36" fill="#fff" />
+        </mask>
+      ))
+    }
+  </defs>
+  {
+    rings.map((r) => (
+      <g class={`ring ring--${r.key}`} data-ring={r.key}>
+        <circle class="ring-edge" cx={r.cx} cy={r.cy} r="120" />
+        <circle class="ring-body" cx={r.cx} cy={r.cy} r="120" />
+        <circle cx={r.cx} cy={r.cy} r={r.shade.r} fill="none" stroke="#000" stroke-opacity={r.shade.opacity} stroke-width={r.shade.width} />
+        <circle cx={r.cx} cy={r.cy} r={r.shine.r} fill="none" stroke="#fff" stroke-opacity={r.shine.opacity} stroke-width={r.shine.width} />
+      </g>
+    ))
+  }
+  {
+    patches.map((p, i) => {
+      const r = rings[p.ring]!;
+      return (
+        <g class={`ring ring--${r.key}`} data-ring={r.key} mask={`url(#approach-x${i})`}>
+          <circle class="ring-gap" cx={r.cx} cy={r.cy} r="120" />
+          <circle class="ring-edge" cx={r.cx} cy={r.cy} r="120" />
+          <circle class="ring-body" cx={r.cx} cy={r.cy} r="120" />
+          <circle cx={r.cx} cy={r.cy} r={r.shade.r} fill="none" stroke="#000" stroke-opacity={r.shade.opacity} stroke-width={r.shade.width} />
+          <circle cx={r.cx} cy={r.cy} r={r.shine.r} fill="none" stroke="#fff" stroke-opacity={r.shine.opacity} stroke-width={r.shine.width} />
+        </g>
+      );
+    })
+  }
+  {
+    labels.map((l) => (
+      <g class="diagram-label">
+        <path d={`M${l.x} ${l.y1}V${l.y2}`} />
+        <circle cx={l.x} cy={l.y1} r="2.2" />
+        <text x={l.x} y={l.ty}>{t.approach.rings[l.key].toLocaleUpperCase(lang)}</text>
+      </g>
+    ))
+  }
+</svg>
+
+<style>
+  .diagram {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+  .ring-edge,
+  .ring-body,
+  .ring-gap {
+    fill: none;
+  }
+  .ring-gap {
+    stroke: var(--paper);
+    stroke-width: 40;
+  }
+  .ring-edge {
+    stroke: var(--ink);
+    stroke-width: 26;
+  }
+  .ring-body {
+    stroke-width: 23.5;
+  }
+  .ring--design .ring-body {
+    stroke: var(--porcelain);
+  }
+  .ring--engineering .ring-body {
+    stroke: var(--graphite);
+  }
+  .ring--automation .ring-body {
+    stroke: var(--accent);
+  }
+  .diagram-label path {
+    fill: none;
+    stroke: var(--label);
+    stroke-width: 1;
+  }
+  .diagram-label circle {
+    fill: var(--ink);
+  }
+  .diagram-label text {
+    font-family: var(--font-sans);
+    font-size: 9.2px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    fill: var(--label);
+    text-anchor: middle;
+  }
+</style>
