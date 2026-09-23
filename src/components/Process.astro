@@ -1,0 +1,326 @@
+---
+import { getDictionary, pad2, type Locale } from '../i18n';
+import SectionHeading from './ui/SectionHeading.astro';
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const t = getDictionary(lang);
+
+/** Timeline geometry in % of the track width (1 unit = 11.4286 %, go-live at 7.5 units). */
+const GO_LIVE = 85.714;
+
+interface Bar {
+  start: number;
+  end: number | null;
+  tone: 'outline' | 'solid' | 'accent';
+  demos?: number[];
+  outAlign?: 'start' | 'end' | 'edge';
+}
+
+const bars: Bar[] = [
+  { start: 0, end: 11.429, tone: 'outline' },
+  { start: 8.571, end: 28.571, tone: 'outline' },
+  { start: 22.857, end: 77.143, tone: 'solid', demos: [34.286, 45.714, 57.143, 68.571] },
+  { start: 77.143, end: GO_LIVE, tone: 'solid', outAlign: 'end' },
+  { start: GO_LIVE, end: null, tone: 'accent', outAlign: 'edge' },
+];
+
+const barStyle = (bar: Bar) =>
+  bar.end === null ? `--start: ${bar.start}%` : `--start: ${bar.start}%; --len: ${(bar.end - bar.start).toFixed(3)}%`;
+---
+
+<section id="process" class="process container" aria-labelledby="process-title">
+  <SectionHeading id="process-title" title={t.process.title} count={pad2(t.process.stages.length)} intro={t.process.intro} />
+  <figure class="proc">
+    <div class="proc-axis" aria-hidden="true">
+      <span class="label proc-axis-stage">{t.process.stage}</span>
+      <div class="proc-axis-lane">
+        <span class="label proc-axis-kick">{t.process.axis.kickoff}</span>
+        <span class="label proc-axis-live">{t.process.axis.golive}</span>
+        <span class="label proc-axis-ongoing">{t.process.axis.ongoing}</span>
+      </div>
+    </div>
+    <ol class="proc-list">
+      {
+        t.process.stages.map((stage, i) => {
+          const bar = bars[i]!;
+          return (
+            <li class="proc-row">
+              <div class="proc-info">
+                <span class="proc-num">{pad2(i + 1)}</span>
+                <div>
+                  <h3 class="proc-title">{stage.title}</h3>
+                  <p class="proc-body">{stage.body}</p>
+                </div>
+              </div>
+              <div class="proc-lane">
+                <div class="proc-track" aria-hidden="true">
+                  <span class={`proc-bar proc-bar--${bar.tone}`} style={barStyle(bar)} />
+                  {bar.demos?.map((x) => (
+                    <span class="proc-demo" style={`--x: ${x}%`} />
+                  ))}
+                </div>
+                <p class={`proc-out proc-out--${bar.outAlign ?? 'start'}`} style={`--start: ${bar.start}%`}>
+                  <span class="proc-out-label">{t.process.out}</span> {stage.out}
+                </p>
+              </div>
+            </li>
+          );
+        })
+      }
+    </ol>
+    <figcaption class="fig-caption proc-caption">
+      <span class="fig-num">{t.process.fig}</span> — {t.process.captionBefore}{' '}
+      <span class="proc-pill"><span class="visually-hidden">{t.process.pillAlt}</span></span>{' '}
+      {t.process.captionAfter}
+    </figcaption>
+  </figure>
+</section>
+
+<style>
+  .process {
+    padding-bottom: var(--section-y);
+    overflow-x: clip;
+  }
+  .proc {
+    margin-top: 40px;
+  }
+  .proc-axis {
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--ink);
+  }
+  .proc-axis-stage,
+  .proc-axis-ongoing {
+    display: none;
+  }
+  .proc-axis-lane {
+    position: relative;
+    height: 18px;
+    margin-left: 40px;
+  }
+  .proc-axis-lane > * {
+    position: absolute;
+    bottom: 0;
+    white-space: nowrap;
+  }
+  .proc-axis-kick {
+    left: 0;
+  }
+  .proc-axis-live {
+    left: 85.714%;
+    transform: translateX(calc(-100% - 6px));
+    color: var(--ink);
+  }
+  .proc-axis-ongoing {
+    right: 0;
+  }
+  .proc-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .proc-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 18px;
+    padding-block: 24px;
+    border-bottom: 1px solid var(--line);
+  }
+  .proc-info {
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr);
+  }
+  .proc-num {
+    padding-top: 7px;
+    font-size: 14px;
+    color: var(--label);
+    font-variant-numeric: tabular-nums;
+  }
+  .proc-title {
+    font-size: var(--fs-h3);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+  }
+  .proc-body {
+    margin-top: 10px;
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--muted);
+    text-wrap: pretty;
+  }
+  .proc-lane {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-left: 40px;
+  }
+  .proc-track {
+    position: relative;
+    height: 20px;
+    background-image: linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-repeat: repeat-x;
+    background-size: 11.4286% 100%;
+  }
+  .proc-track::after {
+    content: '';
+    position: absolute;
+    top: -4px;
+    bottom: -4px;
+    left: 85.714%;
+    border-left: 1px dashed var(--label);
+  }
+  .proc-bar {
+    position: absolute;
+    top: 4px;
+    left: var(--start);
+    width: var(--len);
+    height: 12px;
+    border-radius: 6px;
+  }
+  .proc-bar--outline {
+    background: var(--paper);
+    border: 1.2px solid var(--ink);
+  }
+  .proc-bar--solid {
+    background: var(--ink);
+  }
+  .proc-bar--accent {
+    width: 100vw;
+    background: var(--accent);
+  }
+  .proc-demo {
+    position: absolute;
+    top: 8px;
+    left: var(--x);
+    width: 4px;
+    height: 4px;
+    margin-left: -2px;
+    border-radius: 50%;
+    background: var(--paper);
+  }
+  .proc-out {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+  .proc-out-label {
+    color: var(--label);
+  }
+  .proc-caption {
+    margin-top: 24px;
+  }
+  .proc-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 12px;
+    margin: 0 2px;
+    border-radius: 6px;
+    background: var(--ink);
+    vertical-align: -1px;
+  }
+  .proc-pill::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--paper);
+  }
+  @media (min-width: 64rem) {
+    .proc {
+      margin-top: 56px;
+    }
+    .proc-axis {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: var(--gutter);
+      align-items: end;
+      height: 44px;
+      padding-bottom: 0;
+    }
+    .proc-axis-stage {
+      display: block;
+      grid-column: span 4;
+      padding-bottom: 14px;
+    }
+    .proc-axis-lane {
+      grid-column: 5 / span 8;
+      height: 100%;
+      margin-left: 0;
+    }
+    .proc-axis-lane > * {
+      bottom: 14px;
+    }
+    .proc-axis-live {
+      transform: translateX(-50%);
+    }
+    .proc-axis-ongoing {
+      display: block;
+    }
+    .proc-row {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: var(--gutter);
+      row-gap: 0;
+      min-height: 140px;
+      padding-block: 0;
+    }
+    .proc-info {
+      grid-column: 1 / span 4;
+      grid-template-columns: 52px minmax(0, 1fr);
+      align-content: start;
+      padding: 28px 32px 28px 0;
+    }
+    .proc-num {
+      padding-top: 9px;
+    }
+    .proc-lane {
+      position: relative;
+      display: block;
+      grid-column: 5 / span 8;
+      margin-left: 0;
+    }
+    .proc-track {
+      position: absolute;
+      inset: 0;
+      height: auto;
+    }
+    .proc-track::after {
+      top: 0;
+      bottom: 0;
+    }
+    .proc-bar {
+      top: calc(50% - 30px);
+      height: 32px;
+      border-radius: 16px;
+    }
+    .proc-demo {
+      top: calc(50% - 18px);
+      width: 8px;
+      height: 8px;
+      margin-left: -4px;
+    }
+    .proc-out {
+      position: absolute;
+      top: calc(50% + 12px);
+      left: var(--start);
+      margin-left: -6px;
+      padding: 2px 6px;
+      background: var(--paper);
+      white-space: nowrap;
+    }
+    .proc-out--end {
+      right: calc(14.286% + 8px);
+      left: auto;
+      text-align: right;
+    }
+    .proc-out--edge {
+      right: 0;
+      left: auto;
+      text-align: right;
+    }
+  }
+</style>
