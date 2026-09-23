@@ -487,7 +487,7 @@ describe('structuredData', () => {
 
   it('leaves out every value that is still a placeholder', () => {
     const data = structuredData({ site, lang: 'en', ...page, pageUrl: 'https://example.com/', imageUrl: 'https://example.com/og-en.jpg' });
-    expect(JSON.stringify(data)).not.toMatch(/\[|yourdomain|example\.com/);
+    expect(JSON.stringify(data)).not.toMatch(/"\[|yourdomain|example\.com/);
     for (const key of ['@id', 'name', 'url', 'image', 'email', 'telephone', 'sameAs']) expect(data, key).not.toHaveProperty(key);
     expect(data).toMatchObject({ '@type': 'ProfessionalService', address: { postalCode: '71000', addressLocality: 'Sarajevo' } });
   });
@@ -735,7 +735,7 @@ describe.each(pages)('$path social cards and structured data', ({ path, lang }) 
     const data = JSON.parse(scripts[0]?.textContent ?? '{}') as Record<string, unknown>;
     expect(data['@type']).toBe('ProfessionalService');
     expect(data.knowsLanguage).toEqual(['en', 'bs']);
-    expect(JSON.stringify(data)).not.toMatch(/\[[^\]]*\]|yourdomain/);
+    expect(JSON.stringify(data)).not.toMatch(/"\[|yourdomain/);
   });
 
   it('offers a touch icon', () => {

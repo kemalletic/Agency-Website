@@ -9,7 +9,7 @@ export interface SiteConfig {
   url: string;
   email: string;
   phone: string;
-  address: { street: Localized; city: string; country: Localized };
+  address: { street: Localized; city: string; country: Localized; /** ISO 3166-1 alpha-2, e.g. "BA". */ countryCode: string };
   hours: Localized;
   /** Month the next project can start, e.g. "October 2026" / "oktobar 2026". */
   bookingFrom: Localized;
@@ -29,6 +29,7 @@ export const site: SiteConfig = {
     street: { en: '[Street and number]', bs: '[Ulica i broj]' },
     city: '71000 Sarajevo',
     country: { en: 'Bosnia and Herzegovina', bs: 'Bosna i Hercegovina' },
+    countryCode: 'BA',
   },
   hours: { en: '[Mon–Fri, 9:00–17:00 CET]', bs: '[pon–pet, 9:00–17:00 CET]' },
   bookingFrom: { en: '[MONTH YEAR]', bs: '[MJESEC GODINA]' },

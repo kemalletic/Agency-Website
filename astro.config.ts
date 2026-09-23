@@ -3,7 +3,8 @@ import { site } from './src/config/site';
 import { devPosters } from './src/dev/posters-integration';
 
 export default defineConfig({
-  site: site.url,
+  // SITE_URL lets a preview deployment (or a local Lighthouse run) publish its own absolute URLs.
+  site: process.env.SITE_URL || site.url,
   integrations: [devPosters()],
   i18n: {
     defaultLocale: 'en',

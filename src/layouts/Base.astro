@@ -6,15 +6,23 @@ import '../styles/motion.css';
 import '../styles/rings.css';
 import { site } from '../config/site';
 import { getDictionary, localePath, locales, ogLocale, type Locale } from '../i18n';
+import { structuredData } from '../lib/seo';
 
 interface Props {
   lang: Locale;
+  /** Defaults to "<studio> — <dictionary title>". */
+  title?: string;
+  description?: string;
+  /** false keeps a page out of search (404): noindex, and no canonical, hreflang or structured data. */
+  index?: boolean;
 }
 
-const { lang } = Astro.props;
-const t = getDictionary(lang);
-const title = `${site.name} — ${t.meta.title}`;
-const href = (l: Locale) => new URL(localePath(l), site.url).href;
+const t = getDictionary(Astro.props.lang);
+const { lang, title = `${site.name} — ${t.meta.title}`, description = t.meta.description, index = true } = Astro.props;
+const origin = Astro.site ?? new URL(site.url);
+const href = (l: Locale) => new URL(localePath(l), origin).href;
+const card = new URL(`/og-${lang}.jpg`, origin).href;
+const ld = index ? JSON.stringify(structuredData({ site, lang, pageUrl: href(lang), imageUrl: card, description })).replace(/</g, '\\u003c') : '';
 ---
 
 <!doctype html>
@@ -40,18 +48,39 @@ const href = (l: Locale) => new URL(localePath(l), site.url).href;
       })();
     </script>
     <title>{title}</title>
-    <meta name="description" content={t.meta.description} />
-    <link rel="canonical" href={href(lang)} />
-    {locales.map((l) => <link rel="alternate" hreflang={l} href={href(l)} />)}
-    <link rel="alternate" hreflang="x-default" href={href('en')} />
+    <meta name="description" content={description} />
+    {
+      index ? (
+        <>
+          <link rel="canonical" href={href(lang)} />
+          {locales.map((l) => <link rel="alternate" hreflang={l} href={href(l)} />)}
+          <link rel="alternate" hreflang="x-default" href={href('en')} />
+          <meta property="og:url" content={href(lang)} />
+        </>
+      ) : (
+        <meta name="robots" content="noindex" />
+      )
+    }
     <meta name="theme-color" content="#ebe9e4" />
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
     <meta property="og:title" content={title} />
-    <meta property="og:description" content={t.meta.description} />
-    <meta property="og:url" content={href(lang)} />
+    <meta property="og:description" content={description} />
     <meta property="og:locale" content={ogLocale[lang]} />
+    {locales.filter((l) => l !== lang).map((l) => <meta property="og:locale:alternate" content={ogLocale[l]} />)}
+    <meta property="og:image" content={card} />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={title} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={card} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <Font cssVariable="--font-sans" preload={[{ subset: 'latin', weight: '300' }]} />
+    {index && <script type="application/ld+json" set:html={ld} />}
   </head>
   <body>
     <a class="skip-link" href="#main">{t.a11y.skip}</a>

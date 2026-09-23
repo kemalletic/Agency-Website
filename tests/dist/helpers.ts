@@ -20,3 +20,8 @@ export function text(el: Element | null | undefined): string {
 export function norm(value: string): string {
   return value.replace(/\s+/g, ' ').trim();
 }
+
+/** A built file as text (sitemaps, robots.txt, headers). */
+export function readDist(path: string): string {
+  return readFileSync(new URL(`../../dist/${path}`, import.meta.url), 'utf8');
+}
