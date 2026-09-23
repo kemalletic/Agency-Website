@@ -1,0 +1,79 @@
+---
+import { getDictionary, type Locale } from '../../i18n';
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const flow = getDictionary(lang).services.flow;
+
+const links = [
+  'M164 100C224 100 190 175 250 175',
+  'M164 250C224 250 190 175 250 175',
+  'M310 175C370 175 338 64 398 64',
+  'M310 175C370 175 338 175 398 175',
+  'M310 175C370 175 338 286 398 286',
+];
+
+const nodes = [
+  { x: 40, y: 82, label: flow.shop },
+  { x: 40, y: 232, label: flow.inbox },
+  { x: 398, y: 46, label: flow.accounting },
+  { x: 398, y: 157, label: flow.warehouse },
+  { x: 398, y: 268, label: flow.invoice },
+];
+---
+
+<div class="art-frame">
+  <svg viewBox="0 0 560 350" aria-hidden="true">
+    {links.map((d) => <path class="link" d={d} />)}
+    {links.map((d) => <path class="flow" d={d} />)}
+    {
+      nodes.map((n) => (
+        <g class="node">
+          <rect x={n.x + 0.5} y={n.y + 0.5} width="123" height="35" rx="17.5" fill="#fbfaf8" stroke="#d9d5ce" />
+          <circle cx={n.x + 18} cy={n.y + 18} r="3.4" fill="#8c8983" />
+          <text class="node-label" x={n.x + 30} y={n.y + 22.2}>
+            {n.label}
+          </text>
+        </g>
+      ))
+    }
+    <circle cx="280" cy="175" r="30" fill="#121211" />
+    <g fill="none" stroke-width="2.2">
+      <circle cx="280" cy="170" r="7.4" stroke="#f4f2ee" />
+      <circle cx="275.4" cy="178" r="7.4" stroke="#8c8983" />
+      <circle class="hub-accent" cx="284.6" cy="178" r="7.4" />
+    </g>
+  </svg>
+</div>
+
+<style>
+  .link {
+    fill: none;
+    stroke: #cfcbc4;
+    stroke-width: 1.2;
+  }
+  .flow {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 3.6;
+    stroke-linecap: round;
+    stroke-dasharray: 0.1 17;
+    animation: flow 1.5s linear infinite;
+  }
+  .node-label {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    fill: var(--ink);
+  }
+  .hub-accent {
+    stroke: var(--accent);
+  }
+  @keyframes flow {
+    to {
+      stroke-dashoffset: -34.2;
+    }
+  }
+</style>

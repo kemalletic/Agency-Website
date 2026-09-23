@@ -1,0 +1,65 @@
+---
+import type { Locale } from '../../i18n';
+
+interface Props {
+  lang: Locale;
+}
+
+const rows = [
+  { y: 136, name: 58, meta: 40, status: 'accent' },
+  { y: 180, name: 50, meta: 52, status: 'dark' },
+  { y: 224, name: 42, meta: 40, status: 'open' },
+  { y: 268, name: 58, meta: 52, status: 'accent' },
+  { y: 312, name: 50, meta: 40, status: 'open' },
+] as const;
+
+const bars = [
+  { x: 396, y: 220, h: 34 },
+  { x: 418, y: 202, h: 52 },
+  { x: 440, y: 214, h: 40 },
+  { x: 462, y: 190, h: 64 },
+];
+---
+
+<div class="art-frame">
+  <svg viewBox="0 0 560 350" aria-hidden="true">
+    <rect x="206" y="28" width="150" height="340" rx="26" fill="#fbfaf8" stroke="#d9d5ce" />
+    <rect x="261" y="40" width="40" height="7" rx="3.5" fill="#e6e3dd" />
+    <rect x="224" y="66" width="64" height="10" rx="2.5" fill="#121211" />
+    <rect x="224" y="88" width="114" height="20" rx="10" fill="#f0eee9" />
+    <rect x="226" y="90" width="56" height="16" rx="8" fill="#fbfaf8" />
+    {
+      rows.map((row, i) => (
+        <g class="app-row">
+          <circle cx="238" cy={row.y} r="10" fill="#e6e3dd" />
+          <rect x="256" y={row.y - 8} width={row.name} height="6" rx="3" fill="#2a2a2c" />
+          <rect x="256" y={row.y + 4} width={row.meta} height="4" rx="2" fill="#cfcbc4" />
+          {row.status === 'open' ? (
+            <circle cx="338" cy={row.y} r="3.6" fill="none" stroke="#8c8983" />
+          ) : (
+            <circle
+              class={row.status === 'accent' ? 'acc' : undefined}
+              cx="338"
+              cy={row.y}
+              r="3.6"
+              fill={row.status === 'dark' ? '#2a2a2c' : undefined}
+            />
+          )}
+          {i < rows.length - 1 && <path d={`M224 ${row.y + 22}H338`} stroke="#efede8" />}
+        </g>
+      ))
+    }
+    <g class="app-toast">
+      <rect x="58" y="116" width="180" height="58" rx="14" fill="#fbfaf8" stroke="#d9d5ce" />
+      <circle class="acc" cx="82" cy="145" r="6" />
+      <rect x="98" y="134" width="96" height="7" rx="3.5" fill="#121211" />
+      <rect x="98" y="149" width="118" height="5" rx="2.5" fill="#cfcbc4" />
+    </g>
+    <g class="app-chart">
+      <rect x="378" y="150" width="136" height="120" rx="12" fill="#fbfaf8" stroke="#d9d5ce" />
+      <rect x="394" y="166" width="50" height="6" rx="3" fill="#8c8983" />
+      {bars.map((b) => <rect x={b.x} y={b.y} width="12" height={b.h} rx="3" fill="#cfcbc4" />)}
+      <rect class="acc" x="484" y="178" width="12" height="76" rx="3" />
+    </g>
+  </svg>
+</div>

@@ -1,0 +1,226 @@
+---
+import { getDictionary, pad2, type Locale } from '../i18n';
+import ServiceApps from './art/ServiceApps.astro';
+import ServiceFlow from './art/ServiceFlow.astro';
+import ServiceWeb from './art/ServiceWeb.astro';
+import SectionHeading from './ui/SectionHeading.astro';
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const t = getDictionary(lang);
+const art = { web: ServiceWeb, apps: ServiceApps, systems: ServiceFlow } as const;
+---
+
+<section id="services" class="services container" aria-labelledby="services-title">
+  <SectionHeading id="services-title" title={t.services.title} count={pad2(t.services.items.length)} intro={t.services.intro} />
+  <div class="svc-list">
+    {
+      t.services.items.map((item, i) => {
+        const Art = art[item.id];
+        return (
+          <details class="svc" name="services" open={i === 0} data-service={item.id}>
+            <summary class="svc-summary">
+              <span class="svc-num">{pad2(i + 1)}</span>
+              <h3 class="svc-title">{item.title}</h3>
+              <span class="svc-tagline">{item.tagline}</span>
+              <span class="svc-icon" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 14 14">
+                  <path d="M1 7H13" />
+                  <path class="svc-icon-v" d="M7 1V13" />
+                </svg>
+              </span>
+            </summary>
+            <div class="svc-panel">
+              <div class="svc-text">
+                <p class="svc-body">{item.body}</p>
+                <div class="svc-meta">
+                  <span class="label">{t.services.bring}</span>
+                  <span class="svc-bring">{item.bring}</span>
+                </div>
+                <div class="svc-meta svc-meta--list">
+                  <span class="label">{t.services.includes}</span>
+                  <ul class="svc-chips">
+                    {item.includes.map((x) => (
+                      <li>{x}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+              <div class="svc-art">
+                <Art lang={lang} />
+              </div>
+            </div>
+          </details>
+        );
+      })
+    }
+  </div>
+</section>
+
+<style>
+  .services {
+    padding-bottom: var(--section-y);
+  }
+  .svc {
+    border-bottom: 1px solid var(--line);
+  }
+  .svc-summary {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: 'num icon' 'title icon' 'tag icon';
+    column-gap: 16px;
+    row-gap: 10px;
+    align-items: center;
+    padding-block: 26px;
+    list-style: none;
+    cursor: pointer;
+  }
+  .svc-summary::-webkit-details-marker {
+    display: none;
+  }
+  .svc-summary::marker {
+    content: '';
+  }
+  .svc-num {
+    grid-area: num;
+    font-size: 14px;
+    color: var(--label);
+    font-variant-numeric: tabular-nums;
+  }
+  .svc-title {
+    grid-area: title;
+    font-size: var(--fs-service);
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    transition: transform 0.5s var(--ease-std);
+  }
+  .svc-tagline {
+    grid-area: tag;
+    font-size: 16px;
+    line-height: 1.45;
+    color: var(--muted);
+  }
+  .svc-icon {
+    display: grid;
+    grid-area: icon;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    transition: border-color 0.3s var(--ease-std);
+  }
+  .svc-icon path {
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 1.4;
+    stroke-linecap: round;
+  }
+  .svc-icon-v {
+    transform-box: fill-box;
+    transform-origin: center;
+    transition: transform 0.35s var(--ease-std);
+  }
+  .svc[open] .svc-icon-v {
+    transform: scaleY(0);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .svc-summary:hover .svc-title {
+      transform: translateX(10px);
+    }
+    .svc-summary:hover .svc-icon {
+      border-color: var(--ink);
+    }
+  }
+  .svc-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 40px;
+    padding: 4px 0 48px;
+  }
+  .svc-text {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  .svc-body {
+    font-size: var(--fs-body-xl);
+    font-weight: 300;
+    line-height: 1.5;
+    letter-spacing: -0.01em;
+    text-wrap: pretty;
+  }
+  .svc-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .svc-meta--list {
+    gap: 14px;
+  }
+  .svc-bring {
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+  .svc-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 0;
+    list-style: none;
+  }
+  .svc-chips li {
+    display: flex;
+    align-items: center;
+    height: 36px;
+    padding: 0 15px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-size: 14px;
+  }
+  @media (min-width: 64rem) {
+    .svc-summary {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      grid-template-areas: none;
+      column-gap: var(--gutter);
+      min-height: 128px;
+      padding-block: 0;
+    }
+    .svc-num {
+      grid-area: auto;
+      grid-column: 1;
+    }
+    .svc-title {
+      grid-area: auto;
+      grid-column: 2 / span 6;
+    }
+    .svc-tagline {
+      grid-area: auto;
+      grid-column: 8 / span 4;
+    }
+    .svc-icon {
+      grid-area: auto;
+      grid-column: 12;
+      justify-self: end;
+    }
+    .svc-panel {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: var(--gutter);
+      align-items: start;
+      padding-bottom: 64px;
+    }
+    .svc-text {
+      grid-column: 2 / span 5;
+      gap: 36px;
+      padding-right: 24px;
+    }
+    .svc-art {
+      grid-column: 8 / span 5;
+    }
+  }
+</style>

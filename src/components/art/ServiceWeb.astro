@@ -1,0 +1,49 @@
+---
+import type { Locale } from '../../i18n';
+
+interface Props {
+  lang: Locale;
+}
+
+const cards = [84, 220, 356];
+---
+
+<div class="art-frame">
+  <svg viewBox="0 0 560 350" aria-hidden="true">
+    <rect x="56" y="40" width="448" height="340" rx="12" fill="#fbfaf8" stroke="#d9d5ce" />
+    <path d="M56 74H504" stroke="#e6e3dd" />
+    <rect x="206" y="50" width="148" height="14" rx="7" fill="#f0eee9" />
+    <circle cx="76" cy="57" r="3.2" fill="#e6e3dd" />
+    <circle cx="90" cy="57" r="3.2" fill="#e6e3dd" />
+    <circle cx="104" cy="57" r="3.2" fill="#e6e3dd" />
+    <rect x="84" y="96" width="38" height="8" rx="2" fill="#121211" />
+    <rect x="360" y="98" width="26" height="4" rx="2" fill="#cfcbc4" />
+    <rect x="398" y="98" width="26" height="4" rx="2" fill="#cfcbc4" />
+    <rect x="436" y="98" width="26" height="4" rx="2" fill="#cfcbc4" />
+    <rect x="84" y="132" width="188" height="14" rx="3" fill="#121211" />
+    <rect x="84" y="154" width="146" height="14" rx="3" fill="#121211" />
+    <rect x="84" y="184" width="170" height="5" rx="2.5" fill="#cfcbc4" />
+    <rect x="84" y="195" width="132" height="5" rx="2.5" fill="#cfcbc4" />
+    <rect class="acc art-cta" x="84" y="214" width="70" height="22" rx="11" />
+    <rect x="300" y="124" width="180" height="118" rx="8" fill="#e0dcd5" />
+    <path d="M300 212L352 176L398 206L430 186L480 218V234A8 8 0 0 1 472 242H308A8 8 0 0 1 300 234Z" fill="#d2cdc4" />
+    <circle cx="440" cy="158" r="12" fill="#fbfaf8" opacity="0.85" />
+    {
+      cards.map((x) => (
+        <g>
+          <rect x={x} y="266" width="124" height="90" rx="8" fill="#f4f2ee" stroke="#e6e3dd" />
+          <rect x={x + 14} y="282" width="52" height="6" rx="3" fill="#8c8983" />
+          <rect x={x + 14} y="296" width="82" height="4" rx="2" fill="#cfcbc4" />
+        </g>
+      ))
+    }
+    <path
+      class="art-cursor"
+      d="M138 226V246L143 241L147 250L150.5 248.5L146.5 239.8L153 239.5Z"
+      fill="#121211"
+      stroke="#fbfaf8"
+      stroke-width="1.4"
+      stroke-linejoin="round"
+    />
+  </svg>
+</div>
