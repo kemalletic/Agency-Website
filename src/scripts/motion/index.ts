@@ -1,6 +1,7 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
+import { initHeader } from './header';
 import { initSmoothScroll } from './lenis';
 import { initReveals } from './reveal';
 
@@ -12,6 +13,8 @@ type Cleanup = () => void;
 async function boot(): Promise<void> {
   await document.fonts.ready;
   const root = document.documentElement;
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  initHeader({ allowHide: !reduced });
 
   const mm = gsap.matchMedia();
   mm.add('(prefers-reduced-motion: no-preference)', () => {

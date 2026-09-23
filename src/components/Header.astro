@@ -29,7 +29,7 @@ const links = [
     <div class="header-end">
       <span class="header-clock">{t.clockCity} <Clock lang={lang} /></span>
       <div class="header-lang"><LangSwitch lang={lang} /></div>
-      <div class="header-cta"><Button href="#contact" size="s">{t.cta.start}</Button></div>
+      <div class="header-cta"><Button href="#contact" size="s" data-magnetic>{t.cta.start}</Button></div>
       <button class="menu-toggle" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="site-menu" data-menu-open>{t.a11y.menu}</button>
     </div>
   </div>
@@ -44,6 +44,48 @@ const links = [
     background: color-mix(in srgb, var(--paper) 86%, transparent);
     -webkit-backdrop-filter: saturate(1.3) blur(14px);
     backdrop-filter: saturate(1.3) blur(14px);
+    box-shadow: 0 1px 0 color-mix(in srgb, var(--line) 80%, transparent);
+    transition:
+      transform 0.5s var(--ease-out),
+      background-color 0.35s var(--ease-std),
+      box-shadow 0.35s var(--ease-std),
+      color 0.35s var(--ease-std);
+  }
+  .site-header[data-solid='false'] {
+    background: transparent;
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  .site-header[data-hidden='true'] {
+    transform: translateY(-100%);
+  }
+  .site-header[data-tone='dark'] {
+    color: var(--paper);
+    background: color-mix(in srgb, var(--night) 84%, transparent);
+    box-shadow: 0 1px 0 var(--night-line);
+  }
+  .site-header[data-tone='dark'] .header-brand :global(.brand) {
+    color: var(--paper);
+  }
+  .site-header[data-tone='dark'] .header-clock {
+    color: var(--night-muted);
+  }
+  .site-header[data-tone='dark'] .header-lang :global(.lang a) {
+    color: var(--night-muted);
+  }
+  .site-header[data-tone='dark'] .header-lang :global(.lang a[aria-current='page']) {
+    color: var(--paper);
+  }
+  .site-header[data-tone='dark'] .header-lang :global(.lang-sep) {
+    color: var(--night-line);
+  }
+  .site-header[data-tone='dark'] .header-cta :global(.btn) {
+    background: var(--paper);
+    color: var(--ink);
+  }
+  .site-header[data-tone='dark'] .menu-toggle {
+    border-color: var(--night-line);
   }
   .header-inner {
     display: flex;
