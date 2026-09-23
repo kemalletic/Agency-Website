@@ -5900,3 +5900,16 @@ git commit -m "test: verify full page structure and fix layout details
 
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 ```
+
+---
+
+## Implementation notes (deviations found during execution)
+
+| Where | Change | Why |
+| --- | --- | --- |
+| `.gitignore` | `dist/` → `/dist/`, `.astro/` → `/.astro/`. | The unanchored rule also ignored `tests/dist/`, so the built-page tests were never committed. |
+| `Approach.astro` | `.hl { white-space: nowrap }`. | The ring dot before "automation" dangled at the end of a line (also in the mockup). |
+| `Services.astro`, `Work.astro` | Hover shifts wrapped in `@media (hover: hover) and (pointer: fine)`. | A tap on a phone left the hover state stuck. |
+| `Process.astro` | Section is full-bleed (`overflow-x: clip`) with an inner `.container`; caption spaces are explicit `{' '}`. | The run bar widened the page; Astro dropped the spaces around the demo pill ("Eachdotis"). |
+| `Footer.astro` | `box-shadow: 0 -2px 0 var(--night)`. | A hairline of paper showed where contact ends on a fractional pixel. |
+| Header, Hero, Process, Work, Footer | Extra rules for 1024–1279 px (hero up to 1439 px): no header clock, tighter nav, rings one column right, single-line meta row, no "Ongoing" label, shifted "Your project" and footer columns. | Overlaps that only appear on small laptops. |

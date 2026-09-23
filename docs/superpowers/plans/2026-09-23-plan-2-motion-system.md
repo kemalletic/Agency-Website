@@ -2071,3 +2071,20 @@ git commit -m "test: verify motion under reduced motion, without JS and on budge
 
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 ```
+
+---
+
+## Implementation notes (deviations found during execution)
+
+| Where | Change | Why |
+| --- | --- | --- |
+| `src/scripts/motion/lenis.ts` | Anchor targets are measured as `rect.top + window.scrollY − scroll-padding-top` and passed to `lenis.scrollTo` as a number. | A native scroll Lenis has not processed yet (same frame) made element targets land ~450 px off. |
+| `src/styles/motion.css` | `.split-line(-mask)` get `display: block`; `.split-word` `inline-block` + `nowrap`; `.split-char(-mask)` `inline-block`. | With `tag: 'span'` SplitText sets no display, and transforms/clipping do nothing on inline spans. |
+| `src/scripts/motion/reveal.ts` | `chars` splits also set `wordsClass: 'split-word'`. | Keeps the characters of a word on one line. |
+| `src/components/Process.astro` | The chart wrapper is `.proc-chart`, not `.proc-body`. | `.proc-body` already styles the stage description paragraph. |
+| `src/scripts/motion/process.ts`, `header.ts` | The pinned chart toggles `html.is-pinned`; the header stays hidden while it is set (unless it has focus). | On scroll-up during the pin the returning header covered the axis labels. |
+| `src/components/Header.astro` | Dark tone also dims the EN/BS separator. | The light separator glared on the night header. |
+| `src/scripts/motion/work.ts` | The cursor pill hides on `scroll` when the pointer is no longer over a card. | Scrolling moves a card from under a resting pointer without a `pointerleave`. |
+| `src/layouts/Base.astro`, `src/styles/base.css` | The head guard always adds `html.js`; `time[data-clock]` is hidden without it. | Without JavaScript the clock showed `--:--`. |
+
+Verification results: unit 39, dist 128, `astro check` 0 errors; reduced motion and no-JS show complete, static pages; the fail-safe un-hides content after 3 s; JavaScript is 55 KB gzip; no long tasks while scrolling the whole page.
