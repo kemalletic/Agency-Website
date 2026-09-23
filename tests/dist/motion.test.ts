@@ -46,3 +46,20 @@ describe.each(pages)('$path reveal markup', ({ path }) => {
     expect(doc.querySelectorAll('.hero-title .hero-word').length).toBeGreaterThan(5);
   });
 });
+
+describe.each(pages)('$path contact motion hooks', ({ path, lang }) => {
+  const doc = loadPage(path);
+
+  it('places a page-dim layer before the contact section', () => {
+    expect(doc.querySelector('.page-dim')?.getAttribute('aria-hidden')).toBe('true');
+  });
+
+  it('marks the main calls to action as magnetic', () => {
+    expect(doc.querySelectorAll('[data-magnetic]').length).toBeGreaterThanOrEqual(4);
+  });
+
+  it('knows how to say "sent"', async () => {
+    const { getDictionary } = await import('../../src/i18n');
+    expect(doc.querySelector('form[data-contact-form]')?.getAttribute('data-msg-sent')).toBe(getDictionary(lang).contact.sent);
+  });
+});

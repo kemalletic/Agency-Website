@@ -202,6 +202,7 @@ export const en: Dictionary = {
     note: 'Goes straight to the people who will build it.',
     submit: 'Send',
     sending: 'Sending…',
+    sent: 'Sent',
     success: 'Thank you — we will reply within one working day.',
     error: 'Something went wrong. Please write to us directly:',
     subject: 'New project inquiry',

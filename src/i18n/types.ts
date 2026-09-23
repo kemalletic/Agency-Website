@@ -111,6 +111,7 @@ export interface Dictionary {
     note: string;
     submit: string;
     sending: string;
+    sent: string;
     success: string;
     error: string;
     subject: string;

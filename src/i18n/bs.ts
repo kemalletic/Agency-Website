@@ -202,6 +202,7 @@ export const bs: Dictionary = {
     note: 'Ide direktno ljudima koji će to graditi.',
     submit: 'Pošalji',
     sending: 'Šaljem…',
+    sent: 'Poslano',
     success: 'Hvala — odgovorit ćemo u roku od jednog radnog dana.',
     error: 'Nešto nije u redu. Pišite nam direktno:',
     subject: 'Novi upit za projekat',

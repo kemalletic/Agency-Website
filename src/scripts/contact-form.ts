@@ -53,7 +53,10 @@ export function initContactForm(): void {
   const setState = (state: FormState): void => {
     form.dataset.state = state;
     if (submit) submit.disabled = state === 'sending';
-    if (submitLabel) submitLabel.textContent = state === 'sending' ? (d.msgSending ?? idleLabel) : idleLabel;
+    if (!submitLabel) return;
+    if (state === 'sending') submitLabel.textContent = d.msgSending ?? idleLabel;
+    else if (state === 'success') submitLabel.textContent = d.msgSent ?? idleLabel;
+    else submitLabel.textContent = idleLabel;
   };
 
   const showStatus = (message: string, mailto?: string): void => {
@@ -69,6 +72,10 @@ export function initContactForm(): void {
 
   form.addEventListener('focusout', () => {
     if (attempted) showErrors(validateContact(read(), messages));
+  });
+
+  form.addEventListener('input', () => {
+    if (form.dataset.state === 'success' || form.dataset.state === 'error') setState('idle');
   });
 
   form.addEventListener('submit', async (event) => {
