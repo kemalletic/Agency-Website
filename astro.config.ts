@@ -1,7 +1,8 @@
 import { defineConfig, envField, fontProviders } from 'astro/config';
+import { site } from './src/config/site';
 
 export default defineConfig({
-  site: 'https://example.com',
+  site: site.url,
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'bs'],
