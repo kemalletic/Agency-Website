@@ -5,6 +5,7 @@ import Approach from './Approach.astro';
 import Header from './Header.astro';
 import Hero from './Hero.astro';
 import Services from './Services.astro';
+import Work from './Work.astro';
 
 interface Props {
   lang: Locale;
@@ -19,5 +20,6 @@ const { lang } = Astro.props;
     <Hero lang={lang} />
     <Approach lang={lang} />
     <Services lang={lang} />
+    <Work lang={lang} />
   </main>
 </Base>

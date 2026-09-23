@@ -1,0 +1,87 @@
+---
+const sidebar = [64, 52, 70, 58, 66, 48];
+const kpis = [72, 54, 88];
+const columns = [210, 286, 496, 576, 686];
+const headWidths = [30, 44, 30, 34, 40];
+const rows = [
+  { name: 132, amount: 66, note: 54, status: 'accent' },
+  { name: 168, amount: 58, note: 48, status: 'accent' },
+  { name: 112, amount: 72, note: 60, status: 'dark' },
+  { name: 150, amount: 60, note: 50, status: 'open' },
+  { name: 124, amount: 64, note: 56, status: 'dark' },
+  { name: 140, amount: 54, note: 46, status: 'open' },
+] as const;
+---
+
+<svg class="pj-art" viewBox="0 0 866 541" preserveAspectRatio="xMinYMin slice" aria-hidden="true">
+  <defs>
+    <filter id="pj-portal-shadow" x="-10%" y="-10%" width="130%" height="140%">
+      <feDropShadow dx="0" dy="34" stdDeviation="26" flood-color="#000" flood-opacity="0.32"></feDropShadow>
+    </filter>
+  </defs>
+  <g class="pj-mock">
+    <g transform="translate(64 60)">
+      <rect width="900" height="580" rx="12" fill="#fbfaf8" filter="url(#pj-portal-shadow)"></rect>
+      <path d="M0 50.5H900M180.5 51V580" stroke="#ebe8e2"></path>
+      <rect class="acc" x="20" y="15" width="20" height="20" rx="6"></rect>
+      <rect x="54" y="21" width="84" height="8" rx="4" fill="#2a2a2c"></rect>
+      <rect x="208" y="10" width="250" height="30" rx="15" fill="#f0eee9"></rect>
+      <circle cx="865" cy="25" r="15" fill="#e2ded7"></circle>
+      {
+        sidebar.map((w, i) => {
+          const y = 68 + i * 40;
+          const active = i === 1;
+          return (
+            <g>
+              {active && <rect x="12" y={y} width="156" height="34" rx="8" fill="#f0eee9" />}
+              <rect class={active ? 'acc' : undefined} x="22" y={y + 10} width="14" height="14" rx="4" fill={active ? undefined : '#dcd8d1'} />
+              <rect x="46" y={y + 14} width={w} height="6" rx="3" fill={active ? '#2a2a2c' : '#cfcbc4'} />
+            </g>
+          );
+        })
+      }
+      <rect x="210" y="83" width="150" height="18" rx="4" fill="#121211"></rect>
+      <rect x="380" y="76" width="96" height="32" rx="16" fill="#121211"></rect>
+      {
+        kpis.map((w, i) => {
+          const x = 210 + i * 178;
+          return (
+            <g>
+              <rect x={x + 0.5} y="130.5" width="163" height="85" rx="10" fill="#f5f3ef" stroke="#ebe8e2" />
+              <rect x={x + 16} y="146" width="56" height="6" rx="3" fill="#cfcbc4" />
+              <rect x={x + 16} y="166" width={w} height="16" rx="4" fill="#121211" />
+            </g>
+          );
+        })
+      }
+      <path d="M210 272.5H900" stroke="#e6e3dd"></path>
+      {headWidths.map((w, i) => <rect x={columns[i]} y="252.5" width={w} height="5" rx="2.5" fill="#cfcbc4" />)}
+      {
+        rows.map((row, r) => {
+          const c = 272 + r * 48 + 24;
+          return (
+            <g>
+              <path d={`M210 ${c + 24.5}H900`} stroke="#f0eee9" />
+              <rect x="210" y={c - 3.5} width="40" height="7" rx="3.5" fill="#8c8983" />
+              <rect x="286" y={c - 3.5} width={row.name} height="7" rx="3.5" fill="#3a3a3c" />
+              <rect x="496" y={c - 3.5} width="26" height="7" rx="3.5" fill="#bdb9b1" />
+              <rect x="576" y={c - 3.5} width={row.amount} height="7" rx="3.5" fill="#3a3a3c" />
+              {row.status === 'open' ? (
+                <circle cx="690" cy={c} r="3.3" fill="none" stroke="#8c8983" stroke-width="1.4" />
+              ) : (
+                <circle
+                  class={row.status === 'accent' ? 'acc' : undefined}
+                  cx="690"
+                  cy={c}
+                  r="4"
+                  fill={row.status === 'dark' ? '#2a2a2c' : undefined}
+                />
+              )}
+              <rect x="702" y={c - 3} width={row.note} height="6" rx="3" fill="#bdb9b1" />
+            </g>
+          );
+        })
+      }
+    </g>
+  </g>
+</svg>
