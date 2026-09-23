@@ -16,7 +16,7 @@ const status = document.querySelector<HTMLOutputElement>('[data-status]')!;
 const renderer = new WebGLRenderer({ canvas, antialias: true, alpha: true, preserveDrawingBuffer: true });
 renderer.setPixelRatio(1);
 renderer.setSize(SIZE, SIZE, false);
-const rings = createRingsScene(renderer, tokenColors(), QUALITY.high);
+const rings = await createRingsScene(renderer, tokenColors(), QUALITY.high);
 const stage = { x: SIZE / 2, y: SIZE / 2, size: SIZE };
 const viewport = { width: SIZE, height: SIZE };
 const weights = { design: 1, engineering: 1, automation: 1 };

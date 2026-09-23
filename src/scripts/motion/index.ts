@@ -7,6 +7,7 @@ import { initSmoothScroll } from './lenis';
 import { initMagnetic } from './magnetic';
 import { initPrinciples } from './principles';
 import { initProcess } from './process';
+import { initRings } from './rings';
 import { initReveals } from './reveal';
 import { initServices } from './services';
 import { initWork } from './work';
@@ -30,6 +31,7 @@ async function boot(): Promise<void> {
     root.classList.add('motion-ready');
     const cleanups: Cleanup[] = [
       initSmoothScroll(),
+      initRings(),
       initReveals(),
       initWork(),
       initProcess(),

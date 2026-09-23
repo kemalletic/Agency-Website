@@ -53,7 +53,13 @@ export interface RingsScene {
   dispose(): void;
 }
 
-export function createRingsScene(renderer: WebGLRenderer, colors: Record<RingKey, string>, quality: Quality): RingsScene {
+/** Builds the scene on `renderer`; `pause` lets the page breathe after the heaviest step (prefiltering the environment). */
+export async function createRingsScene(
+  renderer: WebGLRenderer,
+  colors: Record<RingKey, string>,
+  quality: Quality,
+  pause: () => Promise<void> = () => Promise.resolve(),
+): Promise<RingsScene> {
   renderer.setClearColor(0x000000, 0);
   // Shader error checks cost a synchronous GPU round trip per program and only log in production.
   renderer.debug.checkShaderErrors = import.meta.env.DEV;
@@ -70,6 +76,7 @@ export function createRingsScene(renderer: WebGLRenderer, colors: Record<RingKey
   pmrem.dispose();
   scene.environment = environment;
   scene.environmentIntensity = 0.5;
+  await pause();
 
   // Key light from the original shader's direction; its shadow map carries the shadows the rings cast on each other.
   const key = new DirectionalLight(new Color(1, 0.972, 0.935), 2.3);
