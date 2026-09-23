@@ -1,0 +1,24 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import type { Locale } from '../i18n';
+
+interface Props extends HTMLAttributes<'time'> {
+  lang: Locale;
+  withOffset?: boolean;
+}
+
+const { lang, withOffset = false, class: className, ...rest } = Astro.props;
+---
+
+<time class:list={['clock', className]} data-clock data-locale={lang} data-with-offset={withOffset ? 'true' : undefined} {...rest}>--:--</time>
+
+<script>
+  import { initClocks } from '../scripts/clock';
+  initClocks();
+</script>
+
+<style>
+  .clock {
+    font-variant-numeric: tabular-nums;
+  }
+</style>

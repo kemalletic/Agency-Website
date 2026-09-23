@@ -1,0 +1,54 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import { site } from '../config/site';
+import { getDictionary, localePath, type Locale } from '../i18n';
+
+interface Props extends HTMLAttributes<'a'> {
+  lang: Locale;
+  size?: 's' | 'm';
+  tone?: 'ink' | 'paper';
+  link?: boolean;
+}
+
+const { lang, size = 'm', tone = 'ink', link = true, class: className, ...rest } = Astro.props;
+const t = getDictionary(lang);
+const Tag = link ? 'a' : 'span';
+---
+
+<Tag
+  class:list={['brand', `brand--${size}`, `brand--${tone}`, className]}
+  href={link ? localePath(lang) : undefined}
+  aria-label={link ? `${site.name} — ${t.a11y.home}` : undefined}
+  {...rest}
+>
+  <span class="brand-name">{site.name}</span><span class="brand-dot" aria-hidden="true"></span>
+</Tag>
+
+<style>
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .brand--paper {
+    color: var(--paper);
+  }
+  .brand-name {
+    font-size: 19px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .brand--s .brand-name {
+    font-size: 17px;
+  }
+  .brand-dot {
+    width: 7px;
+    height: 7px;
+    margin: 0 0 1px 3px;
+    align-self: flex-end;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+</style>

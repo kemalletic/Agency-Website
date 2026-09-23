@@ -1,0 +1,65 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import { getDictionary, languageNames, localePath, locales, type Locale } from '../i18n';
+
+interface Props extends HTMLAttributes<'nav'> {
+  lang: Locale;
+}
+
+const { lang, class: className, ...rest } = Astro.props;
+const t = getDictionary(lang);
+---
+
+<nav class:list={['lang', className]} aria-label={t.a11y.language} {...rest}>
+  {
+    locales.map((l, i) => (
+      <>
+        {i > 0 && (
+          <span class="lang-sep" aria-hidden="true">
+            /
+          </span>
+        )}
+        <a
+          href={localePath(l)}
+          hreflang={l}
+          lang={l}
+          aria-label={languageNames[l]}
+          aria-current={l === lang ? 'page' : undefined}
+          data-lang-link
+        >
+          {l.toUpperCase()}
+        </a>
+      </>
+    ))
+  }
+</nav>
+
+<script>
+  import { initLangSwitch } from '../scripts/lang-switch';
+  initLangSwitch();
+</script>
+
+<style>
+  .lang {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+  }
+  .lang a {
+    color: var(--label);
+    text-decoration: none;
+    transition: color 0.25s var(--ease-std);
+  }
+  .lang a:hover,
+  .lang a[aria-current='page'] {
+    color: var(--ink);
+  }
+  .lang a[aria-current='page'] {
+    font-weight: 500;
+  }
+  .lang-sep {
+    color: var(--line);
+  }
+</style>

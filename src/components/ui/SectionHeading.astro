@@ -1,0 +1,62 @@
+---
+interface Props {
+  id: string;
+  title: string;
+  count: string;
+  intro: string;
+}
+
+const { id, title, count, intro } = Astro.props;
+---
+
+<div class="sh">
+  <h2 id={id} class="sh-title">{title}<span class="sh-count" aria-hidden="true">({count})</span></h2>
+  <p class="sh-intro">{intro}</p>
+</div>
+
+<style>
+  .sh {
+    display: grid;
+    grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+    column-gap: var(--gutter);
+    row-gap: 20px;
+    align-items: end;
+    padding-bottom: 36px;
+    border-bottom: 1px solid var(--ink);
+  }
+  .sh-title {
+    grid-column: 1 / -1;
+    font-size: var(--fs-h2);
+    line-height: 0.95;
+    letter-spacing: -0.05em;
+    font-weight: 300;
+  }
+  .sh-count {
+    display: inline-block;
+    vertical-align: top;
+    margin: 0.12em 0 0 0.3em;
+    font-size: 15px;
+    line-height: 1;
+    letter-spacing: 0;
+    font-weight: 400;
+    color: var(--label);
+    font-variant-numeric: tabular-nums;
+  }
+  .sh-intro {
+    grid-column: 1 / -1;
+    max-width: 34rem;
+    font-size: var(--fs-body-m);
+    line-height: 1.6;
+    color: var(--muted);
+    text-wrap: pretty;
+  }
+  @media (min-width: 64rem) {
+    .sh-title {
+      grid-column: span 8;
+    }
+    .sh-intro {
+      grid-column: 9 / span 4;
+      margin-bottom: 4px;
+    }
+  }
+</style>

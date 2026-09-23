@@ -1,0 +1,123 @@
+---
+import { site } from '../config/site';
+import { getDictionary, type Locale } from '../i18n';
+import Brand from './Brand.astro';
+import Clock from './Clock.astro';
+import LangSwitch from './LangSwitch.astro';
+import Button from './ui/Button.astro';
+
+interface Props {
+  lang: Locale;
+  links: ReadonlyArray<{ href: string; label: string }>;
+}
+
+const { lang, links } = Astro.props;
+const t = getDictionary(lang);
+---
+
+<dialog id="site-menu" class="menu" aria-label={t.a11y.menu} data-menu>
+  <div class="container menu-bar">
+    <Brand lang={lang} />
+    <button class="menu-close" type="button" data-menu-close>{t.a11y.close}</button>
+  </div>
+  <nav class="container menu-nav" aria-label={t.a11y.mainNav}>
+    {
+      links.map((l) => (
+        <a href={l.href} data-menu-link>
+          {l.label}
+        </a>
+      ))
+    }
+  </nav>
+  <div class="container menu-foot">
+    <Button href="#contact" size="l" data-menu-link>{t.cta.start}</Button>
+    <a class="menu-mail" href={`mailto:${site.email}`}>{site.email}</a>
+    <div class="menu-meta">
+      <LangSwitch lang={lang} />
+      <span>{t.clockCity} <Clock lang={lang} /></span>
+    </div>
+  </div>
+</dialog>
+
+<script>
+  import { initMenu } from '../scripts/menu';
+  initMenu();
+</script>
+
+<style>
+  .menu {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    max-width: 100%;
+    height: 100dvh;
+    max-height: 100dvh;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: var(--paper);
+    color: var(--ink);
+  }
+  .menu[open] {
+    display: flex;
+    flex-direction: column;
+  }
+  .menu::backdrop {
+    background: var(--paper);
+  }
+  .menu-bar {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--header-h);
+    border-bottom: 1px solid var(--line);
+  }
+  .menu-close {
+    height: 40px;
+    padding: 0 16px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .menu-nav {
+    display: flex;
+    flex-direction: column;
+    padding-block: 28px;
+  }
+  .menu-nav a {
+    padding-block: 6px;
+    font-size: clamp(2.5rem, 11vw, 3.75rem);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -0.045em;
+    text-decoration: none;
+  }
+  .menu-foot {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    margin-top: auto;
+    padding-bottom: 28px;
+  }
+  .menu-mail {
+    font-size: 15px;
+    color: var(--muted);
+    text-decoration: underline;
+    text-decoration-color: var(--line);
+    text-underline-offset: 4px;
+  }
+  .menu-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  :global(html:has(dialog[data-menu][open])) {
+    overflow: hidden;
+  }
+</style>

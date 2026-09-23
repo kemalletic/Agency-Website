@@ -1,0 +1,123 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends Omit<HTMLAttributes<'a'>, 'type'> {
+  as?: 'a' | 'button' | 'span';
+  type?: 'button' | 'submit';
+  variant?: 'dark' | 'light' | 'ghost' | 'text';
+  size?: 's' | 'm' | 'l';
+  icon?: 'arrow' | 'external' | 'none';
+}
+
+const {
+  as,
+  href,
+  type = 'button',
+  variant = 'dark',
+  size = 'm',
+  icon = 'arrow',
+  class: className,
+  ...rest
+} = Astro.props;
+
+const Tag = as ?? (href ? 'a' : 'button');
+const iconSize = size === 'l' ? 15 : 14;
+const path = icon === 'external' ? 'M3 11L11 3M5 3H11V9' : 'M2 7H12M8 3L12 7L8 11';
+---
+
+<Tag
+  class:list={['btn', `btn--${variant}`, variant !== 'text' && `btn--${size}`, className]}
+  href={Tag === 'a' ? href : undefined}
+  type={Tag === 'button' ? type : undefined}
+  {...rest}
+>
+  <span class="btn-label"><slot /></span>
+  {
+    icon !== 'none' && (
+      <svg class={`arr arr--${icon}`} width={iconSize} height={iconSize} viewBox="0 0 14 14" aria-hidden="true">
+        <path d={path} />
+      </svg>
+    )
+  }
+</Tag>
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    border-radius: 999px;
+    font-weight: 500;
+    line-height: 1;
+    white-space: nowrap;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      background-color 0.3s var(--ease-std),
+      color 0.3s var(--ease-std),
+      border-color 0.3s var(--ease-std);
+  }
+  .btn--s {
+    height: 44px;
+    padding: 0 20px 0 22px;
+    font-size: 14px;
+  }
+  .btn--m {
+    height: 48px;
+    padding: 0 20px 0 22px;
+    font-size: 15px;
+  }
+  .btn--l {
+    height: 56px;
+    padding: 0 26px 0 28px;
+    font-size: 16px;
+    gap: 14px;
+  }
+  .btn--dark {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .btn--dark:hover {
+    background: #000;
+  }
+  .btn--light {
+    background: var(--paper);
+    color: var(--ink);
+  }
+  .btn--light:hover {
+    background: #fff;
+  }
+  .btn--ghost {
+    border: 1px solid var(--night-line);
+    color: var(--paper);
+  }
+  .btn--ghost:hover {
+    border-color: var(--night-muted);
+  }
+  .btn--text {
+    gap: 10px;
+    font-size: 15px;
+    color: var(--ink);
+  }
+  .btn:disabled {
+    cursor: progress;
+    opacity: 0.7;
+  }
+  .arr {
+    flex-shrink: 0;
+    transition: transform 0.35s var(--ease-std);
+  }
+  .arr path {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .btn:hover .arr--arrow {
+    transform: translateX(4px);
+  }
+  .btn:hover .arr--external {
+    transform: translate(2px, -2px);
+  }
+</style>
