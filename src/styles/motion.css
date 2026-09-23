@@ -1,0 +1,16 @@
+/* Before the motion bundle has set start states, keep reveal targets invisible (only when motion is allowed). */
+.js-motion:not(.motion-ready) [data-reveal] {
+  opacity: 0;
+}
+
+/* SplitText masks clip; give descenders room without moving the layout. */
+.split-line-mask,
+.split-char-mask {
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+
+/* Sections focused after an in-page jump should not draw a focus ring around the whole block. */
+[tabindex='-1']:focus {
+  outline: none;
+}

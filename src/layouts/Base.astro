@@ -2,6 +2,7 @@
 import { Font } from 'astro:assets';
 import '../styles/tokens.css';
 import '../styles/base.css';
+import '../styles/motion.css';
 import { site } from '../config/site';
 import { getDictionary, localePath, locales, ogLocale, type Locale } from '../i18n';
 
@@ -20,6 +21,16 @@ const href = (l: Locale) => new URL(localePath(l), site.url).href;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline>
+      (function () {
+        var root = document.documentElement;
+        if (!window.matchMedia || !window.matchMedia('(prefers-reduced-motion: no-preference)').matches) return;
+        root.classList.add('js-motion');
+        window.setTimeout(function () {
+          if (!root.classList.contains('motion-ready')) root.classList.remove('js-motion');
+        }, 3000);
+      })();
+    </script>
     <title>{title}</title>
     <meta name="description" content={t.meta.description} />
     <link rel="canonical" href={href(lang)} />
@@ -37,5 +48,8 @@ const href = (l: Locale) => new URL(localePath(l), site.url).href;
   <body>
     <a class="skip-link" href="#main">{t.a11y.skip}</a>
     <slot />
+    <script>
+      import '../scripts/motion/index';
+    </script>
   </body>
 </html>
