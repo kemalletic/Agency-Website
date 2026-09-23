@@ -2837,3 +2837,35 @@ git commit -m "docs: record implementation notes for plan 3; final posters
 
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 ```
+
+---
+
+## Implementation notes (deviations found during execution)
+
+| Where | Change | Why |
+|---|---|---|
+| `src/lib/rings/config.ts` | `FRAMING.hero.fov` is `ORIGINAL_FOV` (2·atan(0.5/3.1) ≈ 18.4°) instead of 30°; the dolly zoom now runs 18.4° → 10°. | At 30° the nearest tubes were visibly exaggerated next to the approved original render; the original lens keeps the hero identical to the design, and the narrowing still flattens the knot on its way down. |
+| `src/scripts/rings/contact-shadow.ts` | The depth pass projects every surface down the key-light ray (a sheared parallel projection written straight to clip space), the stain fades around the knot's centre seen along that ray, and high parts keep half their darkness (`1 − 0.5·h/reach`). The constructor takes the light direction and floor height. | A straight-down contact shadow sat under the knot as a round blob; the original's shadow falls lower right and shows the rings' shapes. |
+| `src/scripts/rings/scene.ts` | Look tuned against the reference render: `environmentIntensity` 0.5 (plan 0.8), key light 2.3 (1.8), hemisphere 0.5 with a paper ground at 45 % (0.4, full paper), stain opacity 0.7 (0.55), stain blur 2.0 → 0.7 (3.2 → 1.1). | Matches the original's form shading (top-lit, darker undersides) and a soft stain that still shows the rings. |
+| `src/scripts/rings/materials.ts` | Softer finishes: porcelain 0.42 / clearcoat 0.6 / 0.35; graphite 0.5 / 0.4 / 0.45; green 0.4 / 0.5 / 0.35 (roughness / clearcoat / clearcoat roughness). | The spec values mirrored the room's light panels as sharp lines (plastic); the original reads as matte ceramic with a soft sheen. |
+| `src/lib/rings/story.ts` | Floor `spread` starts at 1.25 in the hero (plan 1). | A wider, softer stain, like the original. |
+| `src/scripts/rings/scene.ts` | `renderer.debug.checkShaderErrors = import.meta.env.DEV`. | ANGLE on D3D11 logs harmless X4122 precision warnings through three's program log; the checks also cost a synchronous GPU round trip per program. |
+| `src/scripts/rings/scene.ts`, `index.ts`, `src/dev/posters.ts` | `createRingsScene` is async and pauses after prefiltering the environment; `startRings` yields (`breathe`) before appending the canvas and before compiling, and only appends the canvas once the scene exists. | Start-up was one ~250 ms long task. Now the heaviest single task is the one-off first drawing-buffer allocation in `setSize` (60–130 ms on the test GPU, after `load`); nothing else exceeds ~70 ms. |
+| `src/scripts/motion/rings.ts` | The idle callback waits at most 500 ms (plan and spec: 1500 ms); the check is `typeof requestIdleCallback === 'function'`. | With GSAP and CSS animations running, Chrome often waited the full timeout, leaving the hero stage empty for up to ~2 s. `'requestIdleCallback' in window` narrowed `window` to `never` in the fallback branch. |
+| `src/components/Approach.astro` | The engineering label's text sits mostly left of its leader (`translate: -75% 0`). | On a 350 px stage the centred text ran into the porcelain ring. |
+| `src/dev/posters.astro` | Favicon link added. | The dev studio logged a favicon 404. |
+| `tests/dist/approach.test.ts` | Regex escapes doubled inside the template literal (`\s`, `\d`). | `\s` in a template literal is just `s`. |
+| Tasks 2 and 3 | 11 and 22 tests (the plan said 12 and 23). | Miscount in the plan. |
+| Spec §9.6 | Posters are saved by the dev studio's own `POST /__posters` endpoint (no separate Playwright capture script); the OG image moves to Plan 4. | Simpler and dependency-free. |
+| Spec §9.1/§9.4/§9.5 (by design, see the plan body) | The hero poster hides while `pending` so the intro can assemble the knot (4 s fallback to the poster); the journey ends at the pin start rather than approach `top top`; leaders are CSS lines scaled by `--draw` instead of DrawSVG; visibility comes from the cached stage rects instead of an IntersectionObserver; the knot turns to the nearest of four identical approach orientations (≤ 105°); the sequence adds a quarter roll and a camera crane over the floor; on desktop the whole approach grid (including the smaller paragraph) is pinned because it fits the viewport. | Truthful motion, no jumps, and a clearer story. |
+
+**Measured (1440×900, AMD integrated GPU over D3D11):**
+
+- **Bundles:** the initial JS is 56.2 KB gzip and the lazy rings chunk (Three.js included) is 142.4 KB gzip.
+- **Time to live:** about 0.6 s after `load` with a warm shader cache. A first visit in a fresh browser profile takes 2–3 s while the GPU driver compiles.
+- **Frame rate:** scrolling through the journey and the whole pin gave a median frame of 16.7 ms, p95 17.1 ms and max 18 ms, with no long tasks. There were zero draw calls while the stages were off-screen.
+- **Hand-over:** the live docked frame and the approach poster differ by a mean of ~1/255 per pixel.
+- **Posters:** the hero AVIF is at most 31.8 KB and the approach AVIF at most 32 KB.
+- **Fallbacks:**
+  - No WebGL2 (and losing the context mid-page) ends in `data-rings="off"` with posters and no pin. The reader keeps their place: the scroll moves back by exactly the pin length. The only output is three's own "Context Lost" log.
+  - Reduced motion and no-JS show posters and labels from the start.
