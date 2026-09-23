@@ -9,3 +9,6 @@ node_modules/
 *.log
 .idea/
 npm-debug.log*
+/test-results/
+/playwright-report/
+/.lighthouse/

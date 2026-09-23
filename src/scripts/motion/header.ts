@@ -27,9 +27,16 @@ export function initHeader({ allowHide }: { allowHide: boolean }): () => void {
     ? ScrollTrigger.create({
         trigger: contact,
         start: () => `top ${Math.round(header.offsetHeight / 2)}px`,
-        end: 'max',
+        // Measured after the pins below the header (created later) have added their length, and one pixel past the
+        // bottom, so the tone holds all the way down instead of flipping back to light over the footer.
+        end: () => ScrollTrigger.maxScroll(window) + 1,
+        refreshPriority: -1,
         onToggle: (self) => {
-          header.dataset.tone = self.isActive ? 'dark' : 'light';
+          const dark = self.isActive;
+          header.dataset.tone = dark ? 'dark' : 'light';
+          // Over the contact section and footer, overscroll and the browser chrome turn night too.
+          document.documentElement.dataset.tone = dark ? 'night' : 'paper';
+          document.querySelector('meta[name="theme-color"]')?.setAttribute('content', dark ? '#121211' : '#ebe9e4');
         },
       })
     : null;

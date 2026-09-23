@@ -86,3 +86,13 @@ describe('404 page', () => {
     expect(doc.querySelector('main picture source[type="image/avif"]')).not.toBeNull();
   });
 });
+
+describe('hosting headers', () => {
+  it('caches hashed assets forever and sets the basic security headers', () => {
+    const headers = readDist('_headers');
+    expect(headers).toMatch(/\/_astro\/\*\s+Cache-Control: public, max-age=31536000, immutable/);
+    for (const header of ['X-Content-Type-Options: nosniff', 'Referrer-Policy: strict-origin-when-cross-origin', 'X-Frame-Options: DENY']) {
+      expect(headers).toContain(header);
+    }
+  });
+});

@@ -66,9 +66,17 @@
       scroll-behavior: smooth;
     }
   }
+  html[data-tone='night'] {
+    background: var(--night);
+  }
   body {
+    /* Paper lives on the body again, as its own stacking context: the fixed rings canvas (z-index -1) stays above it,
+       and <html> is free to show night in the rubber-band area below the footer (see header.ts). */
+    position: relative;
+    z-index: 0;
     min-height: 100vh;
     overflow-x: clip;
+    background: var(--paper);
     font-family: var(--font-sans);
     font-size: 1rem;
     line-height: 1.5;
