@@ -7,3 +7,5 @@ dist/
 .playwright-mcp/
 .DS_Store
 *.log
+.idea/
+npm-debug.log*
