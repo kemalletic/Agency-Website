@@ -1,0 +1,73 @@
+---
+import '../styles/tokens.css';
+import '../styles/base.css';
+
+const controls = [
+  { name: 'intro', label: 'Intro (s; 2 = done)', min: 0, max: 2, step: 0.01, value: 2 },
+  { name: 'spin', label: 'Spin (rad)', min: 0, max: 6.283, step: 0.01, value: 0 },
+  { name: 'journey', label: 'Journey', min: 0, max: 1, step: 0.001, value: 0 },
+  { name: 'sequence', label: 'Take one away', min: 0, max: 1, step: 0.001, value: 0 },
+  { name: 'symmetry', label: 'Symmetry', min: 0, max: 3, step: 1, value: 0 },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>Rings poster studio (dev)</title>
+  </head>
+  <body>
+    <main class="studio">
+      <canvas id="stage" width="1360" height="1360"></canvas>
+      <form class="controls">
+        {
+          controls.map((control) => (
+            <label>
+              <span>{control.label}</span>
+              <input type="range" name={control.name} min={control.min} max={control.max} step={control.step} value={control.value} />
+            </label>
+          ))
+        }
+        <button type="button" data-save>Save hero + approach posters</button>
+        <output data-status></output>
+      </form>
+    </main>
+    <script>
+      import './posters';
+    </script>
+    <style>
+      .studio {
+        display: grid;
+        grid-template-columns: minmax(0, 680px) 280px;
+        gap: 32px;
+        align-items: start;
+        padding: 32px;
+      }
+      canvas {
+        width: 100%;
+        height: auto;
+        background: var(--paper);
+        outline: 1px solid var(--line);
+      }
+      .controls {
+        display: grid;
+        gap: 16px;
+        font-size: 14px;
+      }
+      label {
+        display: grid;
+        gap: 4px;
+      }
+      button {
+        padding: 10px 16px;
+        border-radius: 999px;
+        background: var(--ink);
+        color: var(--paper);
+      }
+    </style>
+  </body>
+</html>

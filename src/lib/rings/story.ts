@@ -224,7 +224,7 @@ export function storyState(input: StoryInput): SceneState {
     floor: {
       opacity: lerp(lerp(FLOOR.hero, FLOOR.docked, journey), FLOOR.fallen, crane),
       sharpness: crane,
-      spread: lerp(1, 2.2, crane),
+      spread: lerp(1.25, 2.2, crane),
     },
     labels: p > 0 ? (back ? phase(p, 0.93, 1) : 1 - phase(p, S.hold, S.hold + 0.08)) : phase(input.journey, 0.82, 1),
     marks: { take: phase(p, S.hold, 0.24), fall: phase(p, 0.47, 0.58) },

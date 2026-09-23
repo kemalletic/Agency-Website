@@ -1,8 +1,10 @@
 import { defineConfig, envField, fontProviders } from 'astro/config';
 import { site } from './src/config/site';
+import { devPosters } from './src/dev/posters-integration';
 
 export default defineConfig({
   site: site.url,
+  integrations: [devPosters()],
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'bs'],

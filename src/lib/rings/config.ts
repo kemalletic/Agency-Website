@@ -17,14 +17,17 @@ export const LIGHT_DIRECTION = [-0.34, 1, 0.5] as const;
 /** Camera elevation in degrees: the original eye (0.22, 2.1, 8.7) looked at (0.22, -0.32, 0). */
 export const PITCH = (Math.atan2(2.42, 8.7) * 180) / Math.PI;
 
+/** The original render's vertical field of view: focal length 3.1 for a half-height of 0.5. */
+export const ORIGINAL_FOV = (2 * Math.atan(0.5 / 3.1) * 180) / Math.PI;
+
 /**
  * How a stage frames the knot. `fill`: the bounding radius as a share of the stage side. `anchor`: where the knot's
  * centre sits in the stage, as fractions from its top-left corner. The hero matches the original render; on the way to
- * the approach stage the lens narrows from 30° to 10° (a dolly zoom that flattens the knot into a diagram); while the
- * freed rings lie on the floor the camera cranes up and pulls back.
+ * the approach stage the lens narrows to 10° (a dolly zoom that flattens the knot into a diagram); while the freed
+ * rings lie on the floor the camera cranes up and pulls back.
  */
 export const FRAMING = {
-  hero: { fov: 30, fill: 0.381, anchor: [0.4235, 0.3926] },
+  hero: { fov: ORIGINAL_FOV, fill: 0.381, anchor: [0.4235, 0.3926] },
   approach: { fov: 10, fill: 0.4, anchor: [0.5, 0.46] },
   floor: { pitch: 40, fill: 0.25, anchor: [0.5, 0.52], targetY: FLOOR_Y + 0.1 },
 } as const;
