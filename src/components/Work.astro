@@ -245,4 +245,16 @@ const newTab = { target: '_blank', rel: 'noopener' };
       justify-self: end;
     }
   }
+  /* Between 1024px and 1280px two columns are too narrow for the button, so the row shifts left by one column. */
+  @media (min-width: 64rem) and (max-width: 79.99rem) {
+    .pj-next-title {
+      grid-column: 2 / span 5;
+    }
+    .pj-next-body {
+      grid-column: 7 / span 3;
+    }
+    .pj-next-cta {
+      grid-column: 10 / span 3;
+    }
+  }
 </style>

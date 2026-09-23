@@ -86,4 +86,16 @@ const year = new Date().getFullYear();
       justify-self: end;
     }
   }
+  /* Keep coordinates and the clock on one line between 1024px and 1280px. */
+  @media (min-width: 64rem) and (max-width: 79.99rem) {
+    .footer-brand {
+      grid-column: span 3;
+    }
+    .footer-nav {
+      grid-column: 4 / span 4;
+    }
+    .footer-geo {
+      grid-column: 8 / span 5;
+    }
+  }
 </style>

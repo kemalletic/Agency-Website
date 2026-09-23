@@ -143,23 +143,13 @@ const t = getDictionary(lang);
   }
   @media (min-width: 64rem) {
     .hero-meta {
-      display: grid;
-      grid-template-columns: repeat(12, minmax(0, 1fr));
-      column-gap: var(--gutter);
+      flex-wrap: nowrap;
       align-items: center;
       min-height: 64px;
       padding-block: 0;
     }
-    .hero-meta > :first-child {
-      grid-column: span 4;
-    }
     .hero-location {
       display: block;
-      grid-column: 5 / span 4;
-    }
-    .hero-booking {
-      grid-column: 9 / span 4;
-      justify-self: end;
     }
     .hero-body {
       display: grid;
@@ -197,6 +187,30 @@ const t = getDictionary(lang);
       grid-row: 3;
       align-self: end;
       margin-bottom: 12px;
+    }
+  }
+  /* From 1280px the meta labels line up with the 12-column grid, as in the original design. */
+  @media (min-width: 80rem) {
+    .hero-meta {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: var(--gutter);
+    }
+    .hero-meta > :first-child {
+      grid-column: span 4;
+    }
+    .hero-location {
+      grid-column: 5 / span 4;
+    }
+    .hero-booking {
+      grid-column: 9 / span 4;
+      justify-self: end;
+    }
+  }
+  /* Below 1440px the headline is relatively wider, so the rings move one column right to stay clear of it. */
+  @media (min-width: 64rem) and (max-width: 89.99rem) {
+    .hero-stage {
+      grid-column: 7 / span 6;
     }
   }
 </style>

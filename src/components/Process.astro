@@ -32,52 +32,54 @@ const barStyle = (bar: Bar) =>
   bar.end === null ? `--start: ${bar.start}%` : `--start: ${bar.start}%; --len: ${(bar.end - bar.start).toFixed(3)}%`;
 ---
 
-<section id="process" class="process container" aria-labelledby="process-title">
-  <SectionHeading id="process-title" title={t.process.title} count={pad2(t.process.stages.length)} intro={t.process.intro} />
-  <figure class="proc">
-    <div class="proc-axis" aria-hidden="true">
-      <span class="label proc-axis-stage">{t.process.stage}</span>
-      <div class="proc-axis-lane">
-        <span class="label proc-axis-kick">{t.process.axis.kickoff}</span>
-        <span class="label proc-axis-live">{t.process.axis.golive}</span>
-        <span class="label proc-axis-ongoing">{t.process.axis.ongoing}</span>
+<section id="process" class="process" aria-labelledby="process-title">
+  <div class="container">
+    <SectionHeading id="process-title" title={t.process.title} count={pad2(t.process.stages.length)} intro={t.process.intro} />
+    <figure class="proc">
+      <div class="proc-axis" aria-hidden="true">
+        <span class="label proc-axis-stage">{t.process.stage}</span>
+        <div class="proc-axis-lane">
+          <span class="label proc-axis-kick">{t.process.axis.kickoff}</span>
+          <span class="label proc-axis-live">{t.process.axis.golive}</span>
+          <span class="label proc-axis-ongoing">{t.process.axis.ongoing}</span>
+        </div>
       </div>
-    </div>
-    <ol class="proc-list">
-      {
-        t.process.stages.map((stage, i) => {
-          const bar = bars[i]!;
-          return (
-            <li class="proc-row">
-              <div class="proc-info">
-                <span class="proc-num">{pad2(i + 1)}</span>
-                <div>
-                  <h3 class="proc-title">{stage.title}</h3>
-                  <p class="proc-body">{stage.body}</p>
+      <ol class="proc-list">
+        {
+          t.process.stages.map((stage, i) => {
+            const bar = bars[i]!;
+            return (
+              <li class="proc-row">
+                <div class="proc-info">
+                  <span class="proc-num">{pad2(i + 1)}</span>
+                  <div>
+                    <h3 class="proc-title">{stage.title}</h3>
+                    <p class="proc-body">{stage.body}</p>
+                  </div>
                 </div>
-              </div>
-              <div class="proc-lane">
-                <div class="proc-track" aria-hidden="true">
-                  <span class={`proc-bar proc-bar--${bar.tone}`} style={barStyle(bar)} />
-                  {bar.demos?.map((x) => (
-                    <span class="proc-demo" style={`--x: ${x}%`} />
-                  ))}
+                <div class="proc-lane">
+                  <div class="proc-track" aria-hidden="true">
+                    <span class={`proc-bar proc-bar--${bar.tone}`} style={barStyle(bar)} />
+                    {bar.demos?.map((x) => (
+                      <span class="proc-demo" style={`--x: ${x}%`} />
+                    ))}
+                  </div>
+                  <p class={`proc-out proc-out--${bar.outAlign ?? 'start'}`} style={`--start: ${bar.start}%`}>
+                    <span class="proc-out-label">{t.process.out}</span> {stage.out}
+                  </p>
                 </div>
-                <p class={`proc-out proc-out--${bar.outAlign ?? 'start'}`} style={`--start: ${bar.start}%`}>
-                  <span class="proc-out-label">{t.process.out}</span> {stage.out}
-                </p>
-              </div>
-            </li>
-          );
-        })
-      }
-    </ol>
-    <figcaption class="fig-caption proc-caption">
-      <span class="fig-num">{t.process.fig}</span> — {t.process.captionBefore}{' '}
-      <span class="proc-pill"><span class="visually-hidden">{t.process.pillAlt}</span></span>{' '}
-      {t.process.captionAfter}
-    </figcaption>
-  </figure>
+              </li>
+            );
+          })
+        }
+      </ol>
+      <figcaption class="fig-caption proc-caption">
+        <span class="fig-num">{t.process.fig}</span> — {t.process.captionBefore}{' '}
+        <span class="proc-pill"><span class="visually-hidden">{t.process.pillAlt}</span></span>{' '}
+        {t.process.captionAfter}
+      </figcaption>
+    </figure>
+  </div>
 </section>
 
 <style>
@@ -258,9 +260,6 @@ const barStyle = (bar: Bar) =>
     .proc-axis-live {
       transform: translateX(-50%);
     }
-    .proc-axis-ongoing {
-      display: block;
-    }
     .proc-row {
       grid-template-columns: repeat(12, minmax(0, 1fr));
       column-gap: var(--gutter);
@@ -321,6 +320,12 @@ const barStyle = (bar: Bar) =>
       right: 0;
       left: auto;
       text-align: right;
+    }
+  }
+  /* "Ongoing" only has room next to "Go-live" from 1280px up. */
+  @media (min-width: 80rem) {
+    .proc-axis-ongoing {
+      display: block;
     }
   }
 </style>

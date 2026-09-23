@@ -101,18 +101,27 @@ const links = [
     .nav {
       display: flex;
       grid-column: 5 / span 4;
+      gap: 28px;
     }
     .header-end {
       grid-column: 9 / span 4;
       justify-self: end;
     }
-    .header-clock,
     .header-lang,
     .header-cta {
       display: block;
     }
     .menu-toggle {
       display: none;
+    }
+  }
+  /* The clock only fits next to the language switch and CTA from 1280px up. */
+  @media (min-width: 80rem) {
+    .nav {
+      gap: 36px;
+    }
+    .header-clock {
+      display: block;
     }
   }
 </style>
