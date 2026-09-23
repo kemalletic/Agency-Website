@@ -23,7 +23,17 @@ export function initPrinciples(): () => void {
     }),
   );
 
+  // Only a real photo drifts; the drawn placeholder stays put.
+  const photo = document.querySelector<HTMLElement>('.pr-frame--photo');
+  const image = photo?.querySelector('.pr-img');
+  const drift =
+    photo && image
+      ? gsap.fromTo(image, { yPercent: -6 }, { yPercent: 6, ease: 'none', scrollTrigger: { trigger: photo, start: 'top bottom', end: 'bottom top', scrub: true } })
+      : null;
+
   return () => {
+    drift?.scrollTrigger?.kill();
+    drift?.kill();
     for (const split of splits) split.revert();
   };
 }

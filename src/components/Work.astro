@@ -1,4 +1,6 @@
 ---
+import { Picture } from 'astro:assets';
+import { media } from '../config/media';
 import { site } from '../config/site';
 import { getDictionary, pad2, type Locale } from '../i18n';
 import ProjectPortal from './art/ProjectPortal.astro';
@@ -39,7 +41,21 @@ const newTab = { target: '_blank', rel: 'noopener' };
             data-cursor-icon={link.external ? 'external' : 'arrow'}
             {...extra}
           >
-            <Art />
+            {
+              media.projects[p.id] ? (
+                <div class="pj-shot pj-parallax">
+                  <Picture
+                    src={media.projects[p.id]!}
+                    alt=""
+                    formats={['avif', 'webp']}
+                    widths={[640, 960, 1280, 1600]}
+                    sizes="(min-width: 64rem) 60vw, 100vw"
+                  />
+                </div>
+              ) : (
+                <Art />
+              )
+            }
           </a>
           <div class="pj-info" data-reveal="fade-up" data-reveal-delay="0.1">
             <span class="pj-num">{pad2(i + 1)}</span>
@@ -125,6 +141,20 @@ const newTab = { target: '_blank', rel: 'noopener' };
     display: block;
     width: 100%;
     height: 100%;
+  }
+  .pj-card {
+    position: relative;
+  }
+  /* Taller than the card, so the parallax (±80 px) never shows an edge. */
+  .pj-shot {
+    position: absolute;
+    inset: -15% 0;
+  }
+  .pj-shot :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   .pj-card :global(.pj-mock) {
     transition: transform 0.9s var(--ease-std);

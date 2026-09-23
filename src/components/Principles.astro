@@ -1,4 +1,6 @@
 ---
+import { Picture } from 'astro:assets';
+import { media } from '../config/media';
 import { site } from '../config/site';
 import { fill, getDictionary, pad2, type Locale } from '../i18n';
 import SectionHeading from './ui/SectionHeading.astro';
@@ -19,9 +21,28 @@ const t = getDictionary(lang);
     intro={fill(t.principles.intro, { name: site.name })}
   />
   <div class="pr-grid">
-    <figure class="pr-photo" aria-hidden="true">
-      <div class="pr-frame"><span class="label">{t.principles.photo}</span></div>
-    </figure>
+    {
+      media.team ? (
+        <figure class="pr-photo">
+          <div class="pr-frame pr-frame--photo">
+            <Picture
+              src={media.team}
+              alt={fill(t.principles.photoAlt, { name: site.name })}
+              class="pr-img"
+              formats={['avif', 'webp']}
+              widths={[480, 720, 1000]}
+              sizes="(min-width: 64rem) 30vw, 100vw"
+            />
+          </div>
+        </figure>
+      ) : (
+        <figure class="pr-photo" aria-hidden="true">
+          <div class="pr-frame">
+            <span class="label">{t.principles.photo}</span>
+          </div>
+        </figure>
+      )
+    }
     <ol class="pr-list">
       {
         t.principles.items.map((item, i) => (
@@ -62,6 +83,19 @@ const t = getDictionary(lang);
   }
   .pr-frame .label {
     font-size: 11px;
+  }
+  .pr-frame--photo {
+    position: relative;
+    padding: 0;
+    overflow: hidden;
+  }
+  /* A little taller than the frame, so the scroll drift never shows an edge. */
+  .pr-frame--photo :global(.pr-img) {
+    position: absolute;
+    inset: -8% 0;
+    width: 100%;
+    height: 116%;
+    object-fit: cover;
   }
   .pr-list {
     grid-column: 1 / -1;

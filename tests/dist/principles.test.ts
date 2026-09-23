@@ -22,4 +22,11 @@ describe.each(pages)('$path principles', ({ path, lang }) => {
   it('names the studio in the intro', () => {
     expect(text(section?.querySelector('.sh-intro'))).toContain(site.name);
   });
+
+  it('keeps the drawn placeholders while no photography is configured', () => {
+    expect(doc.querySelector('.pr-photo')?.getAttribute('aria-hidden')).toBe('true');
+    expect(doc.querySelector('.pr-photo img')).toBeNull();
+    expect(doc.querySelectorAll('.pj-card svg.pj-art')).toHaveLength(2);
+    expect(doc.querySelector('.pj-shot')).toBeNull();
+  });
 });

@@ -91,6 +91,7 @@ export interface Dictionary {
     title: string;
     intro: string;
     photo: string;
+    photoAlt: string;
     items: ReadonlyArray<{ lead: string; body: string }>;
   };
   contact: {

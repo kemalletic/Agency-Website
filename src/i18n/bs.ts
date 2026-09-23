@@ -158,6 +158,7 @@ export const bs: Dictionary = {
     title: 'Prije nego nas angažujete',
     intro: '{name} je studio za dizajn i inženjering u Sarajevu, Bosna i Hercegovina. Pet stvari koje vrijedi znati unaprijed.',
     photo: '[ Fotografija — ljudi s kojima ćete raditi ]',
+    photoAlt: 'Ljudi s kojima ćete raditi u {name}',
     items: [
       { lead: 'Vaše je.', body: 'Kod, podaci, domene i nalozi su na vaše ime od prvog dana.' },
       {

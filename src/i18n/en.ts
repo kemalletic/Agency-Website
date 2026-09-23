@@ -158,6 +158,7 @@ export const en: Dictionary = {
     title: 'Before you hire us',
     intro: '{name} is a design and engineering studio in Sarajevo, Bosnia and Herzegovina. Five things worth knowing up front.',
     photo: '[ Photo — the people you will work with ]',
+    photoAlt: 'The people you will work with at {name}',
     items: [
       { lead: 'You own it.', body: 'Code, data, domains and accounts are in your name from day one.' },
       {
