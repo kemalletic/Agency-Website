@@ -1,0 +1,107 @@
+---
+import { Picture } from 'astro:assets';
+import fallen from '../assets/posters/fallen.png';
+import Brand from '../components/Brand.astro';
+import Button from '../components/ui/Button.astro';
+import { site } from '../config/site';
+import { getDictionary, localePath } from '../i18n';
+import Base from '../layouts/Base.astro';
+
+const en = getDictionary('en');
+const bs = getDictionary('bs');
+---
+
+<Base lang="en" title={`404 — ${site.name}`} description={en.notFound.body} index={false}>
+  <main id="main" class="nf container">
+    <Brand lang="en" class="nf-brand" />
+    <div class="nf-body">
+      <figure class="nf-stage" aria-hidden="true">
+        <Picture src={fallen} alt="" formats={['avif', 'webp']} widths={[420, 640, 900]} sizes="(min-width: 64rem) 40vw, 90vw" />
+      </figure>
+      <div class="nf-text">
+        <p class="label">404</p>
+        <h1 class="nf-title">{en.notFound.title}</h1>
+        <p class="nf-copy">{en.notFound.body}</p>
+        <p class="nf-copy nf-copy--bs" lang="bs"><strong>{bs.notFound.title}</strong> {bs.notFound.body}</p>
+        <div class="nf-actions">
+          <Button href={localePath('en')}>{en.notFound.home}</Button>
+          <Button href={localePath('bs')} variant="text" hreflang="bs" lang="bs">{bs.notFound.home}</Button>
+        </div>
+      </div>
+    </div>
+  </main>
+</Base>
+
+<style>
+  .nf {
+    display: grid;
+    align-content: start;
+    gap: 40px;
+    min-height: 100svh;
+    padding-block: 28px 64px;
+  }
+  .nf-body {
+    display: grid;
+    gap: 32px;
+  }
+  .nf-stage {
+    width: min(100%, 30rem);
+    justify-self: center;
+  }
+  .nf-stage :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .nf-text {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 34rem;
+  }
+  .nf-title {
+    font-size: var(--fs-h2);
+    font-weight: 300;
+    line-height: 1.02;
+    letter-spacing: -0.04em;
+    text-wrap: balance;
+  }
+  .nf-copy {
+    font-size: var(--fs-body-l);
+    line-height: 1.6;
+    color: var(--muted);
+    text-wrap: pretty;
+  }
+  .nf-copy--bs {
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+  }
+  .nf-copy--bs strong {
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .nf-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px 32px;
+    margin-top: 8px;
+  }
+  @media (min-width: 64rem) {
+    .nf {
+      align-content: center;
+    }
+    .nf-body {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: var(--gutter);
+      align-items: center;
+    }
+    .nf-stage {
+      grid-column: 1 / span 6;
+      width: 100%;
+    }
+    .nf-text {
+      grid-column: 8 / span 5;
+    }
+  }
+</style>

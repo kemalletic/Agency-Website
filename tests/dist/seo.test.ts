@@ -2,7 +2,7 @@ import { existsSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { site } from '../../src/config/site';
 import { ogLocale, type Locale } from '../../src/i18n';
-import { loadPage, pages } from './helpers';
+import { loadPage, pages, readDist } from './helpers';
 
 const inDist = (path: string): boolean => existsSync(new URL(`../../dist/${path}`, import.meta.url));
 
@@ -40,5 +40,49 @@ describe.each(pages)('$path social cards and structured data', ({ path, lang }) 
   it('stays indexable', () => {
     expect(doc.querySelector('meta[name="robots"]')).toBeNull();
     expect(doc.querySelector('link[rel="canonical"]')).not.toBeNull();
+  });
+});
+describe('sitemap and robots.txt', () => {
+  it('lists both languages with their alternates, and nothing else', () => {
+    expect(readDist('sitemap-index.xml')).toContain('sitemap-0.xml');
+    const map = readDist('sitemap-0.xml');
+    const locs = [...map.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+    expect(locs).toEqual([new URL('/', site.url).href, new URL('/bs/', site.url).href]);
+    expect(map).toContain('hreflang="bs"');
+    expect(map).toContain('hreflang="en"');
+    expect(map).not.toContain('404');
+  });
+
+  it('allows crawling and points at the sitemap', () => {
+    const robots = readDist('robots.txt');
+    expect(robots).toContain('User-agent: *');
+    expect(robots).toContain('Allow: /');
+    expect(robots).toContain(`Sitemap: ${new URL('/sitemap-index.xml', site.url).href}`);
+  });
+
+  it('links the sitemap from every page', () => {
+    for (const { path } of pages) expect(loadPage(path).querySelector('link[rel="sitemap"]')?.getAttribute('href')).toBe('/sitemap-index.xml');
+  });
+});
+
+describe('404 page', () => {
+  const doc = loadPage('404.html');
+
+  it('stays out of search', () => {
+    expect(doc.querySelector('meta[name="robots"]')?.getAttribute('content')).toBe('noindex');
+    expect(doc.querySelector('link[rel="canonical"]')).toBeNull();
+    expect(doc.querySelector('script[type="application/ld+json"]')).toBeNull();
+  });
+
+  it('explains itself in both languages and leads home', () => {
+    expect(doc.querySelectorAll('h1')).toHaveLength(1);
+    expect(doc.querySelector('[lang="bs"]')).not.toBeNull();
+    const links = Array.from(doc.querySelectorAll('main a')).map((a) => a.getAttribute('href'));
+    expect(links).toContain('/');
+    expect(links).toContain('/bs/');
+  });
+
+  it('shows the fallen rings', () => {
+    expect(doc.querySelector('main picture source[type="image/avif"]')).not.toBeNull();
   });
 });

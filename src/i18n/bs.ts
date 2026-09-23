@@ -213,4 +213,9 @@ export const bs: Dictionary = {
     },
     info: { phone: 'Telefon', studio: 'Studio', hours: 'Radno vrijeme', call: 'Zakažite poziv od 30 min' },
   },
+  notFound: {
+    title: 'Ova stranica se raspala.',
+    body: 'Kao prstenovi na našoj početnoj: ukloni jedan dio i ostalo ne može opstati. Stranica koju tražite nije ovdje — možda je premještena.',
+    home: 'Nazad na početnu',
+  },
 };

@@ -933,7 +933,7 @@ const bs = getDictionary('bs');
         <p class="nf-copy nf-copy--bs" lang="bs"><strong>{bs.notFound.title}</strong> {bs.notFound.body}</p>
         <div class="nf-actions">
           <Button href={localePath('en')}>{en.notFound.home}</Button>
-          <Button href={localePath('bs')} variant="ghost" hreflang="bs" lang="bs">{bs.notFound.home}</Button>
+          <Button href={localePath('bs')} variant="text" hreflang="bs" lang="bs">{bs.notFound.home}</Button>
         </div>
       </div>
     </div>
@@ -991,7 +991,8 @@ const bs = getDictionary('bs');
   .nf-actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
+    align-items: center;
+    gap: 16px 32px;
     margin-top: 8px;
   }
   @media (min-width: 64rem) {

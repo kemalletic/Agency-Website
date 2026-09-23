@@ -118,4 +118,5 @@ export interface Dictionary {
     errors: { required: string; email: string; messageShort: string };
     info: { phone: string; studio: string; hours: string; call: string };
   };
+  notFound: { title: string; body: string; home: string };
 }

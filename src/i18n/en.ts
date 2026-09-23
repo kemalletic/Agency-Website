@@ -213,4 +213,9 @@ export const en: Dictionary = {
     },
     info: { phone: 'Phone', studio: 'Studio', hours: 'Hours', call: 'Book a 30-min call' },
   },
+  notFound: {
+    title: 'This page came apart.',
+    body: 'Like the rings on our homepage: take one piece away and the rest cannot hold. The page you were looking for is not here — it may have moved.',
+    home: 'Back to the homepage',
+  },
 };
