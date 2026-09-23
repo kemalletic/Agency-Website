@@ -30,7 +30,15 @@ const newTab = { target: '_blank', rel: 'noopener' };
       const extra = link.external ? newTab : {};
       return (
         <article class={`pj pj--${p.id}`} aria-labelledby={`pj-${p.id}`}>
-          <a class="pj-card" href={link.href} aria-label={p.cardLabel} data-reveal="clip" {...extra}>
+          <a
+            class="pj-card"
+            href={link.href}
+            aria-label={p.cardLabel}
+            data-reveal="clip"
+            data-cursor={p.cursor}
+            data-cursor-icon={link.external ? 'external' : 'arrow'}
+            {...extra}
+          >
             <Art />
           </a>
           <div class="pj-info" data-reveal="fade-up" data-reveal-delay="0.1">
@@ -70,11 +78,19 @@ const newTab = { target: '_blank', rel: 'noopener' };
     })
   }
   <a class="pj-next" href="#contact" data-reveal="fade-up">
+    <svg class="pj-next-border" aria-hidden="true"><rect width="100%" height="100%" rx="12" ry="12"></rect></svg>
     <span class="pj-num">{pad2(t.work.projects.length + 1)}</span>
     <span class="pj-next-title">{t.work.next.title}</span>
     <span class="pj-next-body">{t.work.next.body}<br />{t.work.next.start} {site.bookingFrom[lang]}</span>
     <span class="pj-next-cta"><Button as="span" size="m">{t.cta.start}</Button></span>
   </a>
+  <div class="cursor-pill" aria-hidden="true" data-icon="arrow">
+    <span class="cursor-pill-label"></span>
+    <svg class="cursor-pill-icon" width="12" height="12" viewBox="0 0 14 14">
+      <path class="icon-arrow" d="M2 7H12M8 3L12 7L8 11"></path>
+      <path class="icon-external" d="M3 11L11 3M5 3H11V9"></path>
+    </svg>
+  </div>
 </section>
 
 <style>
@@ -173,13 +189,13 @@ const newTab = { target: '_blank', rel: 'noopener' };
     background: var(--accent);
   }
   .pj-next {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 16px;
     margin-top: clamp(80px, 8vw, 120px);
     padding: 32px 24px;
-    border: 1px dashed var(--line-dash);
     border-radius: 12px;
     text-decoration: none;
     transition: background-color 0.35s ease;
@@ -256,5 +272,61 @@ const newTab = { target: '_blank', rel: 'noopener' };
     .pj-next-cta {
       grid-column: 10 / span 3;
     }
+  }
+  .pj-next-border {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 12px;
+    pointer-events: none;
+  }
+  .pj-next-border rect {
+    fill: none;
+    stroke: var(--line-dash);
+    stroke-width: 2;
+    stroke-dasharray: 5 5;
+  }
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .pj-next:hover .pj-next-border rect {
+      animation: dash-march 1.4s linear infinite;
+    }
+  }
+  @keyframes dash-march {
+    to {
+      stroke-dashoffset: -20;
+    }
+  }
+  .cursor-pill {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 60;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 36px;
+    padding: 0 14px;
+    border-radius: 999px;
+    background: var(--ink);
+    color: var(--paper);
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+    pointer-events: none;
+    visibility: hidden;
+    opacity: 0;
+  }
+  .cursor-pill-icon path {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .cursor-pill[data-icon='arrow'] .icon-external,
+  .cursor-pill[data-icon='external'] .icon-arrow {
+    display: none;
   }
 </style>

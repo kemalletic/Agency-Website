@@ -21,6 +21,7 @@ export interface ProjectItem {
   status: string;
   cta: string;
   cardLabel: string;
+  cursor: string;
 }
 
 export interface Dictionary {

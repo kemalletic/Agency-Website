@@ -100,6 +100,7 @@ export const bs: Dictionary = {
         status: 'U produkciji',
         cta: 'Pitajte nas o ovom projektu',
         cardLabel: 'B2B portal za narudžbe — pitajte nas o ovom projektu',
+        cursor: 'Pitajte nas',
       },
       {
         id: 'shop',
@@ -110,6 +111,7 @@ export const bs: Dictionary = {
         status: 'Online',
         cta: 'Posjetite shop',
         cardLabel: 'ADA Parfemi web shop (otvara se u novoj kartici)',
+        cursor: 'Posjetite',
       },
     ],
     next: { title: 'Vaš projekat', body: 'Ovo mjesto čuvamo za sljedeći.', start: 'Sljedeći početak:' },

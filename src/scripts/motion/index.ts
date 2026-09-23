@@ -5,6 +5,7 @@ import { initHeader } from './header';
 import { initSmoothScroll } from './lenis';
 import { initReveals } from './reveal';
 import { initServices } from './services';
+import { initWork } from './work';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 ScrollTrigger.config({ ignoreMobileResize: true });
@@ -22,7 +23,7 @@ async function boot(): Promise<void> {
   mm.add('(prefers-reduced-motion: no-preference)', () => {
     // Un-hide reveal targets in the same task in which the modules set their start states (no flash).
     root.classList.add('motion-ready');
-    const cleanups: Cleanup[] = [initSmoothScroll(), initReveals()];
+    const cleanups: Cleanup[] = [initSmoothScroll(), initReveals(), initWork()];
     return () => {
       for (const cleanup of cleanups) cleanup();
     };

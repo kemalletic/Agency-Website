@@ -100,6 +100,7 @@ export const en: Dictionary = {
         status: 'In production',
         cta: 'Ask about this project',
         cardLabel: 'B2B ordering portal — ask us about this project',
+        cursor: 'Ask about it',
       },
       {
         id: 'shop',
@@ -110,6 +111,7 @@ export const en: Dictionary = {
         status: 'Live',
         cta: 'Visit the shop',
         cardLabel: 'ADA Parfemi web shop (opens in a new tab)',
+        cursor: 'Visit',
       },
     ],
     next: { title: 'Your project', body: 'This space is kept for the next one.', start: 'Next start:' },
