@@ -69,7 +69,6 @@
   body {
     min-height: 100vh;
     overflow-x: clip;
-    background: var(--paper);
     font-family: var(--font-sans);
     font-size: 1rem;
     line-height: 1.5;

@@ -25,10 +25,31 @@ describe.each(pages)('$path approach', ({ path, lang }) => {
     ]);
   });
 
-  it('labels the diagram in the page language', () => {
-    const labels = Array.from(section?.querySelectorAll('.diagram-label text') ?? []).map(text);
+  it('labels the rings in the page language, placed from the 3D view', () => {
+    const labels = Array.from(section?.querySelectorAll('.stage-labels .stage-label') ?? []);
+    expect(labels.map((label) => label.getAttribute('data-ring'))).toEqual(['design', 'engineering', 'automation']);
     const r = t.approach.rings;
-    expect(labels).toEqual([r.design, r.engineering, r.automation].map((s) => s.toLocaleUpperCase(lang)));
+    expect(labels.map((label) => text(label))).toEqual([r.design, r.engineering, r.automation].map((s) => s.toLocaleUpperCase(lang)));
+    expect(section?.querySelector('.stage-labels')?.getAttribute('aria-hidden')).toBe('true');
+    for (const label of labels) {
+      const style = label.getAttribute('style') ?? '';
+      for (const axis of ['x', 'y']) {
+        const value = Number(new RegExp(`--${axis}:\\s*([\\d.]+)%`).exec(style)?.[1]);
+        expect(value, `${label.getAttribute('data-ring')} ${axis}`).toBeGreaterThan(5);
+        expect(value, `${label.getAttribute('data-ring')} ${axis}`).toBeLessThan(95);
+      }
+    }
+  });
+
+  it('shows a poster of the approach view until the 3D takes over', () => {
+    const stage = section?.querySelector('[data-stage="approach"]');
+    expect(Array.from(stage?.querySelectorAll('picture source') ?? []).map((s) => s.getAttribute('type'))).toEqual([
+      'image/avif',
+      'image/webp',
+    ]);
+    expect(stage?.querySelector('picture')?.classList.contains('stage-poster')).toBe(true);
+    expect(stage?.querySelector('img')?.getAttribute('loading')).toBe('lazy');
+    expect(section?.querySelector('.diagram')).toBeNull();
   });
 
   it('gives the stage an accessible description and caption', () => {

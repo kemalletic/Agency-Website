@@ -1,6 +1,8 @@
 ---
+import { Picture } from 'astro:assets';
+import approachPoster from '../assets/posters/approach.png';
 import { getDictionary, type Locale } from '../i18n';
-import ApproachDiagram from './art/ApproachDiagram.astro';
+import { labelAnchors } from '../lib/rings/labels';
 import RingDot from './ui/RingDot.astro';
 
 interface Props {
@@ -9,13 +11,33 @@ interface Props {
 
 const { lang } = Astro.props;
 const t = getDictionary(lang);
+// Label dots sit where the docked 3D view puts each ring — computed at build time from the scene's own maths.
+const labels = labelAnchors();
+const percent = (value: number): string => `${(value * 100).toFixed(2)}%`;
 ---
 
 <section id="approach" class="approach container" aria-labelledby="approach-label">
   <div class="approach-grid">
-    <figure class="approach-figure" data-reveal="figure">
+    <figure class="approach-figure" data-reveal="fade">
       <div class="approach-stage" data-stage="approach" role="img" aria-label={t.approach.diagramAlt}>
-        <ApproachDiagram lang={lang} />
+        <Picture
+          src={approachPoster}
+          alt=""
+          formats={['avif', 'webp']}
+          widths={[420, 640, 860, 1080]}
+          sizes="(min-width: 64rem) min(38vw, 640px), min(100vw, 26rem)"
+          loading="lazy"
+          pictureAttributes={{ class: 'stage-poster' }}
+        />
+        <div class="stage-labels" aria-hidden="true">
+          {
+            labels.map((label) => (
+              <span class="stage-label" data-ring={label.key} data-dir={label.dir} style={`--x: ${percent(label.x)}; --y: ${percent(label.y)}`}>
+                <span class="label stage-label-text">{t.approach.rings[label.key].toLocaleUpperCase(lang)}</span>
+              </span>
+            ))
+          }
+        </div>
       </div>
       <figcaption class="fig-caption"><span class="fig-num">{t.approach.fig}</span> — {t.approach.caption}</figcaption>
     </figure>
@@ -56,6 +78,75 @@ const t = getDictionary(lang);
   }
   .approach-figure .fig-caption {
     max-width: 24rem;
+  }
+  .approach-stage {
+    position: relative;
+    aspect-ratio: 1;
+    container-type: inline-size;
+  }
+  .approach-stage :global(.stage-poster),
+  .approach-stage :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .stage-labels {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  /* A zero-size anchor at the dot; the live scene draws it with --draw (0..1), posters leave it at 1. */
+  .stage-label {
+    --len: 7cqi;
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+  }
+  .stage-label::before {
+    content: '';
+    position: absolute;
+    left: -2.5px;
+    top: -2.5px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--ink);
+    transform: scale(min(1, calc(var(--draw, 1) * 4)));
+  }
+  .stage-label::after {
+    content: '';
+    position: absolute;
+    left: -0.5px;
+    width: 1px;
+    height: var(--len);
+    background: var(--label);
+    transform: scaleY(var(--draw, 1));
+  }
+  .stage-label[data-dir='up']::after {
+    bottom: 0;
+    transform-origin: 50% 100%;
+  }
+  .stage-label[data-dir='down']::after {
+    top: 0;
+    transform-origin: 50% 0;
+  }
+  .stage-label-text {
+    position: absolute;
+    left: 0;
+    translate: -50% 0;
+    white-space: nowrap;
+    opacity: clamp(0, calc(var(--draw, 1) * 2 - 1), 1);
+  }
+  /* The engineering label hangs off the knot's left tip; set its text mostly left of the leader so it clears the
+     porcelain ring on narrow stages. */
+  .stage-label[data-ring='engineering'] .stage-label-text {
+    translate: -75% 0;
+  }
+  .stage-label[data-dir='up'] .stage-label-text {
+    bottom: calc(var(--len) + 6px);
+  }
+  .stage-label[data-dir='down'] .stage-label-text {
+    top: calc(var(--len) + 6px);
   }
   .approach-text {
     display: flex;

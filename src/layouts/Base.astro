@@ -3,6 +3,7 @@ import { Font } from 'astro:assets';
 import '../styles/tokens.css';
 import '../styles/base.css';
 import '../styles/motion.css';
+import '../styles/rings.css';
 import { site } from '../config/site';
 import { getDictionary, localePath, locales, ogLocale, type Locale } from '../i18n';
 
@@ -27,9 +28,15 @@ const href = (l: Locale) => new URL(localePath(l), site.url).href;
         root.classList.add('js');
         if (!window.matchMedia || !window.matchMedia('(prefers-reduced-motion: no-preference)').matches) return;
         root.classList.add('js-motion');
+        // The 3D rings are worth waiting for only with WebGL2 and without Save-Data; otherwise posters from the start.
+        var connection = navigator.connection;
+        if ('WebGL2RenderingContext' in window && !(connection && connection.saveData)) root.dataset.rings = 'pending';
         window.setTimeout(function () {
           if (!root.classList.contains('motion-ready')) root.classList.remove('js-motion');
         }, 3000);
+        window.setTimeout(function () {
+          if (root.dataset.rings === 'pending') root.dataset.rings = 'poster';
+        }, 4000);
       })();
     </script>
     <title>{title}</title>

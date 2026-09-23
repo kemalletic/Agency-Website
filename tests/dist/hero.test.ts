@@ -25,6 +25,7 @@ describe.each(pages)('$path hero', ({ path, lang }) => {
     const img = hero?.querySelector('picture img');
     expect(img?.getAttribute('fetchpriority')).toBe('high');
     expect(img?.getAttribute('loading')).toBe('eager');
+    expect(hero?.querySelector('picture')?.classList.contains('stage-poster')).toBe(true);
   });
 
   it('shows the meta row with the booking month', () => {
