@@ -1,0 +1,89 @@
+---
+import { site } from '../config/site';
+import { getDictionary, type Locale } from '../i18n';
+import Brand from './Brand.astro';
+import Clock from './Clock.astro';
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const t = getDictionary(lang);
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <Brand lang={lang} size="s" tone="paper" link={false} />
+        <span>© {year}</span>
+      </div>
+      <nav class="footer-nav" aria-label={t.a11y.footerNav}>
+        {site.socials.map((s) => <a href={s.href}>{s.label}</a>)}
+      </nav>
+      <p class="footer-geo">{t.clockCity} · {site.coordinates} · <Clock lang={lang} withOffset /></p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    padding: clamp(96px, 11vw, 160px) 0 40px;
+    background: var(--night);
+    /* Covers the sub-pixel seam where the contact section ends on a fractional pixel. */
+    box-shadow: 0 -2px 0 var(--night);
+    color: var(--night-muted);
+    font-size: 13px;
+  }
+  .footer-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-top: 28px;
+    border-top: 1px solid var(--night-line);
+  }
+  .footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .footer-nav {
+    display: flex;
+    gap: 28px;
+  }
+  .footer-nav a {
+    color: var(--paper);
+    text-decoration: none;
+    background-image: linear-gradient(currentColor, currentColor);
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    background-size: 0 1px;
+    transition: background-size 0.35s var(--ease-std);
+  }
+  .footer-nav a:hover {
+    background-size: 100% 1px;
+  }
+  .footer-geo {
+    font-variant-numeric: tabular-nums;
+  }
+  @media (min-width: 64rem) {
+    .footer-inner {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: var(--gutter);
+      align-items: center;
+    }
+    .footer-brand {
+      grid-column: span 4;
+    }
+    .footer-nav {
+      grid-column: 5 / span 4;
+    }
+    .footer-geo {
+      grid-column: 9 / span 4;
+      justify-self: end;
+    }
+  }
+</style>

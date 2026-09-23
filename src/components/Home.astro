@@ -2,6 +2,8 @@
 import Base from '../layouts/Base.astro';
 import type { Locale } from '../i18n';
 import Approach from './Approach.astro';
+import Contact from './Contact.astro';
+import Footer from './Footer.astro';
 import Header from './Header.astro';
 import Hero from './Hero.astro';
 import Principles from './Principles.astro';
@@ -25,5 +27,7 @@ const { lang } = Astro.props;
     <Work lang={lang} />
     <Process lang={lang} />
     <Principles lang={lang} />
+    <Contact lang={lang} />
   </main>
+  <Footer lang={lang} />
 </Base>

@@ -1,0 +1,342 @@
+---
+import { PUBLIC_WEB3FORMS_KEY } from 'astro:env/client';
+import { site } from '../config/site';
+import { getDictionary, type Locale } from '../i18n';
+import Button from './ui/Button.astro';
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const c = getDictionary(lang).contact;
+const needs = [c.needs.web, c.needs.app, c.needs.sys, c.needs.unsure];
+---
+
+<section id="contact" class="contact" aria-labelledby="contact-title">
+  <div class="container">
+    <div class="ct-grid">
+      <div class="ct-intro">
+        <span class="label ct-label">{c.label}</span>
+        <h2 id="contact-title" class="ct-title">{c.title}</h2>
+        <p class="ct-lead">{c.lead}</p>
+        <a class="ct-mail" href={`mailto:${site.email}`}>{site.email}</a>
+      </div>
+
+      <form
+        class="cf"
+        action="https://api.web3forms.com/submit"
+        method="POST"
+        novalidate
+        data-contact-form
+        data-state="idle"
+        data-mail-to={site.email}
+        data-subject={c.subject}
+        data-from-name={site.name}
+        data-msg-required={c.errors.required}
+        data-msg-email={c.errors.email}
+        data-msg-short={c.errors.messageShort}
+        data-msg-sending={c.sending}
+        data-msg-success={c.success}
+        data-msg-error={c.error}
+      >
+        <input type="hidden" name="access_key" value={PUBLIC_WEB3FORMS_KEY ?? ''} />
+        <input type="hidden" name="subject" value={c.subject} />
+        <input type="hidden" name="from_name" value={site.name} />
+        <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" hidden />
+
+        <fieldset class="cf-needs">
+          <legend class="label cf-legend">{c.needs.legend}</legend>
+          <div class="cf-chips">
+            {
+              needs.map((label) => (
+                <label class="cf-chip">
+                  <input type="checkbox" name="needs" value={label} />
+                  <span>{label}</span>
+                </label>
+              ))
+            }
+          </div>
+        </fieldset>
+
+        <div class="cf-field">
+          <label class="label cf-label" for="cf-name">{c.fields.name}</label>
+          <input class="cf-input" id="cf-name" type="text" name="name" autocomplete="name" placeholder={c.fields.namePh} required aria-describedby="cf-err-name" />
+          <p class="cf-error" id="cf-err-name" data-error-for="name" hidden></p>
+        </div>
+        <div class="cf-field">
+          <label class="label cf-label" for="cf-email">{c.fields.email}</label>
+          <input class="cf-input" id="cf-email" type="email" name="email" autocomplete="email" inputmode="email" placeholder={c.fields.emailPh} required aria-describedby="cf-err-email" />
+          <p class="cf-error" id="cf-err-email" data-error-for="email" hidden></p>
+        </div>
+        <div class="cf-field cf-field--wide">
+          <label class="label cf-label" for="cf-company">{c.fields.company}</label>
+          <input class="cf-input" id="cf-company" type="text" name="company" autocomplete="organization" placeholder={c.fields.companyPh} />
+        </div>
+        <div class="cf-field cf-field--wide">
+          <label class="label cf-label" for="cf-message">{c.fields.message}</label>
+          <textarea class="cf-input cf-textarea" id="cf-message" name="message" rows="3" placeholder={c.fields.messagePh} required minlength="10" aria-describedby="cf-err-message"></textarea>
+          <p class="cf-error" id="cf-err-message" data-error-for="message" hidden></p>
+        </div>
+
+        <div class="cf-foot">
+          <p class="cf-note">{c.note}</p>
+          <Button type="submit" variant="light" size="l">{c.submit}</Button>
+        </div>
+        <p class="cf-status" role="status" aria-live="polite" data-form-status></p>
+      </form>
+    </div>
+
+    <div class="ct-info">
+      <div class="ct-item">
+        <span class="label">{c.info.phone}</span>
+        <span>{site.phone}</span>
+      </div>
+      <div class="ct-item">
+        <span class="label">{c.info.studio}</span>
+        <span>{site.address.street[lang]}<br />{site.address.city}, {site.address.country[lang]}</span>
+      </div>
+      <div class="ct-item">
+        <span class="label">{c.info.hours}</span>
+        <span>{site.hours[lang]}</span>
+      </div>
+      <div class="ct-call"><Button href={site.callUrl} variant="ghost" size="s">{c.info.call}</Button></div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { initContactForm } from '../scripts/contact-form';
+  initContactForm();
+</script>
+
+<style>
+  .contact {
+    padding-top: var(--section-y);
+    padding-bottom: 40px;
+    background: var(--night);
+    color: var(--paper);
+  }
+  .contact .label {
+    color: var(--night-muted);
+  }
+  .ct-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+    column-gap: var(--gutter);
+    row-gap: 64px;
+    align-items: start;
+  }
+  .ct-intro {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    grid-column: 1 / -1;
+  }
+  .ct-title {
+    font-size: var(--fs-display);
+    font-weight: 300;
+    line-height: 0.95;
+    letter-spacing: -0.05em;
+  }
+  .ct-lead {
+    max-width: 28.75rem;
+    font-size: var(--fs-body-l);
+    line-height: 1.6;
+    color: var(--night-muted);
+    text-wrap: pretty;
+  }
+  .ct-mail {
+    align-self: flex-start;
+    margin-top: 12px;
+    font-size: var(--fs-mail);
+    font-weight: 300;
+    line-height: 1.2;
+    letter-spacing: -0.03em;
+    text-decoration: underline;
+    text-decoration-color: var(--night-line);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 8px;
+    overflow-wrap: anywhere;
+  }
+  .ct-mail:hover {
+    text-decoration-color: var(--paper);
+  }
+  .cf {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-column: 1 / -1;
+    gap: 36px 24px;
+  }
+  .cf-legend {
+    margin-bottom: 16px;
+    font-size: 11px;
+  }
+  .cf-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .cf-chip {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    height: 44px;
+    padding: 0 18px;
+    border: 1px solid var(--night-chip);
+    border-radius: 999px;
+    font-size: 15px;
+    cursor: pointer;
+    user-select: none;
+    transition:
+      background-color 0.25s var(--ease-std),
+      color 0.25s var(--ease-std),
+      border-color 0.25s var(--ease-std);
+  }
+  .cf-chip input {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .cf-chip:hover {
+    border-color: var(--night-muted);
+  }
+  .cf-chip:has(input:checked) {
+    border-color: var(--paper);
+    background: var(--paper);
+    color: var(--ink);
+  }
+  .cf-chip:has(input:focus-visible) {
+    outline: 2px solid var(--paper);
+    outline-offset: 4px;
+  }
+  .cf-field {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .cf-label {
+    font-size: 11px;
+  }
+  .cf-input {
+    width: 100%;
+    height: 44px;
+    padding: 0 0 12px;
+    border: 0;
+    border-bottom: 1px solid var(--night-line);
+    border-radius: 0;
+    background: transparent;
+    color: var(--paper);
+    font-size: var(--fs-input);
+    font-weight: 300;
+    transition: border-color 0.25s var(--ease-std);
+  }
+  .cf-textarea {
+    height: auto;
+    min-height: 5.5em;
+    line-height: 1.5;
+    resize: vertical;
+  }
+  .cf-input::placeholder {
+    color: var(--night-faint);
+  }
+  .cf-input:focus {
+    outline: none;
+    border-bottom-color: var(--paper);
+  }
+  .cf-input[aria-invalid='true'] {
+    border-bottom-color: var(--night-error);
+  }
+  .cf-input:-webkit-autofill {
+    -webkit-text-fill-color: var(--paper);
+    transition: background-color 9999s ease-out 0s;
+  }
+  .cf-error {
+    font-size: 13px;
+    line-height: 1.4;
+    color: var(--night-error);
+  }
+  .cf-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px 24px;
+  }
+  .cf-note {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--night-muted);
+  }
+  .cf-status {
+    min-height: 1.5em;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .cf-status :global(a) {
+    color: var(--paper);
+    text-underline-offset: 4px;
+  }
+  .ct-info {
+    display: grid;
+    grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+    column-gap: var(--gutter);
+    row-gap: 28px;
+    margin-top: 96px;
+    padding-top: 32px;
+    border-top: 1px solid var(--night-line);
+  }
+  .ct-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    grid-column: 1 / -1;
+    font-size: 16px;
+    line-height: 1.55;
+  }
+  .ct-item .label {
+    font-size: 11px;
+    color: var(--night-faint);
+  }
+  .ct-call {
+    grid-column: 1 / -1;
+  }
+  @media (min-width: 48rem) {
+    .cf {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 40px 24px;
+    }
+    .cf-needs,
+    .cf-field--wide,
+    .cf-foot,
+    .cf-status {
+      grid-column: span 2;
+    }
+    .ct-item {
+      grid-column: span 4;
+    }
+  }
+  @media (min-width: 64rem) {
+    .ct-intro {
+      grid-column: span 6;
+      gap: 32px;
+    }
+    .cf {
+      grid-column: 8 / span 5;
+      margin-top: 8px;
+    }
+    .ct-info {
+      margin-top: 128px;
+    }
+    .ct-item {
+      grid-column: span 3;
+    }
+    .ct-call {
+      grid-column: 10 / span 3;
+      justify-self: end;
+      align-self: start;
+    }
+  }
+</style>
