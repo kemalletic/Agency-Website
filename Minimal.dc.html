@@ -1,0 +1,641 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Studio homepage — minimal, desktop</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&amp;display=swap">
+<style>
+body{margin:0;background:#ebe9e4;color:#121211;font-family:'Host Grotesk','Helvetica Neue',Arial,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;font-feature-settings:'ss01' on}
+a{color:#121211}a:hover{color:#000000}
+.nav a{color:#121211;text-decoration:none;background-image:linear-gradient(currentColor,currentColor);background-size:0 1px;background-repeat:no-repeat;background-position:0 100%;transition:background-size .35s cubic-bezier(.2,.7,.2,1)}.nav a:hover{background-size:100% 1px}
+.dk a{color:#ebe9e4}.dk a:hover{color:#ffffff}
+.cta .arr{display:inline-block;transition:transform .35s cubic-bezier(.2,.7,.2,1)}.cta:hover .arr{transform:translateX(4px)}
+.row-btn:hover .ttl{transform:translateX(10px)}.ttl{transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.wk .pv{opacity:0;transform:translate(0,-46%) rotate(-3deg) scale(.96);transition:opacity .35s ease,transform .6s cubic-bezier(.2,.7,.2,1)}
+.wk:hover .pv{opacity:1;transform:translate(0,-50%) rotate(0deg) scale(1)}
+.wk .nm{transition:transform .5s cubic-bezier(.2,.7,.2,1)}.wk:hover .nm{transform:translateX(14px)}
+.pj .pjin{transition:transform .9s cubic-bezier(.2,.7,.2,1)}.pj:hover .pjin{transform:translate(-6px,-8px)}
+.pj3{transition:background-color .35s ease}.pj3:hover{background-color:#f3f2ee}
+.flow{animation:flow 1.5s linear infinite}@keyframes flow{to{stroke-dashoffset:-34.2}}
+.hl{cursor:default}
+input::placeholder,textarea::placeholder{color:#8c8983}
+input:focus,textarea:focus{outline:none;border-bottom-color:#ebe9e4 !important}
+button:focus-visible,a:focus-visible{outline:2px solid currentColor;outline-offset:4px}
+@media (prefers-reduced-motion:reduce){*{transition:none !important}.flow{animation:none}}
+</style>
+</helmet>
+<div style="width: 1440px; height: 8466px; box-sizing: border-box; display: flex; flex-direction: column; overflow: hidden; background: #ebe9e4; color: #121211; font-family: 'Host Grotesk', 'Helvetica Neue', Arial, sans-serif;">
+<header style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; padding-left: 64px; padding-right: 64px; align-items: center; height: 96px;">
+<a href="#top" style="grid-column: span 3; justify-self: start; display: flex; align-items: center; text-decoration: none; color: #121211;"><span style="font-size: 19px; font-weight: 500; letter-spacing: -0.02em; color: #121211;">[NAME]</span><span aria-hidden="true" style="width: 7px; height: 7px; border-radius: 50%; background: {{accent}}; align-self: flex-end; margin: 0 0 6px 3px;"></span></a>
+<nav class="nav" aria-label="Main" style="grid-column: 5 / span 4; display: flex; gap: 36px; font-size: 15px; font-weight: 400;">
+<a href="#work">Work</a><a href="#services">Services</a><a href="#process">Process</a><a href="#studio">Studio</a>
+</nav>
+<div style="grid-column: 9 / span 4; justify-self: end; display: flex; align-items: center; gap: 28px;">
+<span style="font-size: 13px; color: #55534e; font-variant-numeric: tabular-nums;">Sarajevo {{time}}</span>
+<a class="cta" href="#contact" style="height: 44px; padding: 0 20px 0 22px; border-radius: 999px; background: #121211; color: #ebe9e4; display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 500; text-decoration: none;">Start a project <svg class="arr" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" style="display: inline-block; flex-shrink: 0;"><path d="M2 7 H12 M8 3 L12 7 L8 11" style="fill: none; stroke: #ebe9e4; stroke-width: 1.4px; stroke-linecap: round; stroke-linejoin: round;"></path></svg></a>
+</div>
+</header>
+<section id="top" style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; padding-left: 64px; padding-right: 64px; grid-template-rows: 64px 720px; padding-bottom: 32px;">
+<div style="grid-column: 1 / span 12; grid-row: 1; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; column-gap: 24px; align-items: center; border-top: 1px solid #d3d0c9;">
+<span style="grid-column: span 4;"><span style="font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #66645f;">Design &amp; engineering studio</span></span>
+<span style="grid-column: 5 / span 4;"><span style="font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #66645f;">Sarajevo, Bosnia and Herzegovina</span></span>
+<span style="grid-column: 9 / span 4; justify-self: end; display: flex; align-items: center; gap: 10px;"><span aria-hidden="true" style="display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: {{accent}}; vertical-align: 0.12em; margin: 0 0.12em 0 0.06em; margin: 0; vertical-align: middle;"></span><span style="font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #55534e;">Booking from [MONTH YEAR]</span></span>
+</div>
+<figure onMouseMove="{{onTilt}}" onMouseLeave="{{onTiltEnd}}" style="grid-column: 6 / span 7; grid-row: 2; justify-self: end; align-self: start; position: relative; width: 720px; height: 720px; margin: 0 -24px 0 0; -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000000 6%, #000000 94%, transparent 100%); mask-image: linear-gradient(90deg, transparent 0%, #000000 6%, #000000 94%, transparent 100%);">
+<img src="./assets/abeb259b406b12574d07a6266a687771.png" alt="" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: block;">
+<canvas data-gl="rings-d" ref="{{setCanvas}}" role="img" aria-label="Three rings, porcelain, graphite and green, linked so that no two of them are linked on their own" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: block;"></canvas>
+</figure>
+<div style="grid-column: 1 / span 7; grid-row: 2; align-self: end; position: relative; z-index: 1; padding-bottom: 8px;">
+<h1 style="margin: 0; font-size: 92px; line-height: 0.97; letter-spacing: -0.047em; font-weight: 300; color: #121211; text-wrap: balance;">We design and build the software your business runs on.</h1>
+<div style="margin-top: 48px; display: flex; align-items: flex-end; gap: 48px;">
+<p style="margin: 0; max-width: 400px; font-size: 18px; line-height: 1.6; color: #55534e; text-wrap: pretty;">Websites, web and mobile apps, and the systems and automations behind them — designed, built and looked after by one studio in Sarajevo.</p>
+<div style="display: flex; flex-direction: column; align-items: flex-start; gap: 14px; flex-shrink: 0;">
+<a class="cta" href="#contact" style="height: 56px; padding: 0 26px 0 28px; border-radius: 999px; background: #121211; color: #ebe9e4; display: flex; align-items: center; gap: 14px; font-size: 16px; font-weight: 500; text-decoration: none;">Start a project <svg class="arr" width="15" height="15" viewBox="0 0 14 14" aria-hidden="true" style="display: inline-block; flex-shrink: 0;"><path d="M2 7 H12 M8 3 L12 7 L8 11" style="fill: none; stroke: #ebe9e4; stroke-width: 1.4px; stroke-linecap: round; stroke-linejoin: round;"></path></svg></a>
+<a href="mailto:hello@yourdomain.com" style="font-size: 14px; color: #55534e; text-decoration: underline; text-decoration-color: #d3d0c9; text-underline-offset: 4px;">[hello@yourdomain.com]</a>
+</div>
+</div>
+</div>
+<p style="grid-column: 10 / span 3; grid-row: 2; align-self: end; margin: 0 0 12px; font-size: 13px; line-height: 1.55; color: #55534e; position: relative; z-index: 1;"><span style="color: #121211; font-weight: 500;">Fig. 1</span> — Borromean rings, rendered live in your browser. No two are linked, yet take any one away and the other two fall apart.</p>
+</section>
+<section id="approach" style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; padding-left: 64px; padding-right: 64px; padding-top: 150px; padding-bottom: 170px; align-items: center;">
+<figure ref="{{setFig}}" style="grid-column: 1 / span 5; margin: 0 0 0 -8px; display: flex; flex-direction: column; gap: 28px;">
+<svg viewBox="-212 -258.98 424 481.01" aria-hidden="true" style="width: 100%; height: auto; display: block; overflow: visible;"><defs><mask id="bx0"><circle cx="-119.91" cy="-69.23" r="36" style="fill: #ffffff;"></circle></mask><mask id="bx1"><circle cx="55.91" cy="32.28" r="36" style="fill: #ffffff;"></circle></mask><mask id="bx2"><circle cx="0" cy="138.46" r="36" style="fill: #ffffff;"></circle></mask><mask id="bx3"><circle cx="0" cy="-64.56" r="36" style="fill: #ffffff;"></circle></mask><mask id="bx4"><circle cx="119.91" cy="-69.23" r="36" style="fill: #ffffff;"></circle></mask><mask id="bx5"><circle cx="-55.91" cy="32.28" r="36" style="fill: #ffffff;"></circle></mask></defs><g style="opacity: {{ring.d}}; stroke-dasharray: 1; stroke-dashoffset: {{reveal}}; transition: opacity 0.45s ease, stroke-dashoffset 1.05s cubic-bezier(.22,.61,.36,1) 0s;"><circle cx="0" cy="-73.9" r="120" pathLength="1" style="fill: none; stroke: #121211; stroke-width: 26px;"></circle><circle cx="0" cy="-73.9" r="120" pathLength="1" style="fill: none; stroke: #f4f2ee; stroke-width: 23.5px;"></circle><circle cx="0" cy="-73.9" r="125.2" pathLength="1" style="fill: none; stroke: #000000; stroke-opacity: 0.07; stroke-width: 5.72px;"></circle><circle cx="0" cy="-73.9" r="114.28" pathLength="1" style="fill: none; stroke: #ffffff; stroke-opacity: 0.9; stroke-width: 3.12px;"></circle></g><g style="opacity: {{ring.e}}; stroke-dasharray: 1; stroke-dashoffset: {{reveal}}; transition: opacity 0.45s ease, stroke-dashoffset 1.05s cubic-bezier(.22,.61,.36,1) 0.16s;"><circle cx="-64" cy="36.95" r="120" pathLength="1" style="fill: none; stroke: #121211; stroke-width: 26px;"></circle><circle cx="-64" cy="36.95" r="120" pathLength="1" style="fill: none; stroke: #2a2a2c; stroke-width: 23.5px;"></circle><circle cx="-64" cy="36.95" r="114.8" pathLength="1" style="fill: none; stroke: #ffffff; stroke-opacity: 0.15; stroke-width: 3.64px;"></circle><circle cx="-64" cy="36.95" r="126.24" pathLength="1" style="fill: none; stroke: #000000; stroke-opacity: 0.18; stroke-width: 3.12px;"></circle></g><g style="opacity: {{ring.a}}; stroke-dasharray: 1; stroke-dashoffset: {{reveal}}; transition: opacity 0.45s ease, stroke-dashoffset 1.05s cubic-bezier(.22,.61,.36,1) 0.32s;"><circle cx="64" cy="36.95" r="120" pathLength="1" style="fill: none; stroke: #121211; stroke-width: 26px;"></circle><circle cx="64" cy="36.95" r="120" pathLength="1" style="fill: none; stroke: {{accent}}; stroke-width: 23.5px;"></circle><circle cx="64" cy="36.95" r="114.8" pathLength="1" style="fill: none; stroke: #ffffff; stroke-opacity: 0.2; stroke-width: 3.64px;"></circle><circle cx="64" cy="36.95" r="126.24" pathLength="1" style="fill: none; stroke: #000000; stroke-opacity: 0.18; stroke-width: 3.12px;"></circle></g><g style="opacity: {{ringx.d}}; stroke-dasharray: 1; stroke-dashoffset: {{reveal}}; transition: opacity 0.45s ease, stroke-dashoffset 1.05s cubic-bezier(.22,.61,.36,1) 0s;"><g style="mask: url(#bx0);"><circle cx="0" cy="-73.9" r="120" pathLength="1" style="fill: none; stroke: #ebe9e4; stroke-width: 40px;"></circle><circle cx="0" cy="-73.9" r="120" pathLength="1" style="fill: none; stroke: #121211; stroke-width: 26px;"></circle><circle cx="0" cy="-73.9" r="120" pathLength="1" style="fill: none; stroke: #f4f2ee; stroke-width: 23.5px;"></circle><circle cx="0" cy="-73.9" r="125.2" pathLength="1" style="fill: none; stroke: #000000; stroke-opacity: 0.07; stroke-width: 5.72px;"></circle><circle cx="0" cy="-73.9" r="114.28" pathLength="1" style="fill: none; stroke: #ffffff; stroke-opacity: 0.9; stroke-width: 3.12px;"></circle></g></g><g style="opacity: {{ringx.d}}; stroke-dasharray: 1; stroke-dashoffset: {{reveal}}; transition: opacity 0.45s ease, stroke-dashoffset 1.05s cubic-bezier(.22,.61,.36,1) 0s;"><g style="mask: url(#bx1);"><circle cx="0" cy="-73.9" r="120" pathLength="1" style="fill: none; stroke: #ebe9e4; stroke-width: 40px;"></circle><circle cx="0" cy="-73.9" r="120" pathLength="1" style="fill: none; stroke: #121211; stroke-width: 26px;"></circle><circle cx="0" cy="-73.9" r="120" pathLength="1" style="fill: none; stroke: #f4f2ee; stroke-width: 23.5px;"></circle><circle cx="0" cy="-73.9" r="125.2" pathLength="1" style="fill: none; stroke: #000000; stroke-opacity: 0.07; stroke-width: 5.72px;"></circle><circle cx="0" cy="-73.9" r="114.28" pathLength="1" style="fill: none; stroke: #ffffff; stroke-opacity: 0.9; stroke-width: 3.12px;"></circle></g></g><g style="opacity: {{ringx.e}}; stroke-dasharray: 1; stroke-dashoffset: {{reveal}}; transition: opacity 0.45s ease, stroke-dashoffset 1.05s cubic-bezier(.22,.61,.36,1) 0.16s;"><g style="mask: url(#bx2);"><circle cx="-64" cy="36.95" r="120" pathLength="1" style="fill: none; stroke: #ebe9e4; stroke-width: 40px;"></circle><circle cx="-64" cy="36.95" r="120" pathLength="1" style="fill: none; stroke: #121211; stroke-width: 26px;"></circle><circle cx="-64" cy="36.95" r="120" pathLength="1" style="fill: none; stroke: #2a2a2c; stroke-width: 23.5px;"></circle><circle cx="-64" cy="36.95" r="114.8" pathLength="1" style="fill: none; stroke: #ffffff; stroke-opacity: 0.15; stroke-width: 3.64px;"></circle><circle cx="-64" cy="36.95" r="126.24" pathLength="1" style="fill: none; stroke: #000000; stroke-opacity: 0.18; stroke-width: 3.12px;"></circle></g></g><g style="opacity: {{ringx.e}}; stroke-dasharray: 1; stroke-dashoffset: {{reveal}}; transition: opacity 0.45s ease, stroke-dashoffset 1.05s cubic-bezier(.22,.61,.36,1) 0.16s;"><g style="mask: url(#bx3);"><circle cx="-64" cy="36.95" r="120" pathLength="1" style="fill: none; stroke: #ebe9e4; stroke-width: 40px;"></circle><circle cx="-64" cy="36.95" r="120" pathLength="1" style="fill: none; stroke: #121211; stroke-width: 26px;"></circle><circle cx="-64" cy="36.95" r="120" pathLength="1" style="fill: none; stroke: #2a2a2c; stroke-width: 23.5px;"></circle><circle cx="-64" cy="36.95" r="114.8" pathLength="1" style="fill: none; stroke: #ffffff; stroke-opacity: 0.15; stroke-width: 3.64px;"></circle><circle cx="-64" cy="36.95" r="126.24" pathLength="1" style="fill: none; stroke: #000000; stroke-opacity: 0.18; stroke-width: 3.12px;"></circle></g></g><g style="opacity: {{ringx.a}}; stroke-dasharray: 1; stroke-dashoffset: {{reveal}}; transition: opacity 0.45s ease, stroke-dashoffset 1.05s cubic-bezier(.22,.61,.36,1) 0.32s;"><g style="mask: url(#bx4);"><circle cx="64" cy="36.95" r="120" pathLength="1" style="fill: none; stroke: #ebe9e4; stroke-width: 40px;"></circle><circle cx="64" cy="36.95" r="120" pathLength="1" style="fill: none; stroke: #121211; stroke-width: 26px;"></circle><circle cx="64" cy="36.95" r="120" pathLength="1" style="fill: none; stroke: {{accent}}; stroke-width: 23.5px;"></circle><circle cx="64" cy="36.95" r="114.8" pathLength="1" style="fill: none; stroke: #ffffff; stroke-opacity: 0.2; stroke-width: 3.64px;"></circle><circle cx="64" cy="36.95" r="126.24" pathLength="1" style="fill: none; stroke: #000000; stroke-opacity: 0.18; stroke-width: 3.12px;"></circle></g></g><g style="opacity: {{ringx.a}}; stroke-dasharray: 1; stroke-dashoffset: {{reveal}}; transition: opacity 0.45s ease, stroke-dashoffset 1.05s cubic-bezier(.22,.61,.36,1) 0.32s;"><g style="mask: url(#bx5);"><circle cx="64" cy="36.95" r="120" pathLength="1" style="fill: none; stroke: #ebe9e4; stroke-width: 40px;"></circle><circle cx="64" cy="36.95" r="120" pathLength="1" style="fill: none; stroke: #121211; stroke-width: 26px;"></circle><circle cx="64" cy="36.95" r="120" pathLength="1" style="fill: none; stroke: {{accent}}; stroke-width: 23.5px;"></circle><circle cx="64" cy="36.95" r="114.8" pathLength="1" style="fill: none; stroke: #ffffff; stroke-opacity: 0.2; stroke-width: 3.64px;"></circle><circle cx="64" cy="36.95" r="126.24" pathLength="1" style="fill: none; stroke: #000000; stroke-opacity: 0.18; stroke-width: 3.12px;"></circle></g></g><path d="M0 -211.9 V-236.9" style="fill: none; stroke: #66645f; stroke-width: 1px;"></path><circle cx="0" cy="-211.9" r="2.2" style="fill: #121211;"></circle><text x="0" y="-245.18" style="font-family: 'Host Grotesk', 'Helvetica Neue', Arial, sans-serif; font-size: 9.2px; font-weight: 500; letter-spacing: 0.14em; fill: #66645f; text-anchor: middle;">DESIGN</text><path d="M-64 174.95 V199.95" style="fill: none; stroke: #66645f; stroke-width: 1px;"></path><circle cx="-64" cy="174.95" r="2.2" style="fill: #121211;"></circle><text x="-64" y="214.21" style="font-family: 'Host Grotesk', 'Helvetica Neue', Arial, sans-serif; font-size: 9.2px; font-weight: 500; letter-spacing: 0.14em; fill: #66645f; text-anchor: middle;">ENGINEERING</text><path d="M64 174.95 V199.95" style="fill: none; stroke: #66645f; stroke-width: 1px;"></path><circle cx="64" cy="174.95" r="2.2" style="fill: #121211;"></circle><text x="64" y="214.21" style="font-family: 'Host Grotesk', 'Helvetica Neue', Arial, sans-serif; font-size: 9.2px; font-weight: 500; letter-spacing: 0.14em; fill: #66645f; text-anchor: middle;">AUTOMATION</text></svg>
+<figcaption style="max-width: 390px; font-size: 13px; line-height: 1.55; color: #55534e;"><span style="color: #121211; font-weight: 500;">Fig. 2</span> — The same rings, flattened. Each lies over one and under the other; no two hold together on their own.</figcaption>
+</figure>
+<div style="grid-column: 7 / span 6; display: flex; flex-direction: column; gap: 40px;">
+<span style="font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #66645f;">Approach</span>
+<p style="margin: 0; font-size: 46px; line-height: 1.14; letter-spacing: -0.032em; font-weight: 300; color: #121211; text-wrap: pretty;"><span class="hl" onMouseEnter="{{hover.d}}" onMouseLeave="{{hover.off}}"><span aria-hidden="true" style="display: inline-block; width: 0.34em; height: 0.34em; border-radius: 50%; background: #f4f2ee; box-shadow: inset 0 0 0 1px #b9b5ad; vertical-align: 0.12em; margin: 0 0.12em 0 0.06em; margin: 0 0.2em 0 0;"></span>Design</span>, <span class="hl" onMouseEnter="{{hover.e}}" onMouseLeave="{{hover.off}}"><span aria-hidden="true" style="display: inline-block; width: 0.34em; height: 0.34em; border-radius: 50%; background: #2a2a2c; vertical-align: 0.12em; margin: 0 0.12em 0 0.06em; margin: 0 0.2em 0 0.04em;"></span>engineering</span> and <span class="hl" onMouseEnter="{{hover.a}}" onMouseLeave="{{hover.off}}"><span aria-hidden="true" style="display: inline-block; width: 0.34em; height: 0.34em; border-radius: 50%; background: {{accent}}; vertical-align: 0.12em; margin: 0 0.12em 0 0.06em; margin: 0 0.2em 0 0.04em;"></span>automation</span> under one roof. Like the three rings, each holds the other two&nbsp;— take one away and the whole thing falls apart.</p>
+<p style="margin: 0; max-width: 470px; font-size: 18px; line-height: 1.6; color: #55534e; text-wrap: pretty;">One team from the first sketch to the system that runs every day. Nobody hands your project over the fence to someone who was not in the room.</p>
+</div>
+</section>
+<section id="services" style="padding-left: 64px; padding-right: 64px; padding-bottom: 176px;">
+<div style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; align-items: end; padding-bottom: 36px; border-bottom: 1px solid #121211;">
+<h2 style="grid-column: span 8; margin: 0; font-size: 76px; line-height: 0.95; letter-spacing: -0.05em; font-weight: 300; color: #121211;">Services<span style="display: inline-block; vertical-align: top; margin: 0.12em 0 0 0.3em; font-size: 15px; line-height: 1; letter-spacing: 0; font-weight: 400; color: #66645f; font-variant-numeric: tabular-nums;">(03)</span></h2>
+<p style="grid-column: 9 / span 4; margin: 0 0 4px; font-size: 17px; line-height: 1.6; color: #55534e; text-wrap: pretty;">Three kinds of work that usually end up connected. Most clients start with one and add the others as they grow.</p>
+</div>
+<div>
+<article style="border-bottom: 1px solid #d3d0c9;">
+<h3 style="margin: 0; font-weight: 300;">
+<button class="row-btn" type="button" aria-expanded="{{svc.s0.expanded}}" onClick="{{svc.s0.toggle}}" style="width: 100%; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; align-items: center; min-height: 128px; padding: 0; border: 0; background: transparent; color: #121211; text-align: left; font-family: 'Host Grotesk', 'Helvetica Neue', Arial, sans-serif; cursor: pointer;">
+<span style="grid-column: span 1; font-size: 14px; font-weight: 400; color: #66645f; font-variant-numeric: tabular-nums;">01</span>
+<span class="ttl" style="grid-column: 2 / span 6; font-size: 54px; line-height: 1; letter-spacing: -0.04em; font-weight: 300;">Websites</span>
+<span style="grid-column: 8 / span 4; font-size: 16px; line-height: 1.45; font-weight: 400; color: #55534e;">A fast site your team edits on its own</span>
+<span style="grid-column: 12; justify-self: end;"><span aria-hidden="true" style="width: 44px; height: 44px; flex-shrink: 0; box-sizing: border-box; border: 1px solid #d3d0c9; border-radius: 50%; display: flex; align-items: center; justify-content: center;"><svg width="14" height="14" viewBox="0 0 14 14" style="display: block;"><path d="M1 7 H13" style="fill: none; stroke: #121211; stroke-width: 1.4px; stroke-linecap: round;"></path><path d="M7 1 V13" style="display: {{svc.s0.vbar}}; fill: none; stroke: #121211; stroke-width: 1.4px; stroke-linecap: round;"></path></svg></span></span>
+</button>
+</h3>
+<div style="display: {{svc.s0.panel}}; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; padding: 4px 0 64px; align-items: start;">
+<div style="grid-column: 2 / span 5; display: flex; flex-direction: column; gap: 36px; padding-right: 24px;">
+<p style="margin: 0; font-size: 21px; line-height: 1.5; letter-spacing: -0.01em; font-weight: 300; color: #121211; text-wrap: pretty;">Company sites, landing pages and web shops that load fast, show up in search, and that your team can update without calling us.</p>
+<div style="display: flex; flex-direction: column; gap: 10px;"><span style="font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #66645f;">You bring</span><span style="font-size: 16px; line-height: 1.5; color: #55534e;">Your brand, content and goals</span></div>
+<div style="display: flex; flex-direction: column; gap: 14px;"><span style="font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #66645f;">Includes</span><ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 8px;"><li style="height: 36px; padding: 0 15px; box-sizing: border-box; border: 1px solid #d3d0c9; border-radius: 999px; display: flex; align-items: center; font-size: 14px; color: #121211;">Design and content structure</li><li style="height: 36px; padding: 0 15px; box-sizing: border-box; border: 1px solid #d3d0c9; border-radius: 999px; display: flex; align-items: center; font-size: 14px; color: #121211;">CMS or web shop</li><li style="height: 36px; padding: 0 15px; box-sizing: border-box; border: 1px solid #d3d0c9; border-radius: 999px; display: flex; align-items: center; font-size: 14px; color: #121211;">SEO, analytics, hosting</li></ul></div>
+</div>
+<div style="grid-column: 8 / span 5;"><div aria-hidden="true" style="position: relative; aspect-ratio: 16 / 10; border-radius: 10px; background: #f3f2ee; overflow: hidden;"><svg viewBox="0 0 560 350" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: block;"><rect x="56" y="40" width="448" height="340" rx="12" style="fill: #fbfaf8; stroke: #d9d5ce; stroke-width: 1px;"></rect><path d="M56 74 H504" style="fill: none; stroke: #e6e3dd; stroke-width: 1px;"></path><rect x="206" y="50" width="148" height="14" rx="7" style="fill: #f0eee9;"></rect><circle cx="76" cy="57" r="3.2" style="fill: #e6e3dd;"></circle><circle cx="90" cy="57" r="3.2" style="fill: #e6e3dd;"></circle><circle cx="104" cy="57" r="3.2" style="fill: #e6e3dd;"></circle><rect x="84" y="96" width="38" height="8" rx="2" style="fill: #121211;"></rect><rect x="360" y="98" width="26" height="4" rx="2" style="fill: #cfcbc4;"></rect><rect x="398" y="98" width="26" height="4" rx="2" style="fill: #cfcbc4;"></rect><rect x="436" y="98" width="26" height="4" rx="2" style="fill: #cfcbc4;"></rect><rect x="84" y="132" width="188" height="14" rx="3" style="fill: #121211;"></rect><rect x="84" y="154" width="146" height="14" rx="3" style="fill: #121211;"></rect><rect x="84" y="184" width="170" height="5" rx="2.5" style="fill: #cfcbc4;"></rect><rect x="84" y="195" width="132" height="5" rx="2.5" style="fill: #cfcbc4;"></rect><rect x="84" y="214" width="70" height="22" rx="11" style="fill: {{accent}};"></rect><rect x="300" y="124" width="180" height="118" rx="8" style="fill: #e0dcd5;"></rect><path d="M300 212 L352 176 L398 206 L430 186 L480 218 L480 234 A8 8 0 0 1 472 242 L308 242 A8 8 0 0 1 300 234 Z" style="fill: #d2cdc4;"></path><circle cx="440" cy="158" r="12" style="fill: #fbfaf8; opacity: 0.85;"></circle><rect x="84" y="266" width="124" height="90" rx="8" style="fill: #f4f2ee; stroke: #e6e3dd; stroke-width: 1px;"></rect><rect x="98" y="282" width="52" height="6" rx="3" style="fill: #8c8983;"></rect><rect x="98" y="296" width="82" height="4" rx="2" style="fill: #cfcbc4;"></rect><rect x="220" y="266" width="124" height="90" rx="8" style="fill: #f4f2ee; stroke: #e6e3dd; stroke-width: 1px;"></rect><rect x="234" y="282" width="52" height="6" rx="3" style="fill: #8c8983;"></rect><rect x="234" y="296" width="82" height="4" rx="2" style="fill: #cfcbc4;"></rect><rect x="356" y="266" width="124" height="90" rx="8" style="fill: #f4f2ee; stroke: #e6e3dd; stroke-width: 1px;"></rect><rect x="370" y="282" width="52" height="6" rx="3" style="fill: #8c8983;"></rect><rect x="370" y="296" width="82" height="4" rx="2" style="fill: #cfcbc4;"></rect><path d="M138 226 L138 246 L143 241 L147 250 L150.5 248.5 L146.5 239.8 L153 239.5 Z" style="fill: #121211; stroke: #fbfaf8; stroke-width: 1.4px; stroke-linejoin: round;"></path></svg></div></div>
+</div>
+</article><article style="border-bottom: 1px solid #d3d0c9;">
+<h3 style="margin: 0; font-weight: 300;">
+<button class="row-btn" type="button" aria-expanded="{{svc.s1.expanded}}" onClick="{{svc.s1.toggle}}" style="width: 100%; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; align-items: center; min-height: 128px; padding: 0; border: 0; background: transparent; color: #121211; text-align: left; font-family: 'Host Grotesk', 'Helvetica Neue', Arial, sans-serif; cursor: pointer;">
+<span style="grid-column: span 1; font-size: 14px; font-weight: 400; color: #66645f; font-variant-numeric: tabular-nums;">02</span>
+<span class="ttl" style="grid-column: 2 / span 6; font-size: 54px; line-height: 1; letter-spacing: -0.04em; font-weight: 300;">Web &amp; mobile apps</span>
+<span style="grid-column: 8 / span 4; font-size: 16px; line-height: 1.45; font-weight: 400; color: #55534e;">An app people actually use every day</span>
+<span style="grid-column: 12; justify-self: end;"><span aria-hidden="true" style="width: 44px; height: 44px; flex-shrink: 0; box-sizing: border-box; border: 1px solid #d3d0c9; border-radius: 50%; display: flex; align-items: center; justify-content: center;"><svg width="14" height="14" viewBox="0 0 14 14" style="display: block;"><path d="M1 7 H13" style="fill: none; stroke: #121211; stroke-width: 1.4px; stroke-linecap: round;"></path><path d="M7 1 V13" style="display: {{svc.s1.vbar}}; fill: none; stroke: #121211; stroke-width: 1.4px; stroke-linecap: round;"></path></svg></span></span>
+</button>
+</h3>
+<div style="display: {{svc.s1.panel}}; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; padding: 4px 0 64px; align-items: start;">
+<div style="grid-column: 2 / span 5; display: flex; flex-direction: column; gap: 36px; padding-right: 24px;">
+<p style="margin: 0; font-size: 21px; line-height: 1.5; letter-spacing: -0.01em; font-weight: 300; color: #121211; text-wrap: pretty;">Customer portals, ordering and booking apps, internal tools — in the browser and on iOS and Android.</p>
+<div style="display: flex; flex-direction: column; gap: 10px;"><span style="font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #66645f;">You bring</span><span style="font-size: 16px; line-height: 1.5; color: #55534e;">Work stuck in spreadsheets and calls</span></div>
+<div style="display: flex; flex-direction: column; gap: 14px;"><span style="font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #66645f;">Includes</span><ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 8px;"><li style="height: 36px; padding: 0 15px; box-sizing: border-box; border: 1px solid #d3d0c9; border-radius: 999px; display: flex; align-items: center; font-size: 14px; color: #121211;">UX research and prototypes</li><li style="height: 36px; padding: 0 15px; box-sizing: border-box; border: 1px solid #d3d0c9; border-radius: 999px; display: flex; align-items: center; font-size: 14px; color: #121211;">Web app and API</li><li style="height: 36px; padding: 0 15px; box-sizing: border-box; border: 1px solid #d3d0c9; border-radius: 999px; display: flex; align-items: center; font-size: 14px; color: #121211;">iOS and Android</li></ul></div>
+</div>
+<div style="grid-column: 8 / span 5;"><div aria-hidden="true" style="position: relative; aspect-ratio: 16 / 10; border-radius: 10px; background: #f3f2ee; overflow: hidden;"><svg viewBox="0 0 560 350" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: block;"><rect x="206" y="28" width="150" height="340" rx="26" style="fill: #fbfaf8; stroke: #d9d5ce; stroke-width: 1px;"></rect><rect x="261" y="40" width="40" height="7" rx="3.5" style="fill: #e6e3dd;"></rect><rect x="224" y="66" width="64" height="10" rx="2.5" style="fill: #121211;"></rect><rect x="224" y="88" width="114" height="20" rx="10" style="fill: #f0eee9;"></rect><rect x="226" y="90" width="56" height="16" rx="8" style="fill: #fbfaf8;"></rect><circle cx="238" cy="136" r="10" style="fill: #e6e3dd;"></circle><rect x="256" y="128" width="58" height="6" rx="3" style="fill: #2a2a2c;"></rect><rect x="256" y="140" width="40" height="4" rx="2" style="fill: #cfcbc4;"></rect><circle cx="338" cy="136" r="3.6" style="fill: {{accent}};"></circle><path d="M224 158 H338" style="fill: none; stroke: #efede8; stroke-width: 1px;"></path><circle cx="238" cy="180" r="10" style="fill: #e6e3dd;"></circle><rect x="256" y="172" width="50" height="6" rx="3" style="fill: #2a2a2c;"></rect><rect x="256" y="184" width="52" height="4" rx="2" style="fill: #cfcbc4;"></rect><circle cx="338" cy="180" r="3.6" style="fill: #2a2a2c;"></circle><path d="M224 202 H338" style="fill: none; stroke: #efede8; stroke-width: 1px;"></path><circle cx="238" cy="224" r="10" style="fill: #e6e3dd;"></circle><rect x="256" y="216" width="42" height="6" rx="3" style="fill: #2a2a2c;"></rect><rect x="256" y="228" width="40" height="4" rx="2" style="fill: #cfcbc4;"></rect><circle cx="338" cy="224" r="3.6" style="fill: none; stroke: #8c8983; stroke-width: 1px;"></circle><path d="M224 246 H338" style="fill: none; stroke: #efede8; stroke-width: 1px;"></path><circle cx="238" cy="268" r="10" style="fill: #e6e3dd;"></circle><rect x="256" y="260" width="58" height="6" rx="3" style="fill: #2a2a2c;"></rect><rect x="256" y="272" width="52" height="4" rx="2" style="fill: #cfcbc4;"></rect><circle cx="338" cy="268" r="3.6" style="fill: {{accent}};"></circle><path d="M224 290 H338" style="fill: none; stroke: #efede8; stroke-width: 1px;"></path><circle cx="238" cy="312" r="10" style="fill: #e6e3dd;"></circle><rect x="256" y="304" width="50" height="6" rx="3" style="fill: #2a2a2c;"></rect><rect x="256" y="316" width="40" height="4" rx="2" style="fill: #cfcbc4;"></rect><circle cx="338" cy="312" r="3.6" style="fill: none; stroke: #8c8983; stroke-width: 1px;"></circle><rect x="58" y="116" width="180" height="58" rx="14" style="fill: #fbfaf8; stroke: #d9d5ce; stroke-width: 1px;"></rect><circle cx="82" cy="145" r="6" style="fill: {{accent}};"></circle><rect x="98" y="134" width="96" height="7" rx="3.5" style="fill: #121211;"></rect><rect x="98" y="149" width="118" height="5" rx="2.5" style="fill: #cfcbc4;"></rect><rect x="378" y="150" width="136" height="120" rx="12" style="fill: #fbfaf8; stroke: #d9d5ce; stroke-width: 1px;"></rect><rect x="394" y="166" width="50" height="6" rx="3" style="fill: #8c8983;"></rect><rect x="396" y="220" width="12" height="34" rx="3" style="fill: #cfcbc4;"></rect><rect x="418" y="202" width="12" height="52" rx="3" style="fill: #cfcbc4;"></rect><rect x="440" y="214" width="12" height="40" rx="3" style="fill: #cfcbc4;"></rect><rect x="462" y="190" width="12" height="64" rx="3" style="fill: #cfcbc4;"></rect><rect x="484" y="178" width="12" height="76" rx="3" style="fill: {{accent}};"></rect></svg></div></div>
+</div>
+</article><article style="border-bottom: 1px solid #d3d0c9;">
+<h3 style="margin: 0; font-weight: 300;">
+<button class="row-btn" type="button" aria-expanded="{{svc.s2.expanded}}" onClick="{{svc.s2.toggle}}" style="width: 100%; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; align-items: center; min-height: 128px; padding: 0; border: 0; background: transparent; color: #121211; text-align: left; font-family: 'Host Grotesk', 'Helvetica Neue', Arial, sans-serif; cursor: pointer;">
+<span style="grid-column: span 1; font-size: 14px; font-weight: 400; color: #66645f; font-variant-numeric: tabular-nums;">03</span>
+<span class="ttl" style="grid-column: 2 / span 6; font-size: 54px; line-height: 1; letter-spacing: -0.04em; font-weight: 300;">Systems &amp; automation</span>
+<span style="grid-column: 8 / span 4; font-size: 16px; line-height: 1.45; font-weight: 400; color: #55534e;">Flows that run on their own, with logs</span>
+<span style="grid-column: 12; justify-self: end;"><span aria-hidden="true" style="width: 44px; height: 44px; flex-shrink: 0; box-sizing: border-box; border: 1px solid #d3d0c9; border-radius: 50%; display: flex; align-items: center; justify-content: center;"><svg width="14" height="14" viewBox="0 0 14 14" style="display: block;"><path d="M1 7 H13" style="fill: none; stroke: #121211; stroke-width: 1.4px; stroke-linecap: round;"></path><path d="M7 1 V13" style="display: {{svc.s2.vbar}}; fill: none; stroke: #121211; stroke-width: 1.4px; stroke-linecap: round;"></path></svg></span></span>
+</button>
+</h3>
+<div style="display: {{svc.s2.panel}}; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; padding: 4px 0 64px; align-items: start;">
+<div style="grid-column: 2 / span 5; display: flex; flex-direction: column; gap: 36px; padding-right: 24px;">
+<p style="margin: 0; font-size: 21px; line-height: 1.5; letter-spacing: -0.01em; font-weight: 300; color: #121211; text-wrap: pretty;">Connections between your shop, accounting, warehouse and inbox. E-invoicing. AI steps where they save real hours — not where they only look good in a demo.</p>
+<div style="display: flex; flex-direction: column; gap: 10px;"><span style="font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #66645f;">You bring</span><span style="font-size: 16px; line-height: 1.5; color: #55534e;">Work that moves between tools by hand</span></div>
+<div style="display: flex; flex-direction: column; gap: 14px;"><span style="font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #66645f;">Includes</span><ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 8px;"><li style="height: 36px; padding: 0 15px; box-sizing: border-box; border: 1px solid #d3d0c9; border-radius: 999px; display: flex; align-items: center; font-size: 14px; color: #121211;">Integrations and APIs</li><li style="height: 36px; padding: 0 15px; box-sizing: border-box; border: 1px solid #d3d0c9; border-radius: 999px; display: flex; align-items: center; font-size: 14px; color: #121211;">E-invoicing</li><li style="height: 36px; padding: 0 15px; box-sizing: border-box; border: 1px solid #d3d0c9; border-radius: 999px; display: flex; align-items: center; font-size: 14px; color: #121211;">AI-assisted document handling</li></ul></div>
+</div>
+<div style="grid-column: 8 / span 5;"><div aria-hidden="true" style="position: relative; aspect-ratio: 16 / 10; border-radius: 10px; background: #f3f2ee; overflow: hidden;"><svg viewBox="0 0 560 350" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: block;"><path d="M164 100 C224 100 190 175 250 175" style="fill: none; stroke: #cfcbc4; stroke-width: 1.2px;"></path><path d="M164 250 C224 250 190 175 250 175" style="fill: none; stroke: #cfcbc4; stroke-width: 1.2px;"></path><path d="M310 175 C370 175 338 64 398 64" style="fill: none; stroke: #cfcbc4; stroke-width: 1.2px;"></path><path d="M310 175 C370 175 338 175 398 175" style="fill: none; stroke: #cfcbc4; stroke-width: 1.2px;"></path><path d="M310 175 C370 175 338 286 398 286" style="fill: none; stroke: #cfcbc4; stroke-width: 1.2px;"></path><path class="flow" d="M164 100 C224 100 190 175 250 175" style="fill: none; stroke: {{accent}}; stroke-width: 3.6px; stroke-linecap: round; stroke-dasharray: 0.1 17; animation-play-state: {{flowState}};"></path><path class="flow" d="M164 250 C224 250 190 175 250 175" style="fill: none; stroke: {{accent}}; stroke-width: 3.6px; stroke-linecap: round; stroke-dasharray: 0.1 17; animation-play-state: {{flowState}};"></path><path class="flow" d="M310 175 C370 175 338 64 398 64" style="fill: none; stroke: {{accent}}; stroke-width: 3.6px; stroke-linecap: round; stroke-dasharray: 0.1 17; animation-play-state: {{flowState}};"></path><path class="flow" d="M310 175 C370 175 338 175 398 175" style="fill: none; stroke: {{accent}}; stroke-width: 3.6px; stroke-linecap: round; stroke-dasharray: 0.1 17; animation-play-state: {{flowState}};"></path><path class="flow" d="M310 175 C370 175 338 286 398 286" style="fill: none; stroke: {{accent}}; stroke-width: 3.6px; stroke-linecap: round; stroke-dasharray: 0.1 17; animation-play-state: {{flowState}};"></path><rect x="40" y="82" width="124" height="36" rx="18" style="fill: #fbfaf8; stroke: #d9d5ce; stroke-width: 1px;"></rect><circle cx="58" cy="100" r="3.4" style="fill: #8c8983;"></circle><text x="70" y="104.2" style="font-family: 'Host Grotesk', 'Helvetica Neue', Arial, sans-serif; font-size: 12px; font-weight: 400; fill: #121211; text-anchor: start;">Web shop</text><rect x="40" y="232" width="124" height="36" rx="18" style="fill: #fbfaf8; stroke: #d9d5ce; stroke-width: 1px;"></rect><circle cx="58" cy="250" r="3.4" style="fill: #8c8983;"></circle><text x="70" y="254.2" style="font-family: 'Host Grotesk', 'Helvetica Neue', Arial, sans-serif; font-size: 12px; font-weight: 400; fill: #121211; text-anchor: start;">Inbox</text><rect x="398" y="46" width="124" height="36" rx="18" style="fill: #fbfaf8; stroke: #d9d5ce; stroke-width: 1px;"></rect><circle cx="416" cy="64" r="3.4" style="fill: #8c8983;"></circle><text x="428" y="68.2" style="font-family: 'Host Grotesk', 'Helvetica Neue', Arial, sans-serif; font-size: 12px; font-weight: 400; fill: #121211; text-anchor: start;">Accounting</text><rect x="398" y="157" width="124" height="36" rx="18" style="fill: #fbfaf8; stroke: #d9d5ce; stroke-width: 1px;"></rect><circle cx="416" cy="175" r="3.4" style="fill: #8c8983;"></circle><text x="428" y="179.2" style="font-family: 'Host Grotesk', 'Helvetica Neue', Arial, sans-serif; font-size: 12px; font-weight: 400; fill: #121211; text-anchor: start;">Warehouse</text><rect x="398" y="268" width="124" height="36" rx="18" style="fill: #fbfaf8; stroke: #d9d5ce; stroke-width: 1px;"></rect><circle cx="416" cy="286" r="3.4" style="fill: #8c8983;"></circle><text x="428" y="290.2" style="font-family: 'Host Grotesk', 'Helvetica Neue', Arial, sans-serif; font-size: 12px; font-weight: 400; fill: #121211; text-anchor: start;">E-invoice</text><circle cx="280" cy="175" r="30" style="fill: #121211;"></circle><circle cx="280" cy="170" r="7.4" style="fill: none; stroke: #f4f2ee; stroke-width: 2.2px;"></circle><circle cx="275.4" cy="178" r="7.4" style="fill: none; stroke: #8c8983; stroke-width: 2.2px;"></circle><circle cx="284.6" cy="178" r="7.4" style="fill: none; stroke: {{accent}}; stroke-width: 2.2px;"></circle></svg></div></div>
+</div>
+</article>
+</div>
+</section>
+<section id="work" style="padding-left: 64px; padding-right: 64px; padding-bottom: 176px;">
+<div style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; align-items: end; padding-bottom: 36px; border-bottom: 1px solid #121211;">
+<h2 style="grid-column: span 8; margin: 0; font-size: 76px; line-height: 0.95; letter-spacing: -0.05em; font-weight: 300; color: #121211;">Selected work<span style="display: inline-block; vertical-align: top; margin: 0.12em 0 0 0.3em; font-size: 15px; line-height: 1; letter-spacing: 0; font-weight: 400; color: #66645f; font-variant-numeric: tabular-nums;">(02)</span></h2>
+<p style="grid-column: 9 / span 4; margin: 0 0 4px; font-size: 17px; line-height: 1.6; color: #55534e; text-wrap: pretty;">Two projects we can show in public. We are happy to walk you through others on a call.</p>
+</div>
+<article style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; align-items: end; margin-top: 64px;">
+<a href="#contact" class="pj" aria-label="B2B ordering portal — ask us about this project" style="grid-column: 1 / span 8; position: relative; display: block; aspect-ratio: 16 / 10; border-radius: 12px; overflow: hidden; background: {{accent}};">
+<span style="position: absolute; left: 20px; top: 16px; height: 26px; padding: 0 12px; border-radius: 13px; background: #ebe9e4; display: flex; align-items: center; z-index: 2;"><span style="font-size: 10px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #66645f;">Placeholder — order screen</span></span>
+<div class="pjin" style="position: absolute; left: 64px; top: 60px; width: 900px; height: 580px; box-sizing: border-box; border-radius: 12px; background: #fbfaf8; box-shadow: 0 60px 90px -50px rgba(0, 0, 0, 0.6); overflow: hidden; display: flex; flex-direction: column;">
+<span style="height: 50px; flex-shrink: 0; display: flex; align-items: center; gap: 14px; padding: 0 20px; border-bottom: 1px solid #ebe8e2;"><span style="display: block; flex-shrink: 0; width: 20px; height: 20px; border-radius: 6px; background: {{accent}};"></span><span style="display: block; flex-shrink: 0; width: 84px; height: 8px; border-radius: 4px; background: #2a2a2c;"></span><span style="margin-left: 70px; width: 250px; height: 30px; border-radius: 15px; background: #f0eee9;"></span><span style="margin-left: auto; width: 30px; height: 30px; border-radius: 50%; background: #e2ded7;"></span></span>
+<span style="flex-grow: 1; display: flex; min-height: 0;">
+<span style="width: 180px; flex-shrink: 0; box-sizing: border-box; padding: 18px 12px; border-right: 1px solid #ebe8e2; display: flex; flex-direction: column; gap: 6px;"><span style="height: 34px; border-radius: 8px; display: flex; align-items: center; gap: 10px; padding: 0 10px; background: transparent;"><span style="display: block; flex-shrink: 0; width: 14px; height: 14px; border-radius: 4px; background: #dcd8d1;"></span><span style="display: block; flex-shrink: 0; width: 64px; height: 6px; border-radius: 3px; background: #cfcbc4;"></span></span><span style="height: 34px; border-radius: 8px; display: flex; align-items: center; gap: 10px; padding: 0 10px; background: #f0eee9;"><span style="display: block; flex-shrink: 0; width: 14px; height: 14px; border-radius: 4px; background: {{accent}};"></span><span style="display: block; flex-shrink: 0; width: 52px; height: 6px; border-radius: 3px; background: #2a2a2c;"></span></span><span style="height: 34px; border-radius: 8px; display: flex; align-items: center; gap: 10px; padding: 0 10px; background: transparent;"><span style="display: block; flex-shrink: 0; width: 14px; height: 14px; border-radius: 4px; background: #dcd8d1;"></span><span style="display: block; flex-shrink: 0; width: 70px; height: 6px; border-radius: 3px; background: #cfcbc4;"></span></span><span style="height: 34px; border-radius: 8px; display: flex; align-items: center; gap: 10px; padding: 0 10px; background: transparent;"><span style="display: block; flex-shrink: 0; width: 14px; height: 14px; border-radius: 4px; background: #dcd8d1;"></span><span style="display: block; flex-shrink: 0; width: 58px; height: 6px; border-radius: 3px; background: #cfcbc4;"></span></span><span style="height: 34px; border-radius: 8px; display: flex; align-items: center; gap: 10px; padding: 0 10px; background: transparent;"><span style="display: block; flex-shrink: 0; width: 14px; height: 14px; border-radius: 4px; background: #dcd8d1;"></span><span style="display: block; flex-shrink: 0; width: 66px; height: 6px; border-radius: 3px; background: #cfcbc4;"></span></span><span style="height: 34px; border-radius: 8px; display: flex; align-items: center; gap: 10px; padding: 0 10px; background: transparent;"><span style="display: block; flex-shrink: 0; width: 14px; height: 14px; border-radius: 4px; background: #dcd8d1;"></span><span style="display: block; flex-shrink: 0; width: 48px; height: 6px; border-radius: 3px; background: #cfcbc4;"></span></span></span>
+<span style="flex-grow: 1; min-width: 0; padding: 26px 30px; display: flex; flex-direction: column; gap: 22px;">
+<span style="display: flex; align-items: center; gap: 20px;"><span style="display: block; flex-shrink: 0; width: 150px; height: 18px; border-radius: 4px; background: #121211;"></span><span style="display: block; flex-shrink: 0; width: 96px; height: 32px; border-radius: 16px; background: #121211;"></span></span>
+<span style="display: flex; gap: 14px; width: 520px;"><span style="flex: 1 1 0; min-width: 0; height: 86px; box-sizing: border-box; border-radius: 10px; background: #f5f3ef; border: 1px solid #ebe8e2; padding: 16px; display: flex; flex-direction: column; gap: 14px;"><span style="display: block; flex-shrink: 0; width: 56px; height: 6px; border-radius: 3px; background: #cfcbc4;"></span><span style="display: block; flex-shrink: 0; width: 72px; height: 16px; border-radius: 4px; background: #121211;"></span></span><span style="flex: 1 1 0; min-width: 0; height: 86px; box-sizing: border-box; border-radius: 10px; background: #f5f3ef; border: 1px solid #ebe8e2; padding: 16px; display: flex; flex-direction: column; gap: 14px;"><span style="display: block; flex-shrink: 0; width: 56px; height: 6px; border-radius: 3px; background: #cfcbc4;"></span><span style="display: block; flex-shrink: 0; width: 54px; height: 16px; border-radius: 4px; background: #121211;"></span></span><span style="flex: 1 1 0; min-width: 0; height: 86px; box-sizing: border-box; border-radius: 10px; background: #f5f3ef; border: 1px solid #ebe8e2; padding: 16px; display: flex; flex-direction: column; gap: 14px;"><span style="display: block; flex-shrink: 0; width: 56px; height: 6px; border-radius: 3px; background: #cfcbc4;"></span><span style="display: block; flex-shrink: 0; width: 88px; height: 16px; border-radius: 4px; background: #121211;"></span></span></span>
+<span style="display: flex; flex-direction: column;"><span style="display: grid; grid-template-columns: 76px 210px 80px 110px minmax(0, 1fr); align-items: center; height: 34px; border-bottom: 1px solid #e6e3dd;"><span style="display: block; flex-shrink: 0; width: 30px; height: 5px; border-radius: 2.5px; background: #cfcbc4;"></span><span style="display: block; flex-shrink: 0; width: 44px; height: 5px; border-radius: 2.5px; background: #cfcbc4;"></span><span style="display: block; flex-shrink: 0; width: 30px; height: 5px; border-radius: 2.5px; background: #cfcbc4;"></span><span style="display: block; flex-shrink: 0; width: 34px; height: 5px; border-radius: 2.5px; background: #cfcbc4;"></span><span style="display: block; flex-shrink: 0; width: 40px; height: 5px; border-radius: 2.5px; background: #cfcbc4;"></span></span><span style="display: grid; grid-template-columns: 76px 210px 80px 110px minmax(0, 1fr); align-items: center; height: 48px; border-bottom: 1px solid #f0eee9;"><span style="display: block; flex-shrink: 0; width: 40px; height: 7px; border-radius: 3.5px; background: #8c8983;"></span><span style="display: block; flex-shrink: 0; width: 132px; height: 7px; border-radius: 3.5px; background: #3a3a3c;"></span><span style="display: block; flex-shrink: 0; width: 26px; height: 7px; border-radius: 3.5px; background: #bdb9b1;"></span><span style="display: block; flex-shrink: 0; width: 66px; height: 7px; border-radius: 3.5px; background: #3a3a3c;"></span><span style="display: flex; align-items: center; gap: 8px;"><span style="display: block; width: 8px; height: 8px; box-sizing: border-box; border-radius: 50%; background: {{accent}};"></span><span style="display: block; flex-shrink: 0; width: 54px; height: 6px; border-radius: 3px; background: #bdb9b1;"></span></span></span><span style="display: grid; grid-template-columns: 76px 210px 80px 110px minmax(0, 1fr); align-items: center; height: 48px; border-bottom: 1px solid #f0eee9;"><span style="display: block; flex-shrink: 0; width: 40px; height: 7px; border-radius: 3.5px; background: #8c8983;"></span><span style="display: block; flex-shrink: 0; width: 168px; height: 7px; border-radius: 3.5px; background: #3a3a3c;"></span><span style="display: block; flex-shrink: 0; width: 26px; height: 7px; border-radius: 3.5px; background: #bdb9b1;"></span><span style="display: block; flex-shrink: 0; width: 58px; height: 7px; border-radius: 3.5px; background: #3a3a3c;"></span><span style="display: flex; align-items: center; gap: 8px;"><span style="display: block; width: 8px; height: 8px; box-sizing: border-box; border-radius: 50%; background: {{accent}};"></span><span style="display: block; flex-shrink: 0; width: 48px; height: 6px; border-radius: 3px; background: #bdb9b1;"></span></span></span><span style="display: grid; grid-template-columns: 76px 210px 80px 110px minmax(0, 1fr); align-items: center; height: 48px; border-bottom: 1px solid #f0eee9;"><span style="display: block; flex-shrink: 0; width: 40px; height: 7px; border-radius: 3.5px; background: #8c8983;"></span><span style="display: block; flex-shrink: 0; width: 112px; height: 7px; border-radius: 3.5px; background: #3a3a3c;"></span><span style="display: block; flex-shrink: 0; width: 26px; height: 7px; border-radius: 3.5px; background: #bdb9b1;"></span><span style="display: block; flex-shrink: 0; width: 72px; height: 7px; border-radius: 3.5px; background: #3a3a3c;"></span><span style="display: flex; align-items: center; gap: 8px;"><span style="display: block; width: 8px; height: 8px; box-sizing: border-box; border-radius: 50%; background: #2a2a2c;"></span><span style="display: block; flex-shrink: 0; width: 60px; height: 6px; border-radius: 3px; background: #bdb9b1;"></span></span></span><span style="display: grid; grid-template-columns: 76px 210px 80px 110px minmax(0, 1fr); align-items: center; height: 48px; border-bottom: 1px solid #f0eee9;"><span style="display: block; flex-shrink: 0; width: 40px; height: 7px; border-radius: 3.5px; background: #8c8983;"></span><span style="display: block; flex-shrink: 0; width: 150px; height: 7px; border-radius: 3.5px; background: #3a3a3c;"></span><span style="display: block; flex-shrink: 0; width: 26px; height: 7px; border-radius: 3.5px; background: #bdb9b1;"></span><span style="display: block; flex-shrink: 0; width: 60px; height: 7px; border-radius: 3.5px; background: #3a3a3c;"></span><span style="display: flex; align-items: center; gap: 8px;"><span style="display: block; width: 8px; height: 8px; box-sizing: border-box; border-radius: 50%; border: 1.4px solid #8c8983;"></span><span style="display: block; flex-shrink: 0; width: 50px; height: 6px; border-radius: 3px; background: #bdb9b1;"></span></span></span><span style="display: grid; grid-template-columns: 76px 210px 80px 110px minmax(0, 1fr); align-items: center; height: 48px; border-bottom: 1px solid #f0eee9;"><span style="display: block; flex-shrink: 0; width: 40px; height: 7px; border-radius: 3.5px; background: #8c8983;"></span><span style="display: block; flex-shrink: 0; width: 124px; height: 7px; border-radius: 3.5px; background: #3a3a3c;"></span><span style="display: block; flex-shrink: 0; width: 26px; height: 7px; border-radius: 3.5px; background: #bdb9b1;"></span><span style="display: block; flex-shrink: 0; width: 64px; height: 7px; border-radius: 3.5px; background: #3a3a3c;"></span><span style="display: flex; align-items: center; gap: 8px;"><span style="display: block; width: 8px; height: 8px; box-sizing: border-box; border-radius: 50%; background: #2a2a2c;"></span><span style="display: block; flex-shrink: 0; width: 56px; height: 6px; border-radius: 3px; background: #bdb9b1;"></span></span></span><span style="display: grid; grid-template-columns: 76px 210px 80px 110px minmax(0, 1fr); align-items: center; height: 48px; border-bottom: 1px solid #f0eee9;"><span style="display: block; flex-shrink: 0; width: 40px; height: 7px; border-radius: 3.5px; background: #8c8983;"></span><span style="display: block; flex-shrink: 0; width: 140px; height: 7px; border-radius: 3.5px; background: #3a3a3c;"></span><span style="display: block; flex-shrink: 0; width: 26px; height: 7px; border-radius: 3.5px; background: #bdb9b1;"></span><span style="display: block; flex-shrink: 0; width: 54px; height: 7px; border-radius: 3.5px; background: #3a3a3c;"></span><span style="display: flex; align-items: center; gap: 8px;"><span style="display: block; width: 8px; height: 8px; box-sizing: border-box; border-radius: 50%; border: 1.4px solid #8c8983;"></span><span style="display: block; flex-shrink: 0; width: 46px; height: 6px; border-radius: 3px; background: #bdb9b1;"></span></span></span></span>
+</span>
+</span>
+</div>
+</a>
+<div style="grid-column: 10 / span 3; display: flex; flex-direction: column; gap: 22px;">
+<span style="font-size: 14px; color: #66645f; font-variant-numeric: tabular-nums;">01</span>
+<h3 style="margin: 0; font-size: 40px; line-height: 1.02; letter-spacing: -0.035em; font-weight: 300; color: #121211;">B2B ordering portal</h3>
+<p style="margin: 0; font-size: 16px; line-height: 1.6; color: #55534e; text-wrap: pretty;">Ordering and customer management for a dairy distributor. Shops order online from their own account; the team manages customers and orders in one place.</p>
+<dl style="margin: 4px 0 0; border-top: 1px solid #d3d0c9;"><div style="display: flex; justify-content: space-between; gap: 16px; padding: 13px 0; border-bottom: 1px solid #d3d0c9; font-size: 14px; line-height: 1.4;"><dt style="color: #66645f;">Client</dt><dd style="margin: 0; color: #121211; text-align: right;">Dairy distributor, BiH</dd></div><div style="display: flex; justify-content: space-between; gap: 16px; padding: 13px 0; border-bottom: 1px solid #d3d0c9; font-size: 14px; line-height: 1.4;"><dt style="color: #66645f;">Scope</dt><dd style="margin: 0; color: #121211; text-align: right;">Web app · System</dd></div><div style="display: flex; justify-content: space-between; gap: 16px; padding: 13px 0; border-bottom: 1px solid #d3d0c9; font-size: 14px; line-height: 1.4;"><dt style="color: #66645f;">Status</dt><dd style="margin: 0; color: #121211; text-align: right;"><span style="display: inline-flex; align-items: center; gap: 8px;"><span aria-hidden="true" style="display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: {{accent}}; vertical-align: 0.12em; margin: 0 0.12em 0 0.06em; margin: 0; vertical-align: middle; flex-shrink: 0;"></span>In production</span></dd></div></dl>
+<a class="cta" href="#contact" style="align-self: flex-start; display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 500; color: #121211; text-decoration: none;">Ask about this project <svg class="arr" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" style="display: inline-block; flex-shrink: 0;"><path d="M2 7 H12 M8 3 L12 7 L8 11" style="fill: none; stroke: #121211; stroke-width: 1.4px; stroke-linecap: round; stroke-linejoin: round;"></path></svg></a>
+</div>
+</article>
+<article style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; align-items: end; margin-top: 120px;">
+<div style="grid-column: 1 / span 3; grid-row: 1; display: flex; flex-direction: column; gap: 22px;">
+<span style="font-size: 14px; color: #66645f; font-variant-numeric: tabular-nums;">02</span>
+<h3 style="margin: 0; font-size: 40px; line-height: 1.02; letter-spacing: -0.035em; font-weight: 300; color: #121211;">ADA Parfemi</h3>
+<p style="margin: 0; font-size: 16px; line-height: 1.6; color: #55534e; text-wrap: pretty;">Web shop for a perfume retailer that sells online and through Instagram.</p>
+<dl style="margin: 4px 0 0; border-top: 1px solid #d3d0c9;"><div style="display: flex; justify-content: space-between; gap: 16px; padding: 13px 0; border-bottom: 1px solid #d3d0c9; font-size: 14px; line-height: 1.4;"><dt style="color: #66645f;">Client</dt><dd style="margin: 0; color: #121211; text-align: right;">Perfume retailer</dd></div><div style="display: flex; justify-content: space-between; gap: 16px; padding: 13px 0; border-bottom: 1px solid #d3d0c9; font-size: 14px; line-height: 1.4;"><dt style="color: #66645f;">Scope</dt><dd style="margin: 0; color: #121211; text-align: right;">Website · E-commerce</dd></div><div style="display: flex; justify-content: space-between; gap: 16px; padding: 13px 0; border-bottom: 1px solid #d3d0c9; font-size: 14px; line-height: 1.4;"><dt style="color: #66645f;">Status</dt><dd style="margin: 0; color: #121211; text-align: right;"><span style="display: inline-flex; align-items: center; gap: 8px;"><span aria-hidden="true" style="display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: {{accent}}; vertical-align: 0.12em; margin: 0 0.12em 0 0.06em; margin: 0; vertical-align: middle; flex-shrink: 0;"></span>Live</span></dd></div></dl>
+<a class="cta" href="https://adaparfemi.ba" target="_blank" rel="noopener" style="align-self: flex-start; display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 500; color: #121211; text-decoration: none;">Visit the shop <svg class="arr" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" style="display: inline-block; flex-shrink: 0;"><path d="M3 11 L11 3 M5 3 H11 V9" style="fill: none; stroke: #121211; stroke-width: 1.4px; stroke-linecap: round; stroke-linejoin: round;"></path></svg></a>
+</div>
+<a href="https://adaparfemi.ba" target="_blank" rel="noopener" class="pj" aria-label="ADA Parfemi web shop (opens in a new tab)" style="grid-column: 5 / span 8; grid-row: 1; position: relative; display: block; aspect-ratio: 16 / 10; border-radius: 12px; overflow: hidden; background: #2a2a2c;">
+<span style="position: absolute; left: 20px; top: 16px; height: 26px; padding: 0 12px; border-radius: 13px; background: #ebe9e4; display: flex; align-items: center; z-index: 2;"><span style="font-size: 10px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #66645f;">Placeholder — product page</span></span>
+<div class="pjin" style="position: absolute; left: 48px; top: 60px; width: 640px; height: 540px; box-sizing: border-box; border-radius: 12px; background: #fbfaf8; box-shadow: 0 60px 90px -50px rgba(0, 0, 0, 0.7); overflow: hidden; display: flex; flex-direction: column;">
+<span style="height: 54px; flex-shrink: 0; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 0 22px; border-bottom: 1px solid #ebe8e2;">
+<span style="display: flex; gap: 16px;"><span style="display: block; flex-shrink: 0; width: 34px; height: 6px; border-radius: 3px; background: #cfcbc4;"></span><span style="display: block; flex-shrink: 0; width: 30px; height: 6px; border-radius: 3px; background: #cfcbc4;"></span><span style="display: block; flex-shrink: 0; width: 40px; height: 6px; border-radius: 3px; background: #cfcbc4;"></span></span>
+<span style="display: block; flex-shrink: 0; width: 84px; height: 11px; border-radius: 2px; background: #121211;"></span>
+<span style="display: flex; gap: 12px; justify-content: flex-end;"><span style="width: 22px; height: 22px; box-sizing: border-box; border-radius: 50%; border: 1.4px solid #8c8983;"></span><span style="position: relative; width: 22px; height: 22px; box-sizing: border-box; border-radius: 6px; border: 1.4px solid #8c8983;"><span style="position: absolute; right: -4px; top: -4px; width: 9px; height: 9px; border-radius: 50%; background: {{accent}};"></span></span></span>
+</span>
+<span style="flex-grow: 1; display: flex; min-height: 0;">
+<span style="width: 330px; flex-shrink: 0; background: #efe9e0; display: flex; align-items: center; justify-content: center;"><span aria-hidden="true" style="position: relative; display: block; flex-shrink: 0; width: 128px; height: 204.8px;"><span style="position: absolute; left: 20.48px; top: 190.08px; width: 87.04px; height: 11.52px; border-radius: 64px; background: rgba(0, 0, 0, 0.1);"></span><span style="position: absolute; left: 25.6px; top: 64px; width: 76.8px; height: 130.56px; border-radius: 14.08px; background: linear-gradient(90deg, #e3b778, #b87a35);"></span><span style="position: absolute; left: 35.84px; top: 76.8px; width: 8.96px; height: 104.96px; border-radius: 4.48px; background: rgba(255, 255, 255, 0.35);"></span><span style="position: absolute; left: 44.8px; top: 110.08px; width: 38.4px; height: 28.16px; border-radius: 2.56px; background: rgba(255, 255, 255, 0.55);"></span><span style="position: absolute; left: 52.48px; top: 48.64px; width: 23.04px; height: 17.92px; border-radius: 2.56px; background: #d8cfc2;"></span><span style="position: absolute; left: 42.24px; top: 12.8px; width: 43.52px; height: 38.4px; border-radius: 6.4px; background: #121211;"></span><span style="position: absolute; left: 47.36px; top: 17.92px; width: 5.12px; height: 28.16px; border-radius: 2.56px; background: rgba(255, 255, 255, 0.18);"></span></span></span>
+<span style="flex-grow: 1; min-width: 0; padding: 40px 32px; display: flex; flex-direction: column; gap: 14px;">
+<span style="display: block; flex-shrink: 0; width: 70px; height: 6px; border-radius: 3px; background: #cfcbc4;"></span>
+<span style="display: flex; flex-direction: column; gap: 9px; margin-top: 4px;"><span style="display: block; flex-shrink: 0; width: 190px; height: 17px; border-radius: 4px; background: #121211;"></span><span style="display: block; flex-shrink: 0; width: 128px; height: 17px; border-radius: 4px; background: #121211;"></span></span>
+<span style="display: block; flex-shrink: 0; width: 64px; height: 10px; border-radius: 3px; background: #2a2a2c; margin-top: 12px;"></span>
+<span style="margin-top: 14px;"><span style="display: flex; gap: 8px;"><span style="width: 56px; height: 30px; box-sizing: border-box; border-radius: 15px; border: 1px solid #cfcbc4;"></span><span style="width: 56px; height: 30px; border-radius: 15px; background: #121211;"></span><span style="width: 56px; height: 30px; box-sizing: border-box; border-radius: 15px; border: 1px solid #cfcbc4;"></span></span></span>
+<span style="display: block; flex-shrink: 0; width: 206px; height: 44px; border-radius: 22px; background: #121211; margin-top: 8px;"></span>
+<span style="display: flex; flex-direction: column; margin-top: 14px; width: 206px;"><span style="display: flex; justify-content: space-between; align-items: center; height: 40px; border-top: 1px solid #ebe8e2;"><span style="display: block; flex-shrink: 0; width: 64px; height: 6px; border-radius: 3px; background: #8c8983;"></span><span style="display: block; flex-shrink: 0; width: 10px; height: 2px; border-radius: 1px; background: #8c8983;"></span></span><span style="display: flex; justify-content: space-between; align-items: center; height: 40px; border-top: 1px solid #ebe8e2;"><span style="display: block; flex-shrink: 0; width: 80px; height: 6px; border-radius: 3px; background: #8c8983;"></span><span style="display: block; flex-shrink: 0; width: 10px; height: 2px; border-radius: 1px; background: #8c8983;"></span></span></span>
+</span>
+</span>
+</div>
+<div class="pjin" style="position: absolute; left: 606px; top: 120px; width: 218px; height: 450px; box-sizing: border-box; border-radius: 32px; background: #fbfaf8; box-shadow: 0 60px 90px -40px rgba(0, 0, 0, 0.75), 0 0 0 7px #3a3a3d; overflow: hidden; display: flex; flex-direction: column; gap: 16px; padding: 22px 16px;">
+<span style="display: flex; justify-content: space-between; align-items: center; padding-top: 14px;"><span style="display: block; flex-shrink: 0; width: 66px; height: 9px; border-radius: 2px; background: #121211;"></span><span style="position: relative; width: 20px; height: 20px; box-sizing: border-box; border-radius: 6px; border: 1.4px solid #8c8983;"><span style="position: absolute; right: -4px; top: -4px; width: 8px; height: 8px; border-radius: 50%; background: {{accent}};"></span></span></span>
+<span style="display: flex; gap: 6px;"><span style="width: 46px; height: 24px; border-radius: 12px; background: #121211;"></span><span style="width: 52px; height: 24px; box-sizing: border-box; border-radius: 12px; border: 1px solid #cfcbc4;"></span><span style="width: 40px; height: 24px; box-sizing: border-box; border-radius: 12px; border: 1px solid #cfcbc4;"></span></span>
+<span style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 10px;"><span style="display: flex; flex-direction: column; gap: 8px;"><span style="height: 118px; border-radius: 12px; background: #efe9e0; display: flex; align-items: center; justify-content: center;"><span aria-hidden="true" style="position: relative; display: block; flex-shrink: 0; width: 48px; height: 76.8px;"><span style="position: absolute; left: 7.68px; top: 71.28px; width: 32.64px; height: 4.32px; border-radius: 24px; background: rgba(0, 0, 0, 0.1);"></span><span style="position: absolute; left: 9.6px; top: 24px; width: 28.8px; height: 48.96px; border-radius: 5.28px; background: linear-gradient(90deg, #e3b778, #b87a35);"></span><span style="position: absolute; left: 13.44px; top: 28.8px; width: 3.36px; height: 39.36px; border-radius: 1.68px; background: rgba(255, 255, 255, 0.35);"></span><span style="position: absolute; left: 16.8px; top: 41.28px; width: 14.4px; height: 10.56px; border-radius: 0.96px; background: rgba(255, 255, 255, 0.55);"></span><span style="position: absolute; left: 19.68px; top: 18.24px; width: 8.64px; height: 6.72px; border-radius: 0.96px; background: #d8cfc2;"></span><span style="position: absolute; left: 15.84px; top: 4.8px; width: 16.32px; height: 14.4px; border-radius: 2.4px; background: #121211;"></span><span style="position: absolute; left: 17.76px; top: 6.72px; width: 1.92px; height: 10.56px; border-radius: 0.96px; background: rgba(255, 255, 255, 0.18);"></span></span></span><span style="display: block; flex-shrink: 0; width: 62px; height: 6px; border-radius: 3px; background: #2a2a2c;"></span><span style="display: block; flex-shrink: 0; width: 38px; height: 5px; border-radius: 2.5px; background: #cfcbc4;"></span></span><span style="display: flex; flex-direction: column; gap: 8px;"><span style="height: 118px; border-radius: 12px; background: #efe9e0; display: flex; align-items: center; justify-content: center;"><span aria-hidden="true" style="position: relative; display: block; flex-shrink: 0; width: 48px; height: 76.8px;"><span style="position: absolute; left: 7.68px; top: 71.28px; width: 32.64px; height: 4.32px; border-radius: 24px; background: rgba(0, 0, 0, 0.1);"></span><span style="position: absolute; left: 9.6px; top: 24px; width: 28.8px; height: 48.96px; border-radius: 5.28px; background: linear-gradient(90deg, #d9dcd6, #9ea59b);"></span><span style="position: absolute; left: 13.44px; top: 28.8px; width: 3.36px; height: 39.36px; border-radius: 1.68px; background: rgba(255, 255, 255, 0.35);"></span><span style="position: absolute; left: 16.8px; top: 41.28px; width: 14.4px; height: 10.56px; border-radius: 0.96px; background: rgba(255, 255, 255, 0.55);"></span><span style="position: absolute; left: 19.68px; top: 18.24px; width: 8.64px; height: 6.72px; border-radius: 0.96px; background: #d8cfc2;"></span><span style="position: absolute; left: 15.84px; top: 4.8px; width: 16.32px; height: 14.4px; border-radius: 2.4px; background: #121211;"></span><span style="position: absolute; left: 17.76px; top: 6.72px; width: 1.92px; height: 10.56px; border-radius: 0.96px; background: rgba(255, 255, 255, 0.18);"></span></span></span><span style="display: block; flex-shrink: 0; width: 62px; height: 6px; border-radius: 3px; background: #2a2a2c;"></span><span style="display: block; flex-shrink: 0; width: 38px; height: 5px; border-radius: 2.5px; background: #cfcbc4;"></span></span><span style="display: flex; flex-direction: column; gap: 8px;"><span style="height: 118px; border-radius: 12px; background: #efe9e0; display: flex; align-items: center; justify-content: center;"><span aria-hidden="true" style="position: relative; display: block; flex-shrink: 0; width: 48px; height: 76.8px;"><span style="position: absolute; left: 7.68px; top: 71.28px; width: 32.64px; height: 4.32px; border-radius: 24px; background: rgba(0, 0, 0, 0.1);"></span><span style="position: absolute; left: 9.6px; top: 24px; width: 28.8px; height: 48.96px; border-radius: 5.28px; background: linear-gradient(90deg, #e8c9c0, #b98474);"></span><span style="position: absolute; left: 13.44px; top: 28.8px; width: 3.36px; height: 39.36px; border-radius: 1.68px; background: rgba(255, 255, 255, 0.35);"></span><span style="position: absolute; left: 16.8px; top: 41.28px; width: 14.4px; height: 10.56px; border-radius: 0.96px; background: rgba(255, 255, 255, 0.55);"></span><span style="position: absolute; left: 19.68px; top: 18.24px; width: 8.64px; height: 6.72px; border-radius: 0.96px; background: #d8cfc2;"></span><span style="position: absolute; left: 15.84px; top: 4.8px; width: 16.32px; height: 14.4px; border-radius: 2.4px; background: #121211;"></span><span style="position: absolute; left: 17.76px; top: 6.72px; width: 1.92px; height: 10.56px; border-radius: 0.96px; background: rgba(255, 255, 255, 0.18);"></span></span></span><span style="display: block; flex-shrink: 0; width: 62px; height: 6px; border-radius: 3px; background: #2a2a2c;"></span><span style="display: block; flex-shrink: 0; width: 38px; height: 5px; border-radius: 2.5px; background: #cfcbc4;"></span></span><span style="display: flex; flex-direction: column; gap: 8px;"><span style="height: 118px; border-radius: 12px; background: #efe9e0; display: flex; align-items: center; justify-content: center;"><span aria-hidden="true" style="position: relative; display: block; flex-shrink: 0; width: 48px; height: 76.8px;"><span style="position: absolute; left: 7.68px; top: 71.28px; width: 32.64px; height: 4.32px; border-radius: 24px; background: rgba(0, 0, 0, 0.1);"></span><span style="position: absolute; left: 9.6px; top: 24px; width: 28.8px; height: 48.96px; border-radius: 5.28px; background: linear-gradient(90deg, #e3b778, #b87a35);"></span><span style="position: absolute; left: 13.44px; top: 28.8px; width: 3.36px; height: 39.36px; border-radius: 1.68px; background: rgba(255, 255, 255, 0.35);"></span><span style="position: absolute; left: 16.8px; top: 41.28px; width: 14.4px; height: 10.56px; border-radius: 0.96px; background: rgba(255, 255, 255, 0.55);"></span><span style="position: absolute; left: 19.68px; top: 18.24px; width: 8.64px; height: 6.72px; border-radius: 0.96px; background: #d8cfc2;"></span><span style="position: absolute; left: 15.84px; top: 4.8px; width: 16.32px; height: 14.4px; border-radius: 2.4px; background: #121211;"></span><span style="position: absolute; left: 17.76px; top: 6.72px; width: 1.92px; height: 10.56px; border-radius: 0.96px; background: rgba(255, 255, 255, 0.18);"></span></span></span><span style="display: block; flex-shrink: 0; width: 62px; height: 6px; border-radius: 3px; background: #2a2a2c;"></span><span style="display: block; flex-shrink: 0; width: 38px; height: 5px; border-radius: 2.5px; background: #cfcbc4;"></span></span></span>
+</div>
+</a>
+</article>
+<a href="#contact" class="pj3" style="margin-top: 120px; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; align-items: center; min-height: 184px; padding: 0 36px; box-sizing: border-box; border: 1px dashed #a9a59d; border-radius: 12px; text-decoration: none; color: #121211;">
+<span style="grid-column: span 1; font-size: 14px; color: #66645f; font-variant-numeric: tabular-nums;">03</span>
+<span style="grid-column: 2 / span 6; font-size: 56px; line-height: 1; letter-spacing: -0.04em; font-weight: 300;">Your project</span>
+<span style="grid-column: 8 / span 3; font-size: 16px; line-height: 1.5; color: #55534e;">This space is kept for the next one.<br>Next start: [MONTH YEAR]</span>
+<span class="cta" style="grid-column: 11 / span 2; justify-self: end; height: 48px; padding: 0 20px 0 22px; border-radius: 999px; background: #121211; color: #ebe9e4; display: flex; align-items: center; gap: 12px; font-size: 15px; font-weight: 500; white-space: nowrap;">Start a project <svg class="arr" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" style="display: inline-block; flex-shrink: 0;"><path d="M2 7 H12 M8 3 L12 7 L8 11" style="fill: none; stroke: #ebe9e4; stroke-width: 1.4px; stroke-linecap: round; stroke-linejoin: round;"></path></svg></span>
+</a>
+</section>
+<section id="process" style="padding-left: 64px; padding-right: 64px; padding-bottom: 176px;">
+<div style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; align-items: end; padding-bottom: 36px; border-bottom: 1px solid #121211;">
+<h2 style="grid-column: span 8; margin: 0; font-size: 76px; line-height: 0.95; letter-spacing: -0.05em; font-weight: 300; color: #121211;">Process<span style="display: inline-block; vertical-align: top; margin: 0.12em 0 0 0.3em; font-size: 15px; line-height: 1; letter-spacing: 0; font-weight: 400; color: #66645f; font-variant-numeric: tabular-nums;">(05)</span></h2>
+<p style="grid-column: 9 / span 4; margin: 0 0 4px; font-size: 17px; line-height: 1.6; color: #55534e; text-wrap: pretty;">Five stages, the same every time. They overlap on purpose, so you see working software early and often — not just at the end.</p>
+</div>
+<figure style="margin: 56px 0 0;">
+<div aria-hidden="true" style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; align-items: end; height: 44px; border-bottom: 1px solid #121211;">
+<span style="grid-column: span 4; padding-bottom: 14px;"><span style="font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #66645f;">Stage</span></span>
+<div style="grid-column: 5 / span 8; position: relative; height: 100%;">
+<span style="position: absolute; left: 0; bottom: 14px;"><span style="font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #66645f;">Kick-off</span></span>
+<span style="position: absolute; left: 85.714%; bottom: 14px; transform: translateX(-50%); white-space: nowrap;"><span style="font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #121211;">Go-live</span></span>
+<span style="position: absolute; right: 0; bottom: 14px;"><span style="font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #66645f;">Ongoing</span></span>
+</div>
+</div>
+<ol style="margin: 0; padding: 0; list-style: none;">
+<li style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; min-height: 140px; border-bottom: 1px solid #d3d0c9;">
+<div style="grid-column: 1 / span 4; grid-row: 1; display: grid; grid-template-columns: 52px minmax(0, 1fr); align-content: start; padding: 28px 32px 28px 0;">
+<span style="padding-top: 9px; font-size: 14px; color: #66645f; font-variant-numeric: tabular-nums;">01</span>
+<div><h3 style="margin: 0; font-size: 30px; line-height: 1.1; letter-spacing: -0.03em; font-weight: 300; color: #121211;">Discover</h3>
+<p style="margin: 10px 0 0; font-size: 15px; line-height: 1.55; color: #55534e; text-wrap: pretty;">We sit with the people who do the work and map it: what comes in, what gets retyped, where things wait.</p></div>
+</div>
+<div aria-hidden="true" style="grid-column: 5 / span 8; grid-row: 1; position: relative; background-image: linear-gradient(90deg, #d3d0c9 1px, transparent 1px); background-size: 11.429% 100%; background-repeat: repeat-x;">
+<span style="position: absolute; left: 85.714%; top: 0; bottom: 0; border-left: 1px dashed #66645f;"></span>
+<span style="position: absolute; left: 0%; width: 11.429%; top: calc(50% - 30px); height: 32px; box-sizing: border-box; border-radius: 16px; background: #ebe9e4; border: 1.2px solid #121211;"></span>
+
+</div>
+<p style="grid-column: 5 / span 8; grid-row: 1; align-self: center; position: relative; margin: 0; height: 0;"><span style="position: absolute; left: 0%; margin-left: -6px; top: 12px; padding: 2px 6px; background: #ebe9e4; white-space: nowrap; font-size: 14px; line-height: 1.4; color: #121211;"><span style="color: #66645f;">Out —</span> Scope and estimate</span></p>
+</li><li style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; min-height: 140px; border-bottom: 1px solid #d3d0c9;">
+<div style="grid-column: 1 / span 4; grid-row: 1; display: grid; grid-template-columns: 52px minmax(0, 1fr); align-content: start; padding: 28px 32px 28px 0;">
+<span style="padding-top: 9px; font-size: 14px; color: #66645f; font-variant-numeric: tabular-nums;">02</span>
+<div><h3 style="margin: 0; font-size: 30px; line-height: 1.1; letter-spacing: -0.03em; font-weight: 300; color: #121211;">Design</h3>
+<p style="margin: 10px 0 0; font-size: 15px; line-height: 1.55; color: #55534e; text-wrap: pretty;">A clickable prototype of the key screens, tried out by the people who will use them.</p></div>
+</div>
+<div aria-hidden="true" style="grid-column: 5 / span 8; grid-row: 1; position: relative; background-image: linear-gradient(90deg, #d3d0c9 1px, transparent 1px); background-size: 11.429% 100%; background-repeat: repeat-x;">
+<span style="position: absolute; left: 85.714%; top: 0; bottom: 0; border-left: 1px dashed #66645f;"></span>
+<span style="position: absolute; left: 8.571%; width: 20%; top: calc(50% - 30px); height: 32px; box-sizing: border-box; border-radius: 16px; background: #ebe9e4; border: 1.2px solid #121211;"></span>
+
+</div>
+<p style="grid-column: 5 / span 8; grid-row: 1; align-self: center; position: relative; margin: 0; height: 0;"><span style="position: absolute; left: 8.571%; margin-left: -6px; top: 12px; padding: 2px 6px; background: #ebe9e4; white-space: nowrap; font-size: 14px; line-height: 1.4; color: #121211;"><span style="color: #66645f;">Out —</span> Prototype</span></p>
+</li><li style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; min-height: 140px; border-bottom: 1px solid #d3d0c9;">
+<div style="grid-column: 1 / span 4; grid-row: 1; display: grid; grid-template-columns: 52px minmax(0, 1fr); align-content: start; padding: 28px 32px 28px 0;">
+<span style="padding-top: 9px; font-size: 14px; color: #66645f; font-variant-numeric: tabular-nums;">03</span>
+<div><h3 style="margin: 0; font-size: 30px; line-height: 1.1; letter-spacing: -0.03em; font-weight: 300; color: #121211;">Build</h3>
+<p style="margin: 10px 0 0; font-size: 15px; line-height: 1.55; color: #55534e; text-wrap: pretty;">Short cycles, each ending in something you can click. Your feedback goes straight into the next one.</p></div>
+</div>
+<div aria-hidden="true" style="grid-column: 5 / span 8; grid-row: 1; position: relative; background-image: linear-gradient(90deg, #d3d0c9 1px, transparent 1px); background-size: 11.429% 100%; background-repeat: repeat-x;">
+<span style="position: absolute; left: 85.714%; top: 0; bottom: 0; border-left: 1px dashed #66645f;"></span>
+<span style="position: absolute; left: 22.857%; width: 54.286%; top: calc(50% - 30px); height: 32px; box-sizing: border-box; border-radius: 16px; background: #121211;"></span>
+<span style="position: absolute; left: 34.286%; top: calc(50% - 18px); width: 8px; height: 8px; margin-left: -4px; border-radius: 50%; background: #ebe9e4;"></span><span style="position: absolute; left: 45.714%; top: calc(50% - 18px); width: 8px; height: 8px; margin-left: -4px; border-radius: 50%; background: #ebe9e4;"></span><span style="position: absolute; left: 57.143%; top: calc(50% - 18px); width: 8px; height: 8px; margin-left: -4px; border-radius: 50%; background: #ebe9e4;"></span><span style="position: absolute; left: 68.571%; top: calc(50% - 18px); width: 8px; height: 8px; margin-left: -4px; border-radius: 50%; background: #ebe9e4;"></span>
+</div>
+<p style="grid-column: 5 / span 8; grid-row: 1; align-self: center; position: relative; margin: 0; height: 0;"><span style="position: absolute; left: 22.857%; margin-left: -6px; top: 12px; padding: 2px 6px; background: #ebe9e4; white-space: nowrap; font-size: 14px; line-height: 1.4; color: #121211;"><span style="color: #66645f;">Out —</span> Test version online</span></p>
+</li><li style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; min-height: 140px; border-bottom: 1px solid #d3d0c9;">
+<div style="grid-column: 1 / span 4; grid-row: 1; display: grid; grid-template-columns: 52px minmax(0, 1fr); align-content: start; padding: 28px 32px 28px 0;">
+<span style="padding-top: 9px; font-size: 14px; color: #66645f; font-variant-numeric: tabular-nums;">04</span>
+<div><h3 style="margin: 0; font-size: 30px; line-height: 1.1; letter-spacing: -0.03em; font-weight: 300; color: #121211;">Launch</h3>
+<p style="margin: 10px 0 0; font-size: 15px; line-height: 1.55; color: #55534e; text-wrap: pretty;">Data moved over, your team trained, go-live planned for a quiet day — never a Friday.</p></div>
+</div>
+<div aria-hidden="true" style="grid-column: 5 / span 8; grid-row: 1; position: relative; background-image: linear-gradient(90deg, #d3d0c9 1px, transparent 1px); background-size: 11.429% 100%; background-repeat: repeat-x;">
+<span style="position: absolute; left: 85.714%; top: 0; bottom: 0; border-left: 1px dashed #66645f;"></span>
+<span style="position: absolute; left: 77.143%; width: 8.571%; top: calc(50% - 30px); height: 32px; box-sizing: border-box; border-radius: 16px; background: #121211;"></span>
+
+</div>
+<p style="grid-column: 5 / span 8; grid-row: 1; align-self: center; position: relative; margin: 0; height: 0;"><span style="position: absolute; right: calc(14.286% + 8px); text-align: right; top: 12px; padding: 2px 6px; background: #ebe9e4; white-space: nowrap; font-size: 14px; line-height: 1.4; color: #121211;"><span style="color: #66645f;">Out —</span> Live system</span></p>
+</li><li style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; min-height: 140px; border-bottom: 1px solid #d3d0c9;">
+<div style="grid-column: 1 / span 4; grid-row: 1; display: grid; grid-template-columns: 52px minmax(0, 1fr); align-content: start; padding: 28px 32px 28px 0;">
+<span style="padding-top: 9px; font-size: 14px; color: #66645f; font-variant-numeric: tabular-nums;">05</span>
+<div><h3 style="margin: 0; font-size: 30px; line-height: 1.1; letter-spacing: -0.03em; font-weight: 300; color: #121211;">Run</h3>
+<p style="margin: 10px 0 0; font-size: 15px; line-height: 1.55; color: #55534e; text-wrap: pretty;">We monitor, fix and improve. You get a plain-language log of what changed and why.</p></div>
+</div>
+<div aria-hidden="true" style="grid-column: 5 / span 8; grid-row: 1; position: relative; background-image: linear-gradient(90deg, #d3d0c9 1px, transparent 1px); background-size: 11.429% 100%; background-repeat: repeat-x;">
+<span style="position: absolute; left: 85.714%; top: 0; bottom: 0; border-left: 1px dashed #66645f;"></span>
+<span style="position: absolute; left: 85.714%; right: -64px; top: calc(50% - 30px); height: 32px; box-sizing: border-box; border-radius: 16px; background: {{accent}};"></span>
+
+</div>
+<p style="grid-column: 5 / span 8; grid-row: 1; align-self: center; position: relative; margin: 0; height: 0;"><span style="position: absolute; right: 0; text-align: right; top: 12px; padding: 2px 6px; background: #ebe9e4; white-space: nowrap; font-size: 14px; line-height: 1.4; color: #121211;"><span style="color: #66645f;">Out —</span> Support and changelog</span></p>
+</li>
+</ol>
+<figcaption style="margin-top: 24px; font-size: 13px; line-height: 1.55; color: #55534e;"><span style="color: #121211; font-weight: 500;">Fig. 3</span> — How the stages overlap on a typical project. Each <span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 12px; border-radius: 6px; background: #121211; vertical-align: -1px; margin: 0 2px;"><span style="width: 5px; height: 5px; border-radius: 50%; background: #ebe9e4;"></span></span> is a working demo you can click through.</figcaption>
+</figure>
+</section>
+<section id="studio" style="padding-left: 64px; padding-right: 64px; padding-bottom: 176px;">
+<div style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; align-items: end; padding-bottom: 36px; border-bottom: 1px solid #121211;">
+<h2 style="grid-column: span 8; margin: 0; font-size: 76px; line-height: 0.95; letter-spacing: -0.05em; font-weight: 300; color: #121211;">Before you hire us<span style="display: inline-block; vertical-align: top; margin: 0.12em 0 0 0.3em; font-size: 15px; line-height: 1; letter-spacing: 0; font-weight: 400; color: #66645f; font-variant-numeric: tabular-nums;">(05)</span></h2>
+<p style="grid-column: 9 / span 4; margin: 0 0 4px; font-size: 17px; line-height: 1.6; color: #55534e; text-wrap: pretty;">[NAME] is a design and engineering studio in Sarajevo, Bosnia and Herzegovina. Five things worth knowing up front.</p>
+</div>
+<div style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; align-items: start; margin-top: 8px;">
+<figure style="grid-column: span 4; margin: 40px 0 0;">
+<div style="aspect-ratio: 4 / 5; border-radius: 12px; background: radial-gradient(120% 90% at 26% 18%, #f7f5f1 0%, #e6e2db 46%, #d2cdc4 100%); display: flex; align-items: flex-end; padding: 18px; box-sizing: border-box;"><span style="font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #66645f;">[ Photo — the people you will work with ]</span></div>
+</figure>
+<ol style="grid-column: 6 / span 7; margin: 0; padding: 0; list-style: none;">
+<li style="display: grid; grid-template-columns: 56px minmax(0, 1fr); padding: 30px 0 32px; border-bottom: 1px solid #d3d0c9;">
+<span style="padding-top: 11px; font-size: 14px; color: #66645f; font-variant-numeric: tabular-nums;">01</span>
+<p style="margin: 0; font-size: 30px; line-height: 1.26; letter-spacing: -0.028em; font-weight: 300; color: #66645f; text-wrap: pretty;"><span style="color: #121211; font-weight: 400;">You own it.</span> Code, data, domains and accounts are in your name from day one.</p>
+</li><li style="display: grid; grid-template-columns: 56px minmax(0, 1fr); padding: 30px 0 32px; border-bottom: 1px solid #d3d0c9;">
+<span style="padding-top: 11px; font-size: 14px; color: #66645f; font-variant-numeric: tabular-nums;">02</span>
+<p style="margin: 0; font-size: 30px; line-height: 1.26; letter-spacing: -0.028em; font-weight: 300; color: #66645f; text-wrap: pretty;"><span style="color: #121211; font-weight: 400;">No lock-in.</span> Everything is documented so another team could take over. We would rather you stay because you want to.</p>
+</li><li style="display: grid; grid-template-columns: 56px minmax(0, 1fr); padding: 30px 0 32px; border-bottom: 1px solid #d3d0c9;">
+<span style="padding-top: 11px; font-size: 14px; color: #66645f; font-variant-numeric: tabular-nums;">03</span>
+<p style="margin: 0; font-size: 30px; line-height: 1.26; letter-spacing: -0.028em; font-weight: 300; color: #66645f; text-wrap: pretty;"><span style="color: #121211; font-weight: 400;">Proven tools.</span> .NET, Angular, React, Node and PostgreSQL. Boring on purpose — your business is not our experiment.</p>
+</li><li style="display: grid; grid-template-columns: 56px minmax(0, 1fr); padding: 30px 0 32px; border-bottom: 1px solid #d3d0c9;">
+<span style="padding-top: 11px; font-size: 14px; color: #66645f; font-variant-numeric: tabular-nums;">04</span>
+<p style="margin: 0; font-size: 30px; line-height: 1.26; letter-spacing: -0.028em; font-weight: 300; color: #66645f; text-wrap: pretty;"><span style="color: #121211; font-weight: 400;">A direct line.</span> You talk to the people who design and write the code. No account managers in between.</p>
+</li><li style="display: grid; grid-template-columns: 56px minmax(0, 1fr); padding: 30px 0 32px; border-bottom: 1px solid #d3d0c9;">
+<span style="padding-top: 11px; font-size: 14px; color: #66645f; font-variant-numeric: tabular-nums;">05</span>
+<p style="margin: 0; font-size: 30px; line-height: 1.26; letter-spacing: -0.028em; font-weight: 300; color: #66645f; text-wrap: pretty;"><span style="color: #121211; font-weight: 400;">Your time zone.</span> Sarajevo runs on CET, the same working day as most of Europe. We work in English and Bosnian / Croatian / Serbian.</p>
+</li>
+</ol>
+</div>
+</section>
+<section id="contact" class="dk" style="flex-grow: 1; background: #121211; color: #ebe9e4; padding: 168px 64px 40px;">
+<div style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; align-items: start;">
+<div style="grid-column: span 6; display: flex; flex-direction: column; gap: 32px;">
+<span style="font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #a9a69f;">Contact</span>
+<h2 style="margin: 0; font-size: 112px; line-height: 0.95; letter-spacing: -0.05em; font-weight: 300; color: #ebe9e4;">Start a project</h2>
+<p style="margin: 0; max-width: 460px; font-size: 18px; line-height: 1.6; color: #a9a69f; text-wrap: pretty;">Tell us what you need built — or what keeps getting done by hand. We reply within one working day, with questions or a time to talk.</p>
+<a href="mailto:hello@yourdomain.com" style="margin-top: 12px; align-self: flex-start; font-size: 34px; line-height: 1.2; letter-spacing: -0.03em; font-weight: 300; color: #ebe9e4; text-decoration: underline; text-decoration-color: #34332f; text-decoration-thickness: 1px; text-underline-offset: 8px;">[hello@yourdomain.com]</a>
+</div>
+<form onSubmit="{{noSubmit}}" style="grid-column: 8 / span 5; margin: 8px 0 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 24px;">
+<fieldset style="grid-column: span 2; margin: 0; padding: 0; border: 0; min-width: 0;">
+<legend style="padding: 0; margin-bottom: 16px;"><span style="font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #a9a69f;">What do you need?</span></legend>
+<div style="display: flex; flex-wrap: wrap; gap: 10px;">
+<button type="button" aria-pressed="{{chip.web.pressed}}" onClick="{{chip.web.toggle}}" style="height: 44px; padding: 0 18px; box-sizing: border-box; border-radius: 999px; border: 1px solid {{chip.web.bd}}; background: {{chip.web.bg}}; color: {{chip.web.fg}}; font-family: 'Host Grotesk', 'Helvetica Neue', Arial, sans-serif; font-size: 15px; font-weight: 400; cursor: pointer;">Website</button>
+<button type="button" aria-pressed="{{chip.app.pressed}}" onClick="{{chip.app.toggle}}" style="height: 44px; padding: 0 18px; box-sizing: border-box; border-radius: 999px; border: 1px solid {{chip.app.bd}}; background: {{chip.app.bg}}; color: {{chip.app.fg}}; font-family: 'Host Grotesk', 'Helvetica Neue', Arial, sans-serif; font-size: 15px; font-weight: 400; cursor: pointer;">Web or mobile app</button>
+<button type="button" aria-pressed="{{chip.sys.pressed}}" onClick="{{chip.sys.toggle}}" style="height: 44px; padding: 0 18px; box-sizing: border-box; border-radius: 999px; border: 1px solid {{chip.sys.bd}}; background: {{chip.sys.bg}}; color: {{chip.sys.fg}}; font-family: 'Host Grotesk', 'Helvetica Neue', Arial, sans-serif; font-size: 15px; font-weight: 400; cursor: pointer;">System or automation</button>
+<button type="button" aria-pressed="{{chip.unsure.pressed}}" onClick="{{chip.unsure.toggle}}" style="height: 44px; padding: 0 18px; box-sizing: border-box; border-radius: 999px; border: 1px solid {{chip.unsure.bd}}; background: {{chip.unsure.bg}}; color: {{chip.unsure.fg}}; font-family: 'Host Grotesk', 'Helvetica Neue', Arial, sans-serif; font-size: 15px; font-weight: 400; cursor: pointer;">Not sure yet</button>
+</div>
+</fieldset>
+<label style="grid-column: span 1; display: flex; flex-direction: column; gap: 10px;"><span style="font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #a9a69f;">Name</span><input type="text" name="name" autocomplete="name" placeholder="Your name" style="box-sizing: border-box; width: 100%; padding: 0 0 12px; border: 0; border-bottom: 1px solid #34332f; border-radius: 0; background: transparent; color: #ebe9e4; font-family: 'Host Grotesk', 'Helvetica Neue', Arial, sans-serif; font-size: 20px; font-weight: 300; height: 44px;"></label>
+<label style="grid-column: span 1; display: flex; flex-direction: column; gap: 10px;"><span style="font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #a9a69f;">Email</span><input type="email" name="email" autocomplete="email" placeholder="you@company.com" style="box-sizing: border-box; width: 100%; padding: 0 0 12px; border: 0; border-bottom: 1px solid #34332f; border-radius: 0; background: transparent; color: #ebe9e4; font-family: 'Host Grotesk', 'Helvetica Neue', Arial, sans-serif; font-size: 20px; font-weight: 300; height: 44px;"></label>
+<label style="grid-column: span 2; display: flex; flex-direction: column; gap: 10px;"><span style="font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #a9a69f;">Company (optional)</span><input type="text" name="company" autocomplete="organization" placeholder="Company name" style="box-sizing: border-box; width: 100%; padding: 0 0 12px; border: 0; border-bottom: 1px solid #34332f; border-radius: 0; background: transparent; color: #ebe9e4; font-family: 'Host Grotesk', 'Helvetica Neue', Arial, sans-serif; font-size: 20px; font-weight: 300; height: 44px;"></label>
+<label style="grid-column: span 2; display: flex; flex-direction: column; gap: 10px;"><span style="font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #a9a69f;">What should it do?</span><textarea name="message" rows="3" placeholder="Orders come in by phone and get retyped into accounting…" style="box-sizing: border-box; width: 100%; padding: 0 0 12px; border: 0; border-bottom: 1px solid #34332f; border-radius: 0; background: transparent; color: #ebe9e4; font-family: 'Host Grotesk', 'Helvetica Neue', Arial, sans-serif; font-size: 20px; font-weight: 300; line-height: 1.5; resize: vertical;"></textarea></label>
+<div style="grid-column: span 2; display: flex; align-items: center; justify-content: space-between; gap: 24px;">
+<span style="font-size: 14px; line-height: 1.5; color: #a9a69f;">Goes straight to the people who will build it.</span>
+<button class="cta" type="button" style="height: 56px; padding: 0 26px 0 28px; border: 0; border-radius: 999px; background: #ebe9e4; color: #121211; display: flex; align-items: center; gap: 14px; font-family: 'Host Grotesk', 'Helvetica Neue', Arial, sans-serif; font-size: 16px; font-weight: 500; cursor: pointer;">Send <svg class="arr" width="15" height="15" viewBox="0 0 14 14" aria-hidden="true" style="display: inline-block; flex-shrink: 0;"><path d="M2 7 H12 M8 3 L12 7 L8 11" style="fill: none; stroke: #121211; stroke-width: 1.4px; stroke-linecap: round; stroke-linejoin: round;"></path></svg></button>
+</div>
+</form>
+</div>
+<div style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; margin-top: 128px; padding-top: 32px; border-top: 1px solid #34332f;">
+<div style="grid-column: span 3;"><div style="display: flex; flex-direction: column; gap: 8px;"><span style="font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #8c8983;">Phone</span><span style="font-size: 16px; line-height: 1.55; color: #ebe9e4;">[+387 00 000 000]</span></div></div>
+<div style="grid-column: 4 / span 3;"><div style="display: flex; flex-direction: column; gap: 8px;"><span style="font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #8c8983;">Studio</span><span style="font-size: 16px; line-height: 1.55; color: #ebe9e4;">[Street and number]<br>71000 Sarajevo, Bosnia and Herzegovina</span></div></div>
+<div style="grid-column: 7 / span 3;"><div style="display: flex; flex-direction: column; gap: 8px;"><span style="font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #8c8983;">Hours</span><span style="font-size: 16px; line-height: 1.55; color: #ebe9e4;">[Mon–Fri, 9:00–17:00 CET]</span></div></div>
+<div style="grid-column: 10 / span 3; justify-self: end; align-self: start;"><a class="cta" href="#contact" style="height: 44px; padding: 0 18px 0 20px; border-radius: 999px; border: 1px solid #34332f; color: #ebe9e4; display: flex; align-items: center; gap: 12px; font-size: 14px; text-decoration: none;">Book a 30-min call <svg class="arr" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" style="display: inline-block; flex-shrink: 0;"><path d="M2 7 H12 M8 3 L12 7 L8 11" style="fill: none; stroke: #ebe9e4; stroke-width: 1.4px; stroke-linecap: round; stroke-linejoin: round;"></path></svg></a></div>
+</div>
+<footer style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; align-items: center; margin-top: 160px; padding-top: 28px; border-top: 1px solid #34332f; font-size: 13px; color: #a9a69f;">
+<div style="grid-column: span 4; display: flex; align-items: center; gap: 18px;"><span style="display: flex; align-items: center;"><span style="font-size: 17px; font-weight: 500; letter-spacing: -0.02em; color: #ebe9e4;">[NAME]</span><span aria-hidden="true" style="width: 7px; height: 7px; border-radius: 50%; background: {{accent}}; align-self: flex-end; margin: 0 0 6px 3px;"></span></span><span>© 2026</span></div>
+<nav class="nav dk" aria-label="Footer" style="grid-column: 5 / span 4; display: flex; gap: 28px;"><a href="#" style="text-decoration: none;">LinkedIn</a><a href="#" style="text-decoration: none;">GitHub</a><a href="#" style="text-decoration: none;">Instagram</a></nav>
+<span style="grid-column: 9 / span 4; justify-self: end; font-variant-numeric: tabular-nums;">Sarajevo · 43.8563° N, 18.4131° E · {{time}} {{tz}}</span>
+</footer>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#1e4636","options":["#1e4636","#6e1f24","#2233d6","#b08d57"],"section":"Theme"},"motion":{"editor":"boolean","default":true,"section":"Theme"},"$preview":{"width":1440,"height":8466}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { now: new Date(), open: 0, hl: '', ringsRevealed: false, needs: { web: false, app: false, sys: true, unsure: false } };
+    this.hover = {
+      d: () => this.setState({ hl: 'd' }),
+      e: () => this.setState({ hl: 'e' }),
+      a: () => this.setState({ hl: 'a' }),
+      off: () => this.setState({ hl: '' })
+    };
+    this.cv = null;
+    this.gl = null;
+    this.raf = 0;
+    this.visible = true;
+    this.tilt = [0, 0];
+    this.aim = [0, 0];
+    this.t0 = 0;
+    this.setCanvas = (el) => { this.cv = el; };
+    this.setFig = (el) => { if (el) this.startFigReveal(el); };
+    this.onTilt = (e) => {
+      const el = e && e.currentTarget;
+      if (!el || !el.getBoundingClientRect) return;
+      const r = el.getBoundingClientRect();
+      this.aim = [(e.clientX - r.left) / r.width - 0.5, (e.clientY - r.top) / r.height - 0.5];
+      if (this.gl && !this.raf) this.raf = requestAnimationFrame(this.loop);
+    };
+    this.onTiltEnd = () => {
+      this.aim = [0, 0];
+      if (this.gl && !this.raf) this.raf = requestAnimationFrame(this.loop);
+    };
+    this.loop = (now) => {
+      this.raf = 0;
+      if (!this.gl) return;
+      const moving = this.animated();
+      if (this.visible) this.draw(moving ? (now - this.t0) / 1000 : 0);
+      const settling = Math.abs(this.aim[0] - this.tilt[0]) + Math.abs(this.aim[1] - this.tilt[1]) > 0.002;
+      if (moving || settling) this.raf = requestAnimationFrame(this.loop);
+    };
+  }
+  animated() {
+    let reduce = false;
+    try { reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) { reduce = false; }
+    return (this.props.motion ?? true) && !reduce;
+  }
+  componentDidMount() {
+    this.timer = setInterval(() => this.setState({ now: new Date() }), 10000);
+    this.t0 = (window.performance && window.performance.now) ? window.performance.now() : 0;
+    this.startGL();
+  }
+  componentDidUpdate(prev) {
+    if (this.gl && !this.raf && (prev.accent !== this.props.accent || prev.motion !== this.props.motion)) this.raf = requestAnimationFrame(this.loop);
+  }
+  componentWillUnmount() {
+    clearInterval(this.timer);
+    if (this.raf) cancelAnimationFrame(this.raf);
+    if (this.io) this.io.disconnect();
+    if (this.figIO) this.figIO.disconnect();
+    this.gl = null;
+  }
+  startFigReveal(el) {
+    if (this.figIO || this.state.ringsRevealed) return;
+    if (!this.animated() || !window.IntersectionObserver) { this.setState({ ringsRevealed: true }); return; }
+    try {
+      this.figIO = new IntersectionObserver((es) => {
+        if (es[0] && es[0].isIntersecting) {
+          this.setState({ ringsRevealed: true });
+          if (this.figIO) { this.figIO.disconnect(); this.figIO = null; }
+        }
+      }, { threshold: 0.3 });
+      this.figIO.observe(el);
+    } catch (e) {
+      this.setState({ ringsRevealed: true });
+    }
+  }
+  fs() {
+    return [
+'precision highp float;',
+'uniform vec2 uRes;',
+'uniform mat3 uRot;',
+'uniform vec3 uBg;',
+'uniform vec3 uPorc;',
+'uniform vec3 uGraph;',
+'uniform vec3 uAcc;',
+'uniform float uFloor;',
+'const float PHI = 1.61803398875;',
+'float sdRR(vec2 p, vec2 b, float r) { vec2 q = abs(p) - b + vec2(r); return length(max(q, 0.0)) + min(max(q.x, q.y), 0.0) - r; }',
+'float loopXY(vec3 p, vec2 b, float r, float t) { return length(vec2(sdRR(p.xy, b, r), p.z)) - t; }',
+'vec2 map(vec3 p) {',
+'  vec3 q = uRot * p;',
+'  vec2 B = vec2(PHI, 1.0) * 0.5;',
+'  float R = 0.3; float T = 0.076;',
+'  float a = loopXY(q, B, R, T);',
+'  float b = loopXY(q.yzx, B, R, T);',
+'  float c = loopXY(q.zxy, B, R, T);',
+'  vec2 res = vec2(a, 1.0);',
+'  if (b < res.x) res = vec2(b, 2.0);',
+'  if (c < res.x) res = vec2(c, 3.0);',
+'  return res;',
+'}',
+'vec2 sph(vec3 ro, vec3 rd, float r) { float b = dot(ro, rd); float c = dot(ro, ro) - r * r; float h = b * b - c; if (h < 0.0) return vec2(-1.0); h = sqrt(h); return vec2(-b - h, -b + h); }',
+'vec3 nrm(vec3 p) { vec2 e = vec2(0.0007, 0.0); return normalize(vec3(map(p + e.xyy).x - map(p - e.xyy).x, map(p + e.yxy).x - map(p - e.yxy).x, map(p + e.yyx).x - map(p - e.yyx).x)); }',
+'float shadow(vec3 ro, vec3 rd, float k) {',
+'  vec2 bb = sph(ro, rd, 2.2); if (bb.y < 0.0) return 1.0;',
+'  float res = 1.0; float t = max(0.015, bb.x);',
+'  for (int i = 0; i < 56; i++) { float h = map(ro + rd * t).x; res = min(res, k * h / t); t += clamp(h, 0.012, 0.22); if (res < 0.003 || t > bb.y) break; }',
+'  return clamp(res, 0.0, 1.0);',
+'}',
+'float occl(vec3 p, vec3 n) { float o = 0.0; float s = 1.0; for (int i = 0; i < 5; i++) { float h = 0.012 + 0.13 * float(i) / 4.0; o += (h - map(p + h * n).x) * s; s *= 0.9; } return clamp(1.0 - 2.6 * o, 0.0, 1.0); }',
+'void main() {',
+'  vec2 uv = (gl_FragCoord.xy - 0.5 * uRes) / uRes.y;',
+'  vec3 ro = vec3(0.22, 2.1, 8.7);',
+'  vec3 ta = vec3(0.22, -0.32, 0.0);',
+'  vec3 ww = normalize(ta - ro); vec3 uu = normalize(cross(ww, vec3(0.0, 1.0, 0.0))); vec3 vv = cross(uu, ww);',
+'  vec3 rd = normalize(uv.x * uu + uv.y * vv + 3.1 * ww);',
+'  vec3 L = normalize(vec3(-0.34, 1.0, 0.5));',
+'  vec3 col = uBg;',
+'  float t = 0.0; float m = -1.0;',
+'  vec2 bs = sph(ro, rd, 1.12);',
+'  if (bs.y > 0.0) { t = max(bs.x, 0.0); for (int i = 0; i < 110; i++) { vec2 h = map(ro + rd * t); if (h.x < 0.0006 * t) { m = h.y; break; } t += h.x; if (t > bs.y) break; } }',
+'  if (m > 0.0) {',
+'    vec3 p = ro + rd * t; vec3 n = nrm(p);',
+'    vec3 base = m < 1.5 ? uPorc : (m < 2.5 ? uGraph : uAcc);',
+'    float gloss = m < 1.5 ? 28.0 : (m < 2.5 ? 70.0 : 48.0);',
+'    float spk = m < 1.5 ? 0.22 : (m < 2.5 ? 0.55 : 0.4);',
+'    vec3 H = normalize(L - rd);',
+'    float wrap = m < 1.5 ? 0.35 : 0.12;',
+'    float dif = clamp((dot(n, L) + wrap) / (1.0 + wrap), 0.0, 1.0);',
+'    float sha = shadow(p + n * 0.003, L, 8.0);',
+'    float occ = occl(p, n);',
+'    float sky = 0.55 + 0.45 * n.y;',
+'    float bnc = clamp(0.5 - 0.5 * n.y, 0.0, 1.0);',
+'    float fre = pow(clamp(1.0 + dot(n, rd), 0.0, 1.0), 4.0);',
+'    float nh = clamp(dot(n, H), 0.0, 1.0);',
+'    float spe = (pow(nh, gloss * 3.0) * 0.9 + pow(nh, gloss * 0.35) * 0.25) * clamp(dot(n, L), 0.0, 1.0) * sha;',
+'    vec3 r = reflect(rd, n);',
+'    vec3 env = mix(uBg * 0.55, vec3(1.0), smoothstep(0.05, 0.75, r.y)) * (0.35 + 0.65 * smoothstep(-0.6, 0.4, r.x + 0.2));',
+'    vec3 lin = 1.08 * dif * mix(0.35, 1.0, sha) * vec3(1.0, 0.972, 0.935) + 0.40 * sky * occ * vec3(0.95, 0.975, 1.0) + 0.16 * bnc * occ * uBg;',
+'    col = base * lin + spk * spe * vec3(1.0);',
+'    col = mix(col, env * occ, (0.04 + 0.5 * fre) * (m < 1.5 ? 0.35 : 0.8));',
+'  } else if (rd.y < 0.0) {',
+'    float tf = (uFloor - ro.y) / rd.y; vec3 pf = ro + rd * tf;',
+'    float fall0 = exp(-0.5 * dot(pf.xz, pf.xz));',
+'    float s = fall0 > 0.004 ? shadow(pf + vec3(0.0, 0.001, 0.0), L, 5.0) : 1.0;',
+'    float d = fall0 > 0.004 ? map(pf).x : 9.0;',
+'    float cont = smoothstep(0.0, 1.1, d);',
+'    float fall = fall0;',
+'    float k = mix(1.0, s * (0.30 + 0.70 * cont), 0.62 * fall);',
+'    col = uBg * k;',
+'  }',
+'  col = max(col, 0.0);',
+'  col = mix(col * 12.92, 1.055 * pow(col, vec3(1.0 / 2.4)) - 0.055, step(vec3(0.0031308), col));',
+'  gl_FragColor = vec4(col, 1.0);',
+'}'
+].join('\n');
+  }
+  startGL() {
+    try {
+      const cv = this.cv || document.querySelector('canvas[data-gl="rings-d"]');
+      if (!cv || !cv.getContext) return;
+      const gl = cv.getContext('webgl', { antialias: false, alpha: true, premultipliedAlpha: false, preserveDrawingBuffer: true });
+      if (!gl) return;
+      const mk = (type, src) => {
+        const s = gl.createShader(type);
+        gl.shaderSource(s, src);
+        gl.compileShader(s);
+        return gl.getShaderParameter(s, gl.COMPILE_STATUS) ? s : null;
+      };
+      const vs = mk(gl.VERTEX_SHADER, 'attribute vec2 aPos; void main() { gl_Position = vec4(aPos, 0.0, 1.0); }');
+      const fs = mk(gl.FRAGMENT_SHADER, this.fs());
+      if (!vs || !fs) return;
+      const pr = gl.createProgram();
+      gl.attachShader(pr, vs);
+      gl.attachShader(pr, fs);
+      gl.linkProgram(pr);
+      if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) return;
+      gl.useProgram(pr);
+      const buf = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+      const loc = gl.getAttribLocation(pr, 'aPos');
+      gl.enableVertexAttribArray(loc);
+      gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+      const U = (n) => gl.getUniformLocation(pr, n);
+      this.u = { res: U('uRes'), rot: U('uRot'), bg: U('uBg'), porc: U('uPorc'), graph: U('uGraph'), acc: U('uAcc'), floor: U('uFloor') };
+      this.gl = gl;
+      this.el = cv;
+      if (window.IntersectionObserver) {
+        this.io = new IntersectionObserver((es) => {
+          this.visible = es[0] ? es[0].isIntersecting : true;
+          if (this.visible && this.gl && !this.raf) this.raf = requestAnimationFrame(this.loop);
+        });
+        this.io.observe(cv);
+      }
+      this.raf = requestAnimationFrame(this.loop);
+    } catch (e) {
+      this.gl = null;
+    }
+  }
+  lin(hex) {
+    const m = /^#?([0-9a-f]{6})$/i.exec(String(hex || '').trim());
+    if (!m) return [0.012, 0.06, 0.035];
+    const n = parseInt(m[1], 16);
+    return [(n >> 16) & 255, (n >> 8) & 255, n & 255].map((v) => { v = v / 255; return v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); });
+  }
+  rot(ay, ax, az) {
+    const cy = Math.cos(ay), sy = Math.sin(ay), cx = Math.cos(ax), sx = Math.sin(ax), cz = Math.cos(az), sz = Math.sin(az);
+    const Ry = [cy, 0, sy, 0, 1, 0, -sy, 0, cy];
+    const Rx = [1, 0, 0, 0, cx, -sx, 0, sx, cx];
+    const Rz = [cz, -sz, 0, sz, cz, 0, 0, 0, 1];
+    const mul = (a, b) => {
+      const r = [];
+      for (let i = 0; i < 3; i++) for (let j = 0; j < 3; j++) r[i * 3 + j] = a[i * 3] * b[j] + a[i * 3 + 1] * b[3 + j] + a[i * 3 + 2] * b[6 + j];
+      return r;
+    };
+    const R = mul(mul(Rz, Rx), Ry);
+    return [R[0], R[3], R[6], R[1], R[4], R[7], R[2], R[5], R[8]];
+  }
+  draw(t) {
+    const gl = this.gl, cv = this.el, u = this.u;
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.6);
+    const w = Math.max(1, Math.round(cv.clientWidth * dpr)), h = Math.max(1, Math.round(cv.clientHeight * dpr));
+    if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; }
+    gl.viewport(0, 0, w, h);
+    this.tilt[0] += (this.aim[0] - this.tilt[0]) * 0.07;
+    this.tilt[1] += (this.aim[1] - this.tilt[1]) * 0.07;
+    gl.uniform2f(u.res, w, h);
+    gl.uniformMatrix3fv(u.rot, false, new Float32Array(this.rot(2.2 + t * 0.14 + this.tilt[0] * 0.9, 0.55 + this.tilt[1] * 0.6, 0.25)));
+    gl.uniform3fv(u.bg, this.lin('#ebe9e4'));
+    gl.uniform3fv(u.porc, this.lin('#f4f2ee'));
+    gl.uniform3fv(u.graph, this.lin('#2a2a2c'));
+    gl.uniform3fv(u.acc, this.lin(this.props.accent ?? '#1e4636'));
+    gl.uniform1f(u.floor, -1.22);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+  }
+  renderVals() {
+    const accent = this.props.accent ?? '#1e4636';
+    const open = this.state.open;
+    const row = (i) => ({
+      expanded: open === i ? 'true' : 'false',
+      panel: open === i ? 'grid' : 'none',
+      vbar: open === i ? 'none' : 'block',
+      toggle: () => this.setState({ open: this.state.open === i ? -1 : i })
+    });
+    const svc = { s0: row(0), s1: row(1), s2: row(2) };
+    const needs = this.state.needs;
+    const chip = (key) => ({
+      pressed: needs[key] ? 'true' : 'false',
+      bg: needs[key] ? '#ebe9e4' : 'transparent',
+      fg: needs[key] ? '#121211' : '#ebe9e4',
+      bd: needs[key] ? '#ebe9e4' : '#5b5954',
+      toggle: () => this.setState({ needs: Object.assign({}, this.state.needs, { [key]: !this.state.needs[key] }) })
+    });
+    let time = '--:--', tz = 'CET';
+    try {
+      time = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Sarajevo', hour: '2-digit', minute: '2-digit', hour12: false }).format(this.state.now);
+      const z = new Intl.DateTimeFormat('en-US', { timeZone: 'Europe/Sarajevo', timeZoneName: 'shortOffset' }).formatToParts(this.state.now).find((p) => p.type === 'timeZoneName');
+      tz = z ? z.value.replace('GMT', 'UTC') : 'CET';
+    } catch (e) { time = '--:--'; }
+    const hl = this.state.hl || '';
+    const op = (k) => (hl === '' || hl === k ? '1' : '0.14');
+    return {
+      accent: accent,
+      time: time,
+      tz: tz,
+      ring: { d: op('d'), e: op('e'), a: op('a') },
+      ringx: { d: op('d') === '1' ? '1' : '0', e: op('e') === '1' ? '1' : '0', a: op('a') === '1' ? '1' : '0' },
+      reveal: this.state.ringsRevealed ? '0' : '1',
+      hover: this.hover,
+      flowState: this.animated() ? 'running' : 'paused',
+      setCanvas: this.setCanvas,
+      setFig: this.setFig,
+      onTilt: this.onTilt,
+      onTiltEnd: this.onTiltEnd,
+      noSubmit: (e) => { if (e && e.preventDefault) e.preventDefault(); },
+      svc: svc,
+      chip: { web: chip('web'), app: chip('app'), sys: chip('sys'), unsure: chip('unsure') }
+    };
+  }
+}
+</script>
+</body>
+</html>
