@@ -1,0 +1,41 @@
+---
+import { Font } from 'astro:assets';
+import '../styles/tokens.css';
+import '../styles/base.css';
+import { site } from '../config/site';
+import { getDictionary, localePath, locales, ogLocale, type Locale } from '../i18n';
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const t = getDictionary(lang);
+const title = `${site.name} — ${t.meta.title}`;
+const href = (l: Locale) => new URL(localePath(l), site.url).href;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={t.meta.description} />
+    <link rel="canonical" href={href(lang)} />
+    {locales.map((l) => <link rel="alternate" hreflang={l} href={href(l)} />)}
+    <link rel="alternate" hreflang="x-default" href={href('en')} />
+    <meta name="theme-color" content="#ebe9e4" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={t.meta.description} />
+    <meta property="og:url" content={href(lang)} />
+    <meta property="og:locale" content={ogLocale[lang]} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <Font cssVariable="--font-sans" preload={[{ subset: 'latin', weight: '300' }]} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">{t.a11y.skip}</a>
+    <slot />
+  </body>
+</html>
