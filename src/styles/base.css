@@ -156,6 +156,10 @@
   .skip-link:focus {
     top: 16px;
   }
+  /* The live clock is filled in by script; without it there is nothing honest to show. */
+  html:not(.js) time[data-clock] {
+    display: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

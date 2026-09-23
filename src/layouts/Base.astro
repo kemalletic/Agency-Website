@@ -24,6 +24,7 @@ const href = (l: Locale) => new URL(localePath(l), site.url).href;
     <script is:inline>
       (function () {
         var root = document.documentElement;
+        root.classList.add('js');
         if (!window.matchMedia || !window.matchMedia('(prefers-reduced-motion: no-preference)').matches) return;
         root.classList.add('js-motion');
         window.setTimeout(function () {

@@ -20,20 +20,30 @@ export function initWork(): () => void {
   const yTo = gsap.quickTo(pill, 'y', { duration: 0.45, ease: 'power3' });
   gsap.set(pill, { autoAlpha: 0, scale: 0.6 });
 
+  let pointer: { x: number; y: number } | null = null;
+
   const enter = (event: PointerEvent): void => {
     const card = event.currentTarget as HTMLElement;
+    pointer = { x: event.clientX, y: event.clientY };
     label.textContent = card.dataset.cursor ?? '';
     pill.dataset.icon = card.dataset.cursorIcon ?? 'arrow';
     gsap.set(pill, { x: event.clientX + OFFSET, y: event.clientY + OFFSET });
     gsap.to(pill, { autoAlpha: 1, scale: 1, duration: 0.35, ease: 'back.out(2)' });
   };
   const move = (event: PointerEvent): void => {
+    pointer = { x: event.clientX, y: event.clientY };
     xTo(event.clientX + OFFSET);
     yTo(event.clientY + OFFSET);
   };
   const leave = (): void => {
+    pointer = null;
     gsap.to(pill, { autoAlpha: 0, scale: 0.6, duration: 0.25, ease: 'power2.in' });
   };
+  // Scrolling moves the card from under a resting pointer without a pointerleave; hide the pill then too.
+  const onScroll = (): void => {
+    if (pointer && !document.elementFromPoint(pointer.x, pointer.y)?.closest('.pj-card')) leave();
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
 
   for (const card of cards) {
     card.addEventListener('pointerenter', enter);
@@ -41,6 +51,7 @@ export function initWork(): () => void {
     card.addEventListener('pointerleave', leave);
   }
   return () => {
+    window.removeEventListener('scroll', onScroll);
     for (const card of cards) {
       card.removeEventListener('pointerenter', enter);
       card.removeEventListener('pointermove', move);
