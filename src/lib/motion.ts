@@ -50,3 +50,15 @@ export function magneticOffset(pointerX: number, pointerY: number, box: Box, str
   const dy = pointerY - (box.top + box.height / 2);
   return { x: clamp(dx * strength, -max, max), y: clamp(dy * strength, -max, max) };
 }
+
+/**
+ * How dark the page behind the contact sheet is at scroll `y` (0–1). It dims to 40 % while the sheet rises — its top
+ * from the bottom of the viewport (`start`) to a fifth of it — then on to night by the end of the page (`end`), so a
+ * tall screen, where contact and footer are shorter than the viewport, ends on night instead of a band of grey page.
+ */
+export function pageDim(y: number, start: number, end: number, viewport: number): number {
+  const rise = start + viewport * 0.8;
+  if (end <= rise) return clamp((y - start) / (end - start), 0, 1);
+  if (y <= rise) return 0.4 * clamp((y - start) / (rise - start), 0, 1);
+  return 0.4 + 0.6 * clamp((y - rise) / (end - rise), 0, 1);
+}

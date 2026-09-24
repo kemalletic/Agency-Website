@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { clamp, headerIsSolid, magneticOffset, nextHeaderHidden, parseReveal } from '../../src/lib/motion';
+import { clamp, headerIsSolid, magneticOffset, nextHeaderHidden, pageDim, parseReveal } from '../../src/lib/motion';
 
 describe('parseReveal', () => {
   it('reads a known type with no delay', () => {
@@ -75,5 +75,35 @@ describe('clamp', () => {
     expect(clamp(5, 0, 3)).toBe(3);
     expect(clamp(-1, 0, 3)).toBe(0);
     expect(clamp(2, 0, 3)).toBe(2);
+  });
+});
+
+describe('pageDim', () => {
+  // The sheet's top meets the viewport bottom at 1000 px of scroll; the page ends 1335 px later (a 1440 px screen).
+  const start = 1000;
+  const viewport = 1440;
+  const end = start + 1335;
+  const rise = start + viewport * 0.8;
+
+  it('is clear before the sheet arrives', () => {
+    expect(pageDim(0, start, end, viewport)).toBe(0);
+    expect(pageDim(start, start, end, viewport)).toBe(0);
+  });
+
+  it('dims to 40 % while the sheet rises to a fifth of the viewport', () => {
+    expect(pageDim((start + rise) / 2, start, end, viewport)).toBeCloseTo(0.2, 9);
+    expect(pageDim(rise, start, end, viewport)).toBeCloseTo(0.4, 9);
+  });
+
+  it('reaches full night at the end of the page', () => {
+    expect(pageDim((rise + end) / 2, start, end, viewport)).toBeCloseTo(0.7, 9);
+    expect(pageDim(end, start, end, viewport)).toBe(1);
+    expect(pageDim(end + 50, start, end, viewport)).toBe(1);
+  });
+
+  it('goes straight to night when the page ends before the sheet has risen', () => {
+    const short = start + 400;
+    expect(pageDim(start + 200, start, short, viewport)).toBeCloseTo(0.5, 9);
+    expect(pageDim(short, start, short, viewport)).toBe(1);
   });
 });
