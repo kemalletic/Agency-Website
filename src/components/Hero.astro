@@ -30,7 +30,7 @@ const words = t.hero.title.split(' ');
         alt=""
         formats={['avif', 'webp']}
         widths={[520, 720, 1040, 1360]}
-        sizes="(min-width: 64rem) min(50vw, 720px), min(100vw, 520px)"
+        sizes="(min-width: 64rem) min(50vw, 1080px), min(100vw, 520px)"
         loading="eager"
         fetchpriority="high"
         pictureAttributes={{ class: 'stage-poster' }}
@@ -49,14 +49,14 @@ const words = t.hero.title.split(' ');
 
 <style>
   .hero {
-    padding-bottom: 32px;
+    padding-bottom: 2rem;
   }
   .hero-meta {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    gap: 8px 24px;
-    padding-block: 18px;
+    gap: 0.5rem 1.5rem;
+    padding-block: 1.125rem;
     border-top: 1px solid var(--line);
   }
   .hero-location {
@@ -65,12 +65,12 @@ const words = t.hero.title.split(' ');
   .hero-booking {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
+    gap: 0.625rem;
     color: var(--muted);
   }
   .hero-dot {
-    width: 7px;
-    height: 7px;
+    width: 0.4375rem;
+    height: 0.4375rem;
     flex-shrink: 0;
     border-radius: 50%;
     background: var(--accent);
@@ -78,8 +78,8 @@ const words = t.hero.title.split(' ');
   .hero-body {
     display: flex;
     flex-direction: column;
-    gap: 32px;
-    padding-top: 16px;
+    gap: 2rem;
+    padding-top: 1rem;
   }
   .hero-title {
     font-size: var(--fs-hero);
@@ -90,7 +90,7 @@ const words = t.hero.title.split(' ');
   }
   .hero-stage {
     position: relative;
-    width: min(100%, 520px);
+    width: min(100%, 32.5rem);
     aspect-ratio: 1;
     align-self: center;
     -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
@@ -105,7 +105,7 @@ const words = t.hero.title.split(' ');
   .hero-actions {
     display: flex;
     flex-direction: column;
-    gap: 28px;
+    gap: 1.75rem;
   }
   .hero-lead {
     max-width: 25rem;
@@ -118,14 +118,14 @@ const words = t.hero.title.split(' ');
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 14px;
+    gap: 0.875rem;
   }
   .hero-mail {
-    font-size: 14px;
+    font-size: 0.875rem;
     color: var(--muted);
     text-decoration: underline;
     text-decoration-color: var(--line);
-    text-underline-offset: 4px;
+    text-underline-offset: 0.25rem;
     transition: color 0.25s var(--ease-std);
   }
   .hero-mail:hover {
@@ -138,7 +138,7 @@ const words = t.hero.title.split(' ');
     .hero-actions {
       flex-direction: row;
       align-items: flex-end;
-      gap: 48px;
+      gap: 3rem;
     }
     .hero-ctas {
       flex-shrink: 0;
@@ -148,7 +148,7 @@ const words = t.hero.title.split(' ');
     .hero-meta {
       flex-wrap: nowrap;
       align-items: center;
-      min-height: 64px;
+      min-height: 4rem;
       padding-block: 0;
     }
     .hero-location {
@@ -166,7 +166,7 @@ const words = t.hero.title.split(' ');
       grid-row: 1 / -1;
       justify-self: end;
       align-self: start;
-      width: min(100%, 720px);
+      width: min(100%, 45rem);
       margin-right: calc(-1 * var(--gutter));
     }
     .hero-title {
@@ -180,8 +180,8 @@ const words = t.hero.title.split(' ');
       z-index: 1;
       grid-column: 1 / span 7;
       grid-row: 3;
-      margin-top: 48px;
-      padding-bottom: 8px;
+      margin-top: 3rem;
+      padding-bottom: 0.5rem;
     }
     .hero-caption {
       position: relative;
@@ -189,10 +189,10 @@ const words = t.hero.title.split(' ');
       grid-column: 10 / span 3;
       grid-row: 3;
       align-self: end;
-      margin-bottom: 12px;
+      margin-bottom: 0.75rem;
     }
   }
-  /* From 1280px the meta labels line up with the 12-column grid, as in the original design. */
+  /* From 80rem the meta labels line up with the 12-column grid, as in the original design. */
   @media (min-width: 80rem) {
     .hero-meta {
       display: grid;
@@ -210,7 +210,7 @@ const words = t.hero.title.split(' ');
       justify-self: end;
     }
   }
-  /* Below 1440px the headline is relatively wider, so the rings move one column right to stay clear of it. */
+  /* Below 90rem the headline is relatively wider, so the rings move one column right to stay clear of it. */
   @media (min-width: 64rem) and (max-width: 89.99rem) {
     .hero-stage {
       grid-column: 7 / span 6;
@@ -263,7 +263,7 @@ const words = t.hero.title.split(' ');
   @keyframes hero-fade-up {
     from {
       opacity: 0;
-      transform: translateY(24px);
+      transform: translateY(1.5rem);
     }
   }
   @keyframes hero-figure {

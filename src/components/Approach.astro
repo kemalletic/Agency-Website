@@ -24,8 +24,8 @@ const percent = (value: number): string => `${(value * 100).toFixed(2)}%`;
           src={approachPoster}
           alt=""
           formats={['avif', 'webp']}
-          widths={[420, 640, 860, 1080]}
-          sizes="(min-width: 64rem) min(38vw, 640px), min(100vw, 26rem)"
+          widths={[420, 640, 860, 1080, 1360]}
+          sizes="(min-width: 64rem) min(38vw, 960px), min(100vw, 26rem)"
           loading="lazy"
           pictureAttributes={{ class: 'stage-poster' }}
         />
@@ -65,13 +65,13 @@ const percent = (value: number): string => `${(value * 100).toFixed(2)}%`;
     display: grid;
     grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
     column-gap: var(--gutter);
-    row-gap: 56px;
+    row-gap: 3.5rem;
     align-items: center;
   }
   .approach-figure {
     display: flex;
     flex-direction: column;
-    gap: 28px;
+    gap: 1.75rem;
     grid-column: 1 / -1;
     justify-self: center;
     width: min(100%, 26rem);
@@ -107,8 +107,8 @@ const percent = (value: number): string => `${(value * 100).toFixed(2)}%`;
     position: absolute;
     left: -2.5px;
     top: -2.5px;
-    width: 5px;
-    height: 5px;
+    width: 0.3125rem;
+    height: 0.3125rem;
     border-radius: 50%;
     background: var(--ink);
     transform: scale(min(1, calc(var(--draw, 1) * 4)));
@@ -143,15 +143,15 @@ const percent = (value: number): string => `${(value * 100).toFixed(2)}%`;
     translate: -75% 0;
   }
   .stage-label[data-dir='up'] .stage-label-text {
-    bottom: calc(var(--len) + 6px);
+    bottom: calc(var(--len) + 0.375rem);
   }
   .stage-label[data-dir='down'] .stage-label-text {
-    top: calc(var(--len) + 6px);
+    top: calc(var(--len) + 0.375rem);
   }
   .approach-text {
     display: flex;
     flex-direction: column;
-    gap: 32px;
+    gap: 2rem;
     grid-column: 1 / -1;
   }
   .approach-lead {
@@ -177,11 +177,11 @@ const percent = (value: number): string => `${(value * 100).toFixed(2)}%`;
       grid-column: 1 / span 5;
       justify-self: stretch;
       width: auto;
-      margin-left: -8px;
+      margin-left: -0.5rem;
     }
     .approach-text {
       grid-column: 7 / span 6;
-      gap: 40px;
+      gap: 2.5rem;
     }
   }
 </style>

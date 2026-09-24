@@ -73,10 +73,10 @@ const art = { web: ServiceWeb, apps: ServiceApps, systems: ServiceFlow } as cons
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     grid-template-areas: 'num icon' 'title icon' 'tag icon';
-    column-gap: 16px;
-    row-gap: 10px;
+    column-gap: 1rem;
+    row-gap: 0.625rem;
     align-items: center;
-    padding-block: 26px;
+    padding-block: 1.625rem;
     list-style: none;
     cursor: pointer;
   }
@@ -88,7 +88,7 @@ const art = { web: ServiceWeb, apps: ServiceApps, systems: ServiceFlow } as cons
   }
   .svc-num {
     grid-area: num;
-    font-size: 14px;
+    font-size: 0.875rem;
     color: var(--label);
     font-variant-numeric: tabular-nums;
   }
@@ -102,7 +102,7 @@ const art = { web: ServiceWeb, apps: ServiceApps, systems: ServiceFlow } as cons
   }
   .svc-tagline {
     grid-area: tag;
-    font-size: 16px;
+    font-size: 1rem;
     line-height: 1.45;
     color: var(--muted);
   }
@@ -110,8 +110,8 @@ const art = { web: ServiceWeb, apps: ServiceApps, systems: ServiceFlow } as cons
     display: grid;
     grid-area: icon;
     place-items: center;
-    width: 44px;
-    height: 44px;
+    width: 2.75rem;
+    height: 2.75rem;
     border: 1px solid var(--line);
     border-radius: 50%;
     transition: border-color 0.3s var(--ease-std);
@@ -132,7 +132,7 @@ const art = { web: ServiceWeb, apps: ServiceApps, systems: ServiceFlow } as cons
   }
   @media (hover: hover) and (pointer: fine) {
     .svc-summary:hover .svc-title {
-      transform: translateX(10px);
+      transform: translateX(0.625rem);
     }
     .svc-summary:hover .svc-icon {
       border-color: var(--ink);
@@ -144,13 +144,13 @@ const art = { web: ServiceWeb, apps: ServiceApps, systems: ServiceFlow } as cons
   .svc-panel {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
-    row-gap: 40px;
-    padding: 4px 0 48px;
+    row-gap: 2.5rem;
+    padding: 0.25rem 0 3rem;
   }
   .svc-text {
     display: flex;
     flex-direction: column;
-    gap: 32px;
+    gap: 2rem;
   }
   .svc-body {
     font-size: var(--fs-body-xl);
@@ -162,38 +162,38 @@ const art = { web: ServiceWeb, apps: ServiceApps, systems: ServiceFlow } as cons
   .svc-meta {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 0.625rem;
   }
   .svc-meta--list {
-    gap: 14px;
+    gap: 0.875rem;
   }
   .svc-bring {
-    font-size: 16px;
+    font-size: 1rem;
     line-height: 1.5;
     color: var(--muted);
   }
   .svc-chips {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 0.5rem;
     padding: 0;
     list-style: none;
   }
   .svc-chips li {
     display: flex;
     align-items: center;
-    height: 36px;
-    padding: 0 15px;
+    height: 2.25rem;
+    padding: 0 0.9375rem;
     border: 1px solid var(--line);
     border-radius: 999px;
-    font-size: 14px;
+    font-size: 0.875rem;
   }
   @media (min-width: 64rem) {
     .svc-summary {
       grid-template-columns: repeat(12, minmax(0, 1fr));
       grid-template-areas: none;
       column-gap: var(--gutter);
-      min-height: 128px;
+      min-height: 8rem;
       padding-block: 0;
     }
     .svc-num {
@@ -217,12 +217,12 @@ const art = { web: ServiceWeb, apps: ServiceApps, systems: ServiceFlow } as cons
       grid-template-columns: repeat(12, minmax(0, 1fr));
       column-gap: var(--gutter);
       align-items: start;
-      padding-bottom: 64px;
+      padding-bottom: 4rem;
     }
     .svc-text {
       grid-column: 2 / span 5;
-      gap: 36px;
-      padding-right: 24px;
+      gap: 2.25rem;
+      padding-right: 1.5rem;
     }
     .svc-art {
       grid-column: 8 / span 5;

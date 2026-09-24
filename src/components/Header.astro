@@ -42,8 +42,8 @@ const links = [
     top: 0;
     z-index: 50;
     background: color-mix(in srgb, var(--paper) 86%, transparent);
-    -webkit-backdrop-filter: saturate(1.3) blur(14px);
-    backdrop-filter: saturate(1.3) blur(14px);
+    -webkit-backdrop-filter: saturate(1.3) blur(0.875rem);
+    backdrop-filter: saturate(1.3) blur(0.875rem);
     box-shadow: 0 1px 0 color-mix(in srgb, var(--line) 80%, transparent);
     transition:
       transform 0.5s var(--ease-out),
@@ -95,8 +95,8 @@ const links = [
   }
   .nav {
     display: none;
-    gap: 36px;
-    font-size: 15px;
+    gap: 2.25rem;
+    font-size: 0.9375rem;
   }
   .nav a {
     text-decoration: none;
@@ -112,7 +112,7 @@ const links = [
   .header-end {
     display: flex;
     align-items: center;
-    gap: 28px;
+    gap: 1.75rem;
   }
   .header-clock,
   .header-lang,
@@ -120,15 +120,15 @@ const links = [
     display: none;
   }
   .header-clock {
-    font-size: 13px;
+    font-size: 0.8125rem;
     color: var(--muted);
   }
   .menu-toggle {
-    height: 40px;
-    padding: 0 16px;
+    height: 2.5rem;
+    padding: 0 1rem;
     border: 1px solid var(--line);
     border-radius: 999px;
-    font-size: 14px;
+    font-size: 0.875rem;
     font-weight: 500;
   }
   @media (min-width: 64rem) {
@@ -143,7 +143,7 @@ const links = [
     .nav {
       display: flex;
       grid-column: 5 / span 4;
-      gap: 28px;
+      gap: 1.75rem;
     }
     .header-end {
       grid-column: 9 / span 4;
@@ -157,10 +157,10 @@ const links = [
       display: none;
     }
   }
-  /* The clock only fits next to the language switch and CTA from 1280px up. */
+  /* The clock only fits next to the language switch and CTA from 80rem up. */
   @media (min-width: 80rem) {
     .nav {
-      gap: 36px;
+      gap: 2.25rem;
     }
     .header-clock {
       display: block;

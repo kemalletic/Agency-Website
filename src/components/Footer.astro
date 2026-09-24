@@ -32,28 +32,28 @@ const year = new Date().getFullYear();
   .site-footer {
     position: relative;
     z-index: 2;
-    padding: clamp(96px, 11vw, 160px) 0 40px;
+    padding: clamp(6rem, 11vw, 10rem) 0 2.5rem;
     background: var(--night);
     /* Covers the sub-pixel seam where the contact section ends on a fractional pixel. */
     box-shadow: 0 -2px 0 var(--night);
     color: var(--night-muted);
-    font-size: 13px;
+    font-size: 0.8125rem;
   }
   .footer-inner {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    padding-top: 28px;
+    gap: 1.25rem;
+    padding-top: 1.75rem;
     border-top: 1px solid var(--night-line);
   }
   .footer-brand {
     display: flex;
     align-items: center;
-    gap: 18px;
+    gap: 1.125rem;
   }
   .footer-nav {
     display: flex;
-    gap: 28px;
+    gap: 1.75rem;
   }
   .footer-nav a {
     color: var(--paper);
@@ -88,7 +88,7 @@ const year = new Date().getFullYear();
       justify-self: end;
     }
   }
-  /* Keep coordinates and the clock on one line between 1024px and 1280px. */
+  /* Keep coordinates and the clock on one line between 64rem and 80rem. */
   @media (min-width: 64rem) and (max-width: 79.99rem) {
     .footer-brand {
       grid-column: span 3;

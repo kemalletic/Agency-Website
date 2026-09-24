@@ -117,18 +117,18 @@ const newTab = { target: '_blank', rel: 'noopener' };
     display: grid;
     grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
     column-gap: var(--gutter);
-    row-gap: 32px;
+    row-gap: 2rem;
     align-items: end;
-    margin-top: 64px;
+    margin-top: 4rem;
   }
   .pj + .pj {
-    margin-top: clamp(80px, 8vw, 120px);
+    margin-top: clamp(5rem, 8vw, 7.5rem);
   }
   .pj-card {
     display: block;
     grid-column: 1 / -1;
     aspect-ratio: 16 / 10;
-    border-radius: 12px;
+    border-radius: 0.75rem;
     overflow: hidden;
   }
   .pj--portal .pj-card {
@@ -161,17 +161,17 @@ const newTab = { target: '_blank', rel: 'noopener' };
   }
   @media (hover: hover) and (pointer: fine) {
     .pj-card:hover :global(.pj-mock) {
-      transform: translate(-6px, -8px);
+      transform: translate(-0.375rem, -0.5rem);
     }
   }
   .pj-info {
     display: flex;
     flex-direction: column;
-    gap: 22px;
+    gap: 1.375rem;
     grid-column: 1 / -1;
   }
   .pj-num {
-    font-size: 14px;
+    font-size: 0.875rem;
     color: var(--label);
     font-variant-numeric: tabular-nums;
   }
@@ -182,22 +182,22 @@ const newTab = { target: '_blank', rel: 'noopener' };
     letter-spacing: -0.035em;
   }
   .pj-summary {
-    font-size: 16px;
+    font-size: 1rem;
     line-height: 1.6;
     color: var(--muted);
     text-wrap: pretty;
   }
   .pj-facts {
-    margin-top: 4px;
+    margin-top: 0.25rem;
     border-top: 1px solid var(--line);
   }
   .pj-facts div {
     display: flex;
     justify-content: space-between;
-    gap: 16px;
-    padding: 13px 0;
+    gap: 1rem;
+    padding: 0.8125rem 0;
     border-bottom: 1px solid var(--line);
-    font-size: 14px;
+    font-size: 0.875rem;
     line-height: 1.4;
   }
   .pj-facts dt {
@@ -209,11 +209,11 @@ const newTab = { target: '_blank', rel: 'noopener' };
   .pj-status {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 0.5rem;
   }
   .pj-dot {
-    width: 7px;
-    height: 7px;
+    width: 0.4375rem;
+    height: 0.4375rem;
     flex-shrink: 0;
     border-radius: 50%;
     background: var(--accent);
@@ -223,10 +223,10 @@ const newTab = { target: '_blank', rel: 'noopener' };
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 16px;
-    margin-top: clamp(80px, 8vw, 120px);
-    padding: 32px 24px;
-    border-radius: 12px;
+    gap: 1rem;
+    margin-top: clamp(5rem, 8vw, 7.5rem);
+    padding: 2rem 1.5rem;
+    border-radius: 0.75rem;
     text-decoration: none;
     transition: background-color 0.35s ease;
   }
@@ -235,7 +235,7 @@ const newTab = { target: '_blank', rel: 'noopener' };
       background: var(--paper-2);
     }
     .pj-next:hover :global(.arr) {
-      transform: translateX(4px);
+      transform: translateX(0.25rem);
     }
   }
   .pj-next-title {
@@ -245,7 +245,7 @@ const newTab = { target: '_blank', rel: 'noopener' };
     letter-spacing: -0.04em;
   }
   .pj-next-body {
-    font-size: 16px;
+    font-size: 1rem;
     line-height: 1.5;
     color: var(--muted);
   }
@@ -274,8 +274,8 @@ const newTab = { target: '_blank', rel: 'noopener' };
       grid-template-columns: repeat(12, minmax(0, 1fr));
       column-gap: var(--gutter);
       align-items: center;
-      min-height: 184px;
-      padding: 0 36px;
+      min-height: 11.5rem;
+      padding: 0 2.25rem;
     }
     .pj-next .pj-num {
       grid-column: 1;
@@ -291,7 +291,7 @@ const newTab = { target: '_blank', rel: 'noopener' };
       justify-self: end;
     }
   }
-  /* Between 1024px and 1280px two columns are too narrow for the button, so the row shifts left by one column. */
+  /* Between 64rem and 80rem two columns are too narrow for the button, so the row shifts left by one column. */
   @media (min-width: 64rem) and (max-width: 79.99rem) {
     .pj-next-title {
       grid-column: 2 / span 5;
@@ -309,7 +309,7 @@ const newTab = { target: '_blank', rel: 'noopener' };
     width: 100%;
     height: 100%;
     overflow: hidden;
-    border-radius: 12px;
+    border-radius: 0.75rem;
     pointer-events: none;
   }
   .pj-next-border rect {
@@ -335,13 +335,13 @@ const newTab = { target: '_blank', rel: 'noopener' };
     z-index: 60;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    height: 36px;
-    padding: 0 14px;
+    gap: 0.5rem;
+    height: 2.25rem;
+    padding: 0 0.875rem;
     border-radius: 999px;
     background: var(--ink);
     color: var(--paper);
-    font-size: 13px;
+    font-size: 0.8125rem;
     font-weight: 500;
     white-space: nowrap;
     pointer-events: none;

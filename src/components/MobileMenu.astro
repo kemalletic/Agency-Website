@@ -74,20 +74,20 @@ const t = getDictionary(lang);
     border-bottom: 1px solid var(--line);
   }
   .menu-close {
-    height: 40px;
-    padding: 0 16px;
+    height: 2.5rem;
+    padding: 0 1rem;
     border: 1px solid var(--line);
     border-radius: 999px;
-    font-size: 14px;
+    font-size: 0.875rem;
     font-weight: 500;
   }
   .menu-nav {
     display: flex;
     flex-direction: column;
-    padding-block: 28px;
+    padding-block: 1.75rem;
   }
   .menu-nav a {
-    padding-block: 6px;
+    padding-block: 0.375rem;
     font-size: clamp(2.5rem, 11vw, 3.75rem);
     font-weight: 300;
     line-height: 1.1;
@@ -98,23 +98,23 @@ const t = getDictionary(lang);
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 20px;
+    gap: 1.25rem;
     margin-top: auto;
-    padding-bottom: 28px;
+    padding-bottom: 1.75rem;
   }
   .menu-mail {
-    font-size: 15px;
+    font-size: 0.9375rem;
     color: var(--muted);
     text-decoration: underline;
     text-decoration-color: var(--line);
-    text-underline-offset: 4px;
+    text-underline-offset: 0.25rem;
   }
   .menu-meta {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    font-size: 13px;
+    font-size: 0.8125rem;
     color: var(--muted);
   }
   :global(html:has(dialog[data-menu][open])) {
@@ -140,7 +140,7 @@ const t = getDictionary(lang);
   @keyframes menu-rise {
     from {
       opacity: 0;
-      transform: translateY(24px);
+      transform: translateY(1.5rem);
     }
   }
 </style>
