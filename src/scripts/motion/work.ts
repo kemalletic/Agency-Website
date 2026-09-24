@@ -27,8 +27,11 @@ export function initWork(): () => void {
     pointer = { x: event.clientX, y: event.clientY };
     label.textContent = card.dataset.cursor ?? '';
     pill.dataset.icon = card.dataset.cursorIcon ?? 'arrow';
-    gsap.set(pill, { x: event.clientX + OFFSET, y: event.clientY + OFFSET });
-    gsap.to(pill, { autoAlpha: 1, scale: 1, duration: 0.35, ease: 'back.out(2)' });
+    // Jump to the pointer (start and end), so a follow still running from the last card does not drag the pill back.
+    xTo(event.clientX + OFFSET, event.clientX + OFFSET);
+    yTo(event.clientY + OFFSET, event.clientY + OFFSET);
+    // Show and hide overwrite each other: a pointer that only brushes a card starts the hide while the show still runs.
+    gsap.to(pill, { autoAlpha: 1, scale: 1, duration: 0.35, ease: 'back.out(2)', overwrite: 'auto' });
   };
   const move = (event: PointerEvent): void => {
     pointer = { x: event.clientX, y: event.clientY };
@@ -37,7 +40,7 @@ export function initWork(): () => void {
   };
   const leave = (): void => {
     pointer = null;
-    gsap.to(pill, { autoAlpha: 0, scale: 0.6, duration: 0.25, ease: 'power2.in' });
+    gsap.to(pill, { autoAlpha: 0, scale: 0.6, duration: 0.25, ease: 'power2.in', overwrite: 'auto' });
   };
   // Scrolling moves the card from under a resting pointer without a pointerleave; hide the pill then too.
   const onScroll = (): void => {

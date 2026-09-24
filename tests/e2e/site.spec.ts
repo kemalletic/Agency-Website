@@ -71,6 +71,24 @@ test('switches language and keeps the page', async ({ page, isMobile }) => {
   await expect(page.locator('html')).toHaveAttribute('lang', 'bs');
 });
 
+test('the work cursor pill hides again after the pointer only brushes a card', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'the pill needs a fine pointer');
+  await page.goto('/');
+  await page.waitForFunction(() => document.documentElement.classList.contains('motion-ready'));
+  const card = page.locator('.pj-card').first();
+  await card.scrollIntoViewIfNeeded();
+  // In and straight out again, as when a fast scroll carries a card under a resting pointer: the hide starts while
+  // the show is still running. Dispatched in one task, because two real mouse moves are too far apart to race.
+  await card.evaluate((element) => {
+    const box = element.getBoundingClientRect();
+    const at = { clientX: box.x + box.width / 2, clientY: box.y + box.height / 2 };
+    element.dispatchEvent(new PointerEvent('pointerenter', at));
+    element.dispatchEvent(new PointerEvent('pointerleave', at));
+  });
+  await page.waitForTimeout(800);
+  await expect(page.locator('.cursor-pill')).toBeHidden();
+});
+
 test('the phone menu opens, traps focus and closes with Escape', async ({ page, isMobile }) => {
   test.skip(!isMobile, 'desktop has no menu');
   await page.goto('/');
