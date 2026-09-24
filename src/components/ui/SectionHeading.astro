@@ -44,7 +44,7 @@ const { id, title, count, intro } = Astro.props;
     display: inline-block;
     vertical-align: top;
     margin: 0.12em 0 0 0.3em;
-    font-size: 0.9375rem;
+    font-size: var(--fs-small);
     line-height: 1;
     letter-spacing: 0;
     font-weight: 400;
@@ -54,7 +54,7 @@ const { id, title, count, intro } = Astro.props;
   .sh-intro {
     grid-column: 1 / -1;
     max-width: 34rem;
-    font-size: var(--fs-body-m);
+    font-size: var(--fs-body-l);
     line-height: 1.6;
     color: var(--muted);
     text-wrap: pretty;

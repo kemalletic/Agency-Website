@@ -24,15 +24,15 @@
   --fs-display: clamp(3.5rem, 2.2rem + 5.3333vw, 7rem);
   --fs-h2: clamp(2.75rem, 2.0071rem + 3.0476vw, 4.75rem);
   --fs-service: clamp(2rem, 1.4893rem + 2.0952vw, 3.375rem);
-  --fs-next: clamp(2.25rem, 1.7857rem + 1.9048vw, 3.5rem);
   --fs-lead: clamp(1.75rem, 1.3321rem + 1.7143vw, 2.875rem);
-  --fs-project: clamp(1.875rem, 1.6429rem + 0.9524vw, 2.5rem);
-  --fs-mail: clamp(1.5rem, 1.2679rem + 0.9524vw, 2.125rem);
+  --fs-project: clamp(2rem, 1.8143rem + 0.7619vw, 2.5rem);
   --fs-h3: clamp(1.375rem, 1.1893rem + 0.7619vw, 1.875rem);
   --fs-body-xl: clamp(1.125rem, 1.0554rem + 0.2857vw, 1.3125rem);
-  --fs-body-l: clamp(1.0625rem, 1.0393rem + 0.0952vw, 1.125rem);
-  --fs-body-m: clamp(1rem, 0.9768rem + 0.0952vw, 1.0625rem);
-  --fs-input: clamp(1.125rem, 1.0786rem + 0.1905vw, 1.25rem);
+  --fs-body-l: clamp(1rem, 0.9286rem + 0.2857vw, 1.125rem);
+  /* UI text: four fixed steps below the fluid ones. */
+  --fs-ui: 1rem;
+  --fs-small: 0.875rem;
+  --fs-label: 0.75rem;
 
   /* Layout */
   --page-max: 105rem;

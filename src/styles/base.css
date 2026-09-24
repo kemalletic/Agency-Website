@@ -120,7 +120,7 @@
     color: var(--label);
   }
   .fig-caption {
-    font-size: 0.8125rem;
+    font-size: var(--fs-small);
     line-height: 1.55;
     color: var(--muted);
   }
