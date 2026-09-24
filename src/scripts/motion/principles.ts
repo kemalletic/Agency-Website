@@ -1,27 +1,32 @@
 import { gsap } from 'gsap';
 import { SplitText } from 'gsap/SplitText';
+import { whenNear } from './near';
 
 export function initPrinciples(): () => void {
   const styles = getComputedStyle(document.documentElement);
   const from = styles.getPropertyValue('--label').trim();
   const to = styles.getPropertyValue('--ink').trim();
 
-  const splits = Array.from(document.querySelectorAll<HTMLElement>('.pr-text')).map((text) =>
-    SplitText.create(text, {
-      type: 'words',
-      tag: 'span',
-      aria: 'none',
-      autoSplit: true,
-      onSplit: (self) => {
-        const words = self.words.filter((word) => !word.closest('.pr-lead'));
-        return gsap.fromTo(
-          words,
-          { color: from },
-          { color: to, ease: 'none', stagger: 0.08, scrollTrigger: { trigger: text, start: 'top 82%', end: 'bottom 52%', scrub: true } },
-        );
-      },
-    }),
-  );
+  const splits: SplitText[] = [];
+  // Split each principle only as it comes near: five paragraphs of words are a lot of DOM work at start-up.
+  const release = whenNear(document.querySelectorAll<HTMLElement>('.pr-text'), (text) => {
+    splits.push(
+      SplitText.create(text, {
+        type: 'words',
+        tag: 'span',
+        aria: 'none',
+        autoSplit: true,
+        onSplit: (self) => {
+          const words = self.words.filter((word) => !word.closest('.pr-lead'));
+          return gsap.fromTo(
+            words,
+            { color: from },
+            { color: to, ease: 'none', stagger: 0.08, scrollTrigger: { trigger: text, start: 'top 82%', end: 'bottom 52%', scrub: true } },
+          );
+        },
+      }),
+    );
+  });
 
   // Only a real photo drifts; the drawn placeholder stays put.
   const photo = document.querySelector<HTMLElement>('.pr-frame--photo');
@@ -32,6 +37,7 @@ export function initPrinciples(): () => void {
       : null;
 
   return () => {
+    release();
     drift?.scrollTrigger?.kill();
     drift?.kill();
     for (const split of splits) split.revert();

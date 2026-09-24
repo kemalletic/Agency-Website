@@ -1,15 +1,16 @@
 import { gsap } from 'gsap';
 import { SplitText } from 'gsap/SplitText';
 import { parseReveal } from '../../lib/motion';
+import { whenNear } from './near';
 
 const EASE = 'expo.out';
 
 export function initReveals(): () => void {
   const splits: SplitText[] = [];
 
-  for (const el of document.querySelectorAll<HTMLElement>('[data-reveal]')) {
+  const setup = (el: HTMLElement): void => {
     const options = parseReveal(el.dataset);
-    if (!options) continue;
+    if (!options) return;
     const { delay } = options;
     const scrollTrigger = { trigger: el, start: 'top 88%', once: true };
 
@@ -63,9 +64,12 @@ export function initReveals(): () => void {
         );
         break;
     }
-  }
+  };
 
+  // Elements further down are prepared a viewport before they arrive; until then they are off-screen anyway.
+  const release = whenNear(document.querySelectorAll<HTMLElement>('[data-reveal]'), setup);
   return () => {
+    release();
     for (const split of splits) split.revert();
   };
 }

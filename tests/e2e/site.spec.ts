@@ -94,6 +94,27 @@ test('a deep link lands on its section even with the pins above it', async ({ pa
   expect(offset).toBeLessThan(4);
 });
 
+test('every reveal has played by the end of the page, those prepared on the way included', async ({ page }) => {
+  await page.goto('/');
+  await page.waitForFunction(() => document.documentElement.classList.contains('motion-ready'));
+  // A screen at a time, the way a reader goes, so the reveals further down are prepared as they come near.
+  for (let step = 0; step < 80; step++) {
+    const end = await page.evaluate(() => {
+      window.scrollBy(0, window.innerHeight * 0.8);
+      return window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+    });
+    await page.waitForTimeout(100);
+    if (end) break;
+  }
+  const hidden = () =>
+    page.evaluate(() =>
+      Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]'))
+        .filter((el) => [el, ...el.querySelectorAll<HTMLElement>('[style]')].some((node) => node.style.opacity !== '' && Number(node.style.opacity) < 0.99))
+        .map((el) => el.outerHTML.slice(0, 80)),
+    );
+  await expect.poll(hidden, { timeout: 5_000 }).toEqual([]);
+});
+
 test('the contact form validates and sends (intercepted)', async ({ page }) => {
   let sent: Record<string, unknown> | null = null;
   await page.route('https://api.web3forms.com/**', async (route) => {
