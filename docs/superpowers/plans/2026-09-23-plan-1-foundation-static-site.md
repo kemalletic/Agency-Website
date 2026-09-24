@@ -78,7 +78,7 @@ tests/dist/services.test.ts · work.test.ts · process.test.ts · principles.tes
 
 - Produces: `formatTime(date: Date, locale: 'en' | 'bs'): string` → `"17:59"`; `formatOffset(date: Date): string` → `"UTC+1"` / `"UTC+2"`; `msUntilNextMinute(date: Date): number`; type `ClockLocale = 'en' | 'bs'`. npm scripts `dev`, `build`, `preview`, `check`, `test`, `test:dist`.
 
-- [ ] **Step 1: Move the original export into `reference/`**
+- [x] **Step 1: Move the original export into `reference/`**
 
 ```bash
 cd /c/projects/nice
@@ -89,7 +89,7 @@ git status --short
 
 Expected: five `R` (renamed) entries pointing into `reference/`.
 
-- [ ] **Step 2: Create project config files**
+- [x] **Step 2: Create project config files**
 
 `package.json`:
 
@@ -250,7 +250,7 @@ Temporary `src/pages/index.astro` (replaced in Task 3):
 </html>
 ```
 
-- [ ] **Step 3: Install dependencies**
+- [x] **Step 3: Install dependencies**
 
 ```bash
 export PATH="/c/Users/letic/AppData/Roaming/nvm/v24.21.0:$PATH"
@@ -261,7 +261,7 @@ npm install -D typescript@^6.0.3 @astrojs/check@^0.9.10 vitest@^5.0.1 linkedom@^
 
 Expected: both commands finish with `added N packages`, no `ERR!`.
 
-- [ ] **Step 4: Write the failing time test**
+- [x] **Step 4: Write the failing time test**
 
 `tests/unit/time.test.ts`:
 
@@ -304,12 +304,12 @@ describe('msUntilNextMinute', () => {
 });
 ```
 
-- [ ] **Step 5: Run it to see it fail**
+- [x] **Step 5: Run it to see it fail**
 
 Run: `npm test`
 Expected: FAIL — `Failed to resolve import "../../src/lib/time"`.
 
-- [ ] **Step 6: Implement `src/lib/time.ts`**
+- [x] **Step 6: Implement `src/lib/time.ts`**
 
 ```ts
 export type ClockLocale = 'en' | 'bs';
@@ -338,7 +338,7 @@ export function msUntilNextMinute(date: Date): number {
 }
 ```
 
-- [ ] **Step 7: Run the tests and the build**
+- [x] **Step 7: Run the tests and the build**
 
 Run: `npm test`
 Expected: PASS — `Tests 7 passed (7)`.
@@ -346,7 +346,7 @@ Expected: PASS — `Tests 7 passed (7)`.
 Run: `npm run build`
 Expected: ends with `[build] Complete!` and `dist/index.html` exists.
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 git add -A
@@ -374,7 +374,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
   - Types `Dictionary`, `RichText`, `RichSegment`, `RingKey = 'design' | 'engineering' | 'automation'`, `MarkKey = 'take' | 'fall'`.
   - `site` object: `name`, `url`, `email`, `phone`, `address.street[l]`, `address.city`, `address.country[l]`, `hours[l]`, `bookingFrom[l]`, `coordinates`, `socials[]`, `callUrl`.
 
-- [ ] **Step 1: Write the failing i18n test**
+- [x] **Step 1: Write the failing i18n test**
 
 `tests/unit/i18n.test.ts`:
 
@@ -455,12 +455,12 @@ describe('locale helpers', () => {
 });
 ```
 
-- [ ] **Step 2: Run it to see it fail**
+- [x] **Step 2: Run it to see it fail**
 
 Run: `npm test`
 Expected: FAIL — `Failed to resolve import "../../src/i18n"`.
 
-- [ ] **Step 3: Create `src/i18n/locales.ts`**
+- [x] **Step 3: Create `src/i18n/locales.ts`**
 
 ```ts
 export const locales = ['en', 'bs'] as const;
@@ -482,7 +482,7 @@ export function localePath(locale: Locale): string {
 }
 ```
 
-- [ ] **Step 4: Create `src/i18n/types.ts`**
+- [x] **Step 4: Create `src/i18n/types.ts`**
 
 ```ts
 export type RingKey = 'design' | 'engineering' | 'automation';
@@ -606,7 +606,7 @@ export interface Dictionary {
 }
 ```
 
-- [ ] **Step 5: Create `src/i18n/en.ts`**
+- [x] **Step 5: Create `src/i18n/en.ts`**
 
 ```ts
 import type { Dictionary } from './types';
@@ -824,7 +824,7 @@ export const en: Dictionary = {
 };
 ```
 
-- [ ] **Step 6: Create `src/i18n/bs.ts`**
+- [x] **Step 6: Create `src/i18n/bs.ts`**
 
 ```ts
 import type { Dictionary } from './types';
@@ -1042,7 +1042,7 @@ export const bs: Dictionary = {
 };
 ```
 
-- [ ] **Step 7: Create `src/i18n/index.ts`**
+- [x] **Step 7: Create `src/i18n/index.ts`**
 
 ```ts
 import { bs } from './bs';
@@ -1068,7 +1068,7 @@ export function pad2(n: number): string {
 }
 ```
 
-- [ ] **Step 8: Create `src/config/site.ts`**
+- [x] **Step 8: Create `src/config/site.ts`**
 
 ```ts
 import type { Locale } from '../i18n/locales';
@@ -1115,7 +1115,7 @@ export const site: SiteConfig = {
 };
 ```
 
-- [ ] **Step 9: Point `astro.config.ts` at the site config**
+- [x] **Step 9: Point `astro.config.ts` at the site config**
 
 Replace the first two lines and the `site` property so the file reads:
 
@@ -1150,7 +1150,7 @@ export default defineConfig({
 });
 ```
 
-- [ ] **Step 10: Run tests and type check**
+- [x] **Step 10: Run tests and type check**
 
 Run: `npm test`
 Expected: PASS — `Tests 15 passed (15)`.
@@ -1158,7 +1158,7 @@ Expected: PASS — `Tests 15 passed (15)`.
 Run: `npm run check`
 Expected: `0 errors`.
 
-- [ ] **Step 11: Commit**
+- [x] **Step 11: Commit**
 
 ```bash
 git add -A
@@ -1186,7 +1186,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
   - Tokens: `--paper … --night-error`, `--fs-*`, `--page-max`, `--pad-x`, `--cols`, `--gutter`, `--header-h`, `--section-y`, `--ease-out`, `--ease-std`.
   - Test helpers: `pages`, `loadPage(path)`, `text(el)`.
 
-- [ ] **Step 1: Write the dist test helpers and the failing document test**
+- [x] **Step 1: Write the dist test helpers and the failing document test**
 
 `tests/dist/helpers.ts`:
 
@@ -1261,12 +1261,12 @@ describe.each(pages)('$path document', ({ path, lang }) => {
 });
 ```
 
-- [ ] **Step 2: Build and run the dist test to see it fail**
+- [x] **Step 2: Build and run the dist test to see it fail**
 
 Run: `npm run build && npm run test:dist`
 Expected: FAIL — `ENOENT … dist/bs/index.html` and the English assertions fail (no title/meta yet).
 
-- [ ] **Step 3: Create `src/styles/tokens.css`**
+- [x] **Step 3: Create `src/styles/tokens.css`**
 
 ```css
 :root {
@@ -1333,7 +1333,7 @@ Expected: FAIL — `ENOENT … dist/bs/index.html` and the English assertions fa
 }
 ```
 
-- [ ] **Step 4: Create `src/styles/base.css`**
+- [x] **Step 4: Create `src/styles/base.css`**
 
 ```css
 @layer reset, base;
@@ -1507,7 +1507,7 @@ Expected: FAIL — `ENOENT … dist/bs/index.html` and the English assertions fa
 }
 ```
 
-- [ ] **Step 5: Create `src/layouts/Base.astro`**
+- [x] **Step 5: Create `src/layouts/Base.astro`**
 
 ```astro
 ---
@@ -1553,7 +1553,7 @@ const href = (l: Locale) => new URL(localePath(l), site.url).href;
 </html>
 ```
 
-- [ ] **Step 6: Create `src/components/Home.astro` and both pages**
+- [x] **Step 6: Create `src/components/Home.astro` and both pages**
 
 `src/components/Home.astro`:
 
@@ -1594,12 +1594,12 @@ import Home from '../../components/Home.astro';
 <Home lang="bs" />
 ```
 
-- [ ] **Step 7: Build and run all tests**
+- [x] **Step 7: Build and run all tests**
 
 Run: `npm run build && npm run test:dist && npm test && npm run check`
 Expected: dist `Tests 10 passed (10)`; unit `Tests 15 passed (15)`; check `0 errors`.
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 git add -A
@@ -1629,7 +1629,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
   - `<Clock lang withOffset? class? />` — `<time data-clock data-locale data-with-offset?>`.
   - `<LangSwitch lang class? />`; `<Header lang />` (contains `<MobileMenu>` = `dialog#site-menu[data-menu]`, opener `[data-menu-open]`).
 
-- [ ] **Step 1: Write the failing header test**
+- [x] **Step 1: Write the failing header test**
 
 `tests/dist/header.test.ts`:
 
@@ -1677,12 +1677,12 @@ describe.each(pages)('$path header', ({ path, lang }) => {
 });
 ```
 
-- [ ] **Step 2: Build and see it fail**
+- [x] **Step 2: Build and see it fail**
 
 Run: `npm run build && npm run test:dist`
 Expected: FAIL — header assertions (`header` is null).
 
-- [ ] **Step 3: Create `src/components/ui/Button.astro`**
+- [x] **Step 3: Create `src/components/ui/Button.astro`**
 
 ```astro
 ---
@@ -1810,7 +1810,7 @@ const path = icon === 'external' ? 'M3 11L11 3M5 3H11V9' : 'M2 7H12M8 3L12 7L8 1
 </style>
 ```
 
-- [ ] **Step 4: Create `src/components/ui/SectionHeading.astro` and `src/components/ui/RingDot.astro`**
+- [x] **Step 4: Create `src/components/ui/SectionHeading.astro` and `src/components/ui/RingDot.astro`**
 
 `src/components/ui/SectionHeading.astro`:
 
@@ -1917,7 +1917,7 @@ const { ring } = Astro.props;
 </style>
 ```
 
-- [ ] **Step 5: Create `src/components/Brand.astro`**
+- [x] **Step 5: Create `src/components/Brand.astro`**
 
 ```astro
 ---
@@ -1976,7 +1976,7 @@ const Tag = link ? 'a' : 'span';
 </style>
 ```
 
-- [ ] **Step 6: Create the clock (`src/scripts/clock.ts`, `src/components/Clock.astro`)**
+- [x] **Step 6: Create the clock (`src/scripts/clock.ts`, `src/components/Clock.astro`)**
 
 `src/scripts/clock.ts`:
 
@@ -2031,7 +2031,7 @@ const { lang, withOffset = false, class: className, ...rest } = Astro.props;
 </style>
 ```
 
-- [ ] **Step 7: Create the language switch (`src/scripts/lang-switch.ts`, `src/components/LangSwitch.astro`)**
+- [x] **Step 7: Create the language switch (`src/scripts/lang-switch.ts`, `src/components/LangSwitch.astro`)**
 
 `src/scripts/lang-switch.ts`:
 
@@ -2126,7 +2126,7 @@ const t = getDictionary(lang);
 </style>
 ```
 
-- [ ] **Step 8: Create the mobile menu (`src/scripts/menu.ts`, `src/components/MobileMenu.astro`)**
+- [x] **Step 8: Create the mobile menu (`src/scripts/menu.ts`, `src/components/MobileMenu.astro`)**
 
 `src/scripts/menu.ts`:
 
@@ -2281,7 +2281,7 @@ const t = getDictionary(lang);
 </style>
 ```
 
-- [ ] **Step 9: Create `src/components/Header.astro`**
+- [x] **Step 9: Create `src/components/Header.astro`**
 
 ```astro
 ---
@@ -2404,7 +2404,7 @@ const links = [
 </style>
 ```
 
-- [ ] **Step 10: Render the header from `Home.astro`**
+- [x] **Step 10: Render the header from `Home.astro`**
 
 ```astro
 ---
@@ -2425,18 +2425,18 @@ const { lang } = Astro.props;
 </Base>
 ```
 
-- [ ] **Step 11: Build and run all tests**
+- [x] **Step 11: Build and run all tests**
 
 Run: `npm run build && npm run test:dist && npm test && npm run check`
 Expected: dist `Tests 22 passed (22)`; unit 15 passed; check `0 errors`.
 
-- [ ] **Step 12: Visual check (desktop + mobile)**
+- [x] **Step 12: Visual check (desktop + mobile)**
 
 Start the preview server in the background: `npm run preview -- --host 127.0.0.1 --port 4321`.
 With the Playwright MCP tools: resize to 1440×900, open `http://127.0.0.1:4321/`, screenshot to `.playwright-mcp/t4-header-1440.png`; resize to 390×844, screenshot `.playwright-mcp/t4-header-390.png`; click the "Menu" button, screenshot `.playwright-mcp/t4-menu-390.png`; press Escape.
 Expected: desktop header matches `reference/Minimal.dc.html` (logo left, nav centered at columns 5–8, clock + EN/BS + CTA right); mobile shows logo + "Menu"; the menu fills the screen with large links; Escape closes it; `browser_console_messages` at level `error` is empty.
 
-- [ ] **Step 13: Commit**
+- [x] **Step 13: Commit**
 
 ```bash
 git add -A
@@ -2460,7 +2460,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 - Consumes: `Button` (Task 4), `getDictionary`, `Locale`, `site`.
 - Produces: `section#top.hero` with `h1#hero-title`, `figure[data-stage="hero"][role="img"]` wrapping `<picture class="stage-picture">` (Plan 3 attaches the WebGL rings to this stage), `.hero-caption`.
 
-- [ ] **Step 1: Write the failing hero test**
+- [x] **Step 1: Write the failing hero test**
 
 `tests/dist/hero.test.ts`:
 
@@ -2509,19 +2509,19 @@ describe.each(pages)('$path hero', ({ path, lang }) => {
 });
 ```
 
-- [ ] **Step 2: Build and see it fail**
+- [x] **Step 2: Build and see it fail**
 
 Run: `npm run build && npm run test:dist`
 Expected: FAIL — `expected [] to have a length of 1` (no h1).
 
-- [ ] **Step 3: Copy the poster**
+- [x] **Step 3: Copy the poster**
 
 ```bash
 mkdir -p src/assets/posters
 cp reference/assets/abeb259b406b12574d07a6266a687771.png src/assets/posters/hero.png
 ```
 
-- [ ] **Step 4: Create `src/components/Hero.astro`**
+- [x] **Step 4: Create `src/components/Hero.astro`**
 
 ```astro
 ---
@@ -2728,7 +2728,7 @@ const t = getDictionary(lang);
 </style>
 ```
 
-- [ ] **Step 5: Render the hero from `Home.astro`**
+- [x] **Step 5: Render the hero from `Home.astro`**
 
 Replace `src/components/Home.astro` with:
 
@@ -2754,12 +2754,12 @@ const { lang } = Astro.props;
 </Base>
 ```
 
-- [ ] **Step 6: Build and run tests**
+- [x] **Step 6: Build and run tests**
 
 Run: `npm run build && npm run test:dist && npm run check`
 Expected: dist `Tests 34 passed (34)`; `0 errors`.
 
-- [ ] **Step 7: Visual check against the reference**
+- [x] **Step 7: Visual check against the reference**
 
 Preview at 1440×900 and 390×844; screenshot `.playwright-mcp/t5-hero-1440.png` and `t5-hero-390.png`. With `browser_evaluate` run:
 
@@ -2772,7 +2772,7 @@ Preview at 1440×900 and 390×844; screenshot `.playwright-mcp/t5-hero-1440.png`
 
 Expected at 1440: `h1` = `92px`, `stage` = `720`. At 390: `h1` = `44px`, stage ≤ 350. Headline wraps into four lines at 1440 like `reference/`; rings sit right, caption bottom-right.
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 git add -A
@@ -2796,7 +2796,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 - Consumes: `RingDot` (Task 4), `getDictionary`, `RingKey`, `Locale`.
 - Produces: `section#approach` with `[data-stage="approach"][role="img"]` (Plan 3 replaces its content with the WebGL stage), `.approach-lead` containing `span.hl[data-ring]` ×3 and `span.mark[data-mark]` ×2, SVG `.diagram` with `g.ring[data-ring]` groups and `.diagram-label text`.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 `tests/dist/approach.test.ts`:
 
@@ -2845,12 +2845,12 @@ describe.each(pages)('$path approach', ({ path, lang }) => {
 });
 ```
 
-- [ ] **Step 2: Build and see it fail**
+- [x] **Step 2: Build and see it fail**
 
 Run: `npm run build && npm run test:dist`
 Expected: FAIL — approach assertions (`section` is null).
 
-- [ ] **Step 3: Create `src/components/art/ApproachDiagram.astro`**
+- [x] **Step 3: Create `src/components/art/ApproachDiagram.astro`**
 
 ```astro
 ---
@@ -2994,7 +2994,7 @@ const labels: Array<{ key: RingKey; x: number; y1: number; y2: number; ty: numbe
 </style>
 ```
 
-- [ ] **Step 4: Create `src/components/Approach.astro`**
+- [x] **Step 4: Create `src/components/Approach.astro`**
 
 ```astro
 ---
@@ -3094,7 +3094,7 @@ const t = getDictionary(lang);
 </style>
 ```
 
-- [ ] **Step 5: Render the section from `Home.astro`**
+- [x] **Step 5: Render the section from `Home.astro`**
 
 Replace `src/components/Home.astro` with:
 
@@ -3122,16 +3122,16 @@ const { lang } = Astro.props;
 </Base>
 ```
 
-- [ ] **Step 6: Build and run tests**
+- [x] **Step 6: Build and run tests**
 
 Run: `npm run build && npm run test:dist && npm run check`
 Expected: dist `Tests 44 passed (44)`; `0 errors`.
 
-- [ ] **Step 7: Visual check**
+- [x] **Step 7: Visual check**
 
 Screenshot the section at 1440 (`.playwright-mcp/t6-approach-1440.png`, element `section#approach`) and 390. Expected at 1440: diagram left (columns 1–5) with labels DESIGN / ENGINEERING / AUTOMATION, lead text 46 px on the right, each ring woven over one neighbour and under the other exactly like the reference.
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 git add -A
@@ -3155,7 +3155,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 - Consumes: `SectionHeading` (Task 4), `getDictionary`, `pad2`, `Locale`.
 - Produces: `section#services` with three `details.svc[name="services"][data-service]` (first `open`); `summary.svc-summary` > `h3.svc-title`; `.svc-art` holding an `.art-frame` SVG. Plan 2 hooks: `.art-cta`, `.art-cursor` (web), `.app-row`, `.app-toast`, `.app-chart` (apps), `.flow`, `.node` (systems).
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 `tests/dist/services.test.ts`:
 
@@ -3203,12 +3203,12 @@ describe.each(pages)('$path services', ({ path, lang }) => {
 });
 ```
 
-- [ ] **Step 2: Build and see it fail**
+- [x] **Step 2: Build and see it fail**
 
 Run: `npm run build && npm run test:dist`
 Expected: FAIL — `expected [] to have a length of 3`.
 
-- [ ] **Step 3: Create `src/components/art/ServiceWeb.astro`**
+- [x] **Step 3: Create `src/components/art/ServiceWeb.astro`**
 
 ```astro
 ---
@@ -3262,7 +3262,7 @@ const cards = [84, 220, 356];
 </div>
 ```
 
-- [ ] **Step 4: Create `src/components/art/ServiceApps.astro`**
+- [x] **Step 4: Create `src/components/art/ServiceApps.astro`**
 
 ```astro
 ---
@@ -3332,7 +3332,7 @@ const bars = [
 </div>
 ```
 
-- [ ] **Step 5: Create `src/components/art/ServiceFlow.astro`**
+- [x] **Step 5: Create `src/components/art/ServiceFlow.astro`**
 
 ```astro
 ---
@@ -3416,7 +3416,7 @@ const nodes = [
 </style>
 ```
 
-- [ ] **Step 6: Create `src/components/Services.astro`**
+- [x] **Step 6: Create `src/components/Services.astro`**
 
 ```astro
 ---
@@ -3645,7 +3645,7 @@ const art = { web: ServiceWeb, apps: ServiceApps, systems: ServiceFlow } as cons
 </style>
 ```
 
-- [ ] **Step 7: Render the section from `Home.astro`**
+- [x] **Step 7: Render the section from `Home.astro`**
 
 Replace `src/components/Home.astro` with:
 
@@ -3675,16 +3675,16 @@ const { lang } = Astro.props;
 </Base>
 ```
 
-- [ ] **Step 8: Build and run tests**
+- [x] **Step 8: Build and run tests**
 
 Run: `npm run build && npm run test:dist && npm run check`
 Expected: dist `Tests 58 passed (58)`; `0 errors`.
 
-- [ ] **Step 9: Visual check**
+- [x] **Step 9: Visual check**
 
 Screenshot `section#services` at 1440 and 390 (`t7-services-*.png`). Click the second summary: the first row closes and the second opens (native exclusive accordion). Expected at 1440: rows 128 px tall, title 54 px, tagline at column 8, round +/− icon right; open panel shows text (columns 2–6) and the illustration (columns 8–12) like the reference; the automation flow dots move.
 
-- [ ] **Step 10: Commit**
+- [x] **Step 10: Commit**
 
 ```bash
 git add -A
@@ -3708,7 +3708,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 - Consumes: `SectionHeading`, `Button` (Task 4); `getDictionary`, `pad2`, `Locale`; `site`.
 - Produces: `section#work` with `article.pj.pj--portal` and `article.pj.pj--shop`, each with `a.pj-card` (SVG art whose moving part is `g.pj-mock`) and `.pj-info`; `a.pj-next` card. Plan 2 hooks: `.pj-card`, `.pj-mock`, `.pj-next`.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 `tests/dist/work.test.ts`:
 
@@ -3753,12 +3753,12 @@ describe.each(pages)('$path work', ({ path, lang }) => {
 });
 ```
 
-- [ ] **Step 2: Build and see it fail**
+- [x] **Step 2: Build and see it fail**
 
 Run: `npm run build && npm run test:dist`
 Expected: FAIL — work assertions.
 
-- [ ] **Step 3: Create `src/components/art/Bottle.astro`**
+- [x] **Step 3: Create `src/components/art/Bottle.astro`**
 
 ```astro
 ---
@@ -3783,7 +3783,7 @@ const { x, y, scale, tone } = Astro.props;
 </g>
 ```
 
-- [ ] **Step 4: Create `src/components/art/ProjectPortal.astro`**
+- [x] **Step 4: Create `src/components/art/ProjectPortal.astro`**
 
 ```astro
 ---
@@ -3875,7 +3875,7 @@ const rows = [
 </svg>
 ```
 
-- [ ] **Step 5: Create `src/components/art/ProjectShop.astro`**
+- [x] **Step 5: Create `src/components/art/ProjectShop.astro`**
 
 ```astro
 ---
@@ -3966,7 +3966,7 @@ const gradients = [
 </svg>
 ```
 
-- [ ] **Step 6: Create `src/components/Work.astro`**
+- [x] **Step 6: Create `src/components/Work.astro`**
 
 ```astro
 ---
@@ -4215,7 +4215,7 @@ const newTab = { target: '_blank', rel: 'noopener' };
 </style>
 ```
 
-- [ ] **Step 7: Render the section from `Home.astro`**
+- [x] **Step 7: Render the section from `Home.astro`**
 
 Replace `src/components/Home.astro` with:
 
@@ -4247,16 +4247,16 @@ const { lang } = Astro.props;
 </Base>
 ```
 
-- [ ] **Step 8: Build and run tests**
+- [x] **Step 8: Build and run tests**
 
 Run: `npm run build && npm run test:dist && npm run check`
 Expected: dist `Tests 68 passed (68)`; `0 errors`.
 
-- [ ] **Step 9: Visual check**
+- [x] **Step 9: Visual check**
 
 Screenshot `section#work` at 1440 and 390 (`t8-work-*.png`); compare with `.playwright-mcp/orig-part2.jpeg`. Expected: portal card (green) left with info right; shop card (graphite) right with info left; mockups cropped by the card edge the same way; hovering a card lifts the mockup; "Your project" dashed card below.
 
-- [ ] **Step 10: Commit**
+- [x] **Step 10: Commit**
 
 ```bash
 git add -A
@@ -4280,7 +4280,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 - Consumes: `SectionHeading`; `getDictionary`, `pad2`, `Locale`.
 - Produces: `section#process` > `figure.proc` with `.proc-axis`, `ol.proc-list > li.proc-row` ×5 (each `.proc-info`, `.proc-lane` > `.proc-track[aria-hidden]` > `.proc-bar.proc-bar--{outline|solid|accent}` with `--start`/`--len`, `.proc-demo` with `--x`, and `p.proc-out`). Plan 2 animates these (scrub).
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 `tests/dist/process.test.ts`:
 
@@ -4323,12 +4323,12 @@ describe.each(pages)('$path process', ({ path, lang }) => {
 });
 ```
 
-- [ ] **Step 2: Build and see it fail**
+- [x] **Step 2: Build and see it fail**
 
 Run: `npm run build && npm run test:dist`
 Expected: FAIL — process assertions.
 
-- [ ] **Step 3: Create `src/components/Process.astro`**
+- [x] **Step 3: Create `src/components/Process.astro`**
 
 ```astro
 ---
@@ -4658,7 +4658,7 @@ const barStyle = (bar: Bar) =>
 </style>
 ```
 
-- [ ] **Step 4: Render the section from `Home.astro`**
+- [x] **Step 4: Render the section from `Home.astro`**
 
 Replace `src/components/Home.astro` with:
 
@@ -4692,16 +4692,16 @@ const { lang } = Astro.props;
 </Base>
 ```
 
-- [ ] **Step 5: Build and run tests**
+- [x] **Step 5: Build and run tests**
 
 Run: `npm run build && npm run test:dist && npm run check`
 Expected: dist `Tests 78 passed (78)`; `0 errors`.
 
-- [ ] **Step 6: Visual check**
+- [x] **Step 6: Visual check**
 
 Screenshot `section#process` at 1440 (compare with `.playwright-mcp/orig-part3.jpeg`) and 390. Expected at 1440: identical bar geometry (Discover outline 0–11.4 %, Design outline 8.6–28.6 %, Build solid 22.9–77.1 % with four dots, Launch solid 77.1–85.7 %, Run green from the dashed go-live line to the page edge), "Out —" labels under the bars. At 390: stacked stages, each with a thin full-width mini track; no horizontal scrollbar (`document.documentElement.scrollWidth === 390`).
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add -A
@@ -4725,7 +4725,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 - Consumes: `SectionHeading`; `getDictionary`, `fill`, `pad2`, `Locale`; `site`.
 - Produces: `section#studio` with sticky `figure.pr-photo` and `ol.pr-list > li.pr-item` ×5 (`strong.pr-lead` + body text inside `p.pr-text`). Plan 2 animates `.pr-text` colour fill.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 `tests/dist/principles.test.ts`:
 
@@ -4757,12 +4757,12 @@ describe.each(pages)('$path principles', ({ path, lang }) => {
 });
 ```
 
-- [ ] **Step 2: Build and see it fail**
+- [x] **Step 2: Build and see it fail**
 
 Run: `npm run build && npm run test:dist`
 Expected: FAIL — principles assertions.
 
-- [ ] **Step 3: Create `src/components/Principles.astro`**
+- [x] **Step 3: Create `src/components/Principles.astro`**
 
 ```astro
 ---
@@ -4885,7 +4885,7 @@ const t = getDictionary(lang);
 </style>
 ```
 
-- [ ] **Step 4: Render the section from `Home.astro`**
+- [x] **Step 4: Render the section from `Home.astro`**
 
 Replace `src/components/Home.astro` with:
 
@@ -4921,16 +4921,16 @@ const { lang } = Astro.props;
 </Base>
 ```
 
-- [ ] **Step 5: Build and run tests**
+- [x] **Step 5: Build and run tests**
 
 Run: `npm run build && npm run test:dist && npm run check`
 Expected: dist `Tests 84 passed (84)`; `0 errors`.
 
-- [ ] **Step 6: Visual check**
+- [x] **Step 6: Visual check**
 
 Screenshot `section#studio` at 1440 and 390. Expected at 1440: photo placeholder left (columns 1–4) staying pinned while the list scrolls; list right (columns 6–12), 30 px text, ink lead-ins, grey body, hairlines between items.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add -A
@@ -4957,7 +4957,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
   - `initContactForm(): void` (sets `form[data-state]` to `idle | sending | success | error`).
   - `section#contact.contact` (dark) with `form[data-contact-form]`; `footer.site-footer`.
 
-- [ ] **Step 1: Write the failing unit test**
+- [x] **Step 1: Write the failing unit test**
 
 `tests/unit/form.test.ts`:
 
@@ -5019,12 +5019,12 @@ describe('toPayload', () => {
 });
 ```
 
-- [ ] **Step 2: Run it to see it fail**
+- [x] **Step 2: Run it to see it fail**
 
 Run: `npm test`
 Expected: FAIL — `Failed to resolve import "../../src/lib/form"`.
 
-- [ ] **Step 3: Implement `src/lib/form.ts`**
+- [x] **Step 3: Implement `src/lib/form.ts`**
 
 ```ts
 export type FieldName = 'name' | 'email' | 'message';
@@ -5086,12 +5086,12 @@ export function toPayload(values: ContactValues, meta: Record<string, string>): 
 }
 ```
 
-- [ ] **Step 4: Run the unit tests**
+- [x] **Step 4: Run the unit tests**
 
 Run: `npm test`
 Expected: PASS — `Tests 21 passed (21)`.
 
-- [ ] **Step 5: Write the failing contact dist test**
+- [x] **Step 5: Write the failing contact dist test**
 
 `tests/dist/contact.test.ts`:
 
@@ -5162,12 +5162,12 @@ describe.each(pages)('$path footer', ({ path, lang }) => {
 });
 ```
 
-- [ ] **Step 6: Build and see it fail**
+- [x] **Step 6: Build and see it fail**
 
 Run: `npm run build && npm run test:dist`
 Expected: FAIL — contact and footer assertions.
 
-- [ ] **Step 7: Create `src/scripts/contact-form.ts`**
+- [x] **Step 7: Create `src/scripts/contact-form.ts`**
 
 ```ts
 import {
@@ -5289,7 +5289,7 @@ export function initContactForm(): void {
 }
 ```
 
-- [ ] **Step 8: Create `src/components/Contact.astro`**
+- [x] **Step 8: Create `src/components/Contact.astro`**
 
 ```astro
 ---
@@ -5636,7 +5636,7 @@ const needs = [c.needs.web, c.needs.app, c.needs.sys, c.needs.unsure];
 </style>
 ```
 
-- [ ] **Step 9: Create `src/components/Footer.astro`**
+- [x] **Step 9: Create `src/components/Footer.astro`**
 
 ```astro
 ---
@@ -5728,7 +5728,7 @@ const year = new Date().getFullYear();
 </style>
 ```
 
-- [ ] **Step 10: Finish `Home.astro`**
+- [x] **Step 10: Finish `Home.astro`**
 
 ```astro
 ---
@@ -5766,12 +5766,12 @@ const { lang } = Astro.props;
 </Base>
 ```
 
-- [ ] **Step 11: Build and run everything**
+- [x] **Step 11: Build and run everything**
 
 Run: `npm run build && npm run test:dist && npm test && npm run check`
 Expected: dist `Tests 100 passed (100)`; unit `Tests 21 passed (21)`; check `0 errors`.
 
-- [ ] **Step 12: Behaviour check in the browser**
+- [x] **Step 12: Behaviour check in the browser**
 
 Preview at 1440×900, scroll to `#contact`. With the Playwright MCP tools:
 1. Click "Send" with empty fields → three error messages appear, focus moves to Name, inputs get `aria-invalid="true"`.
@@ -5779,7 +5779,7 @@ Preview at 1440×900, scroll to `#contact`. With the Playwright MCP tools:
 3. Click two chips → they turn light; Tab moves focus through chips with a visible outline.
 Screenshot `t11-contact-1440.png` and `t11-contact-390.png`.
 
-- [ ] **Step 13: Commit**
+- [x] **Step 13: Commit**
 
 ```bash
 git add -A
@@ -5802,7 +5802,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 - Consumes: everything above.
 - Produces: a verified Plan-1 site; screenshots in `.playwright-mcp/` (git-ignored).
 
-- [ ] **Step 1: Write the whole-page test**
+- [x] **Step 1: Write the whole-page test**
 
 `tests/dist/page.test.ts`:
 
@@ -5846,12 +5846,12 @@ describe.each(pages)('$path page', ({ path }) => {
 });
 ```
 
-- [ ] **Step 2: Run it**
+- [x] **Step 2: Run it**
 
 Run: `npm run build && npm run test:dist`
 Expected: PASS — `Tests 108 passed (108)`. If the inline-style test fails, find the element (the failing declaration is printed) and move that style into the component's `<style>` block, then re-run.
 
-- [ ] **Step 3: Measure key sizes at 1440 and 390**
+- [x] **Step 3: Measure key sizes at 1440 and 390**
 
 Preview server running. At 1440×900 run with `browser_evaluate`:
 
@@ -5872,7 +5872,7 @@ Preview server running. At 1440×900 run with `browser_evaluate`:
 Expected at 1440: `h1 92px`, `h2 76px`, `service 54px`, `lead 46px`, `contact 112px`, `scrollWidth 1440`.
 At 390×844 expected: `h1 44px`, `h2 44px`, `service 32px`, `lead 28px`, `contact 56px`, `scrollWidth 390`.
 
-- [ ] **Step 4: Full-page screenshots in both languages**
+- [x] **Step 4: Full-page screenshots in both languages**
 
 For widths 390, 768, 1024, 1440, 1920 and paths `/` and `/bs/`: `browser_resize` (height 900), `browser_navigate`, `browser_take_screenshot` with `fullPage: true`, `type: 'jpeg'`, filename `.playwright-mcp/p1-{lang}-{width}.jpeg`. Split tall captures into 1500 px slices with Python/PIL (as done for the reference) and review each slice.
 
@@ -5883,16 +5883,16 @@ Check list (fix in the owning component, rebuild, re-shoot until all hold):
 - Bosnian page shows no English leftovers and no clipped words.
 - `browser_console_messages` level `error` is empty on both pages.
 
-- [ ] **Step 5: Keyboard pass**
+- [x] **Step 5: Keyboard pass**
 
 At 1440: press Tab from the top — order is skip link → logo → nav links → EN/BS → CTA → hero CTA → e-mail → … → form fields → Send → footer links. Every focused element shows a visible outline. On 390: Tab reaches "Menu"; Enter opens the dialog; Tab cycles inside it; Escape closes and focus returns to "Menu".
 
-- [ ] **Step 6: Run the complete suite**
+- [x] **Step 6: Run the complete suite**
 
 Run: `npm test && npm run build && npm run test:dist && npm run check`
 Expected: unit 21 passed, dist 108 passed, `0 errors`.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add -A

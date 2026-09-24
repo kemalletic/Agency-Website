@@ -92,7 +92,7 @@ rings/index.ts, every gsap tick:
 **Interfaces:**
 - Produces: `PHI`, `RING {halfLong, halfShort, corner, tube}`, `BOUND_RADIUS`, `FLOOR_Y`, `LIGHT_DIRECTION`, `PITCH`, `FRAMING {hero, approach, floor}`, `SPIN_SPEED`, `INTRO`, `SEQUENCE`, `SLIDE`, `FLOOR`; `clamp01`, `lerp`, `phase(x, from, to)`, `smoothstep`, `expoOut`, `power2InOut`, `damp(current, target, rate, dt)`; `type Plane = 'xy'|'yz'|'zx'`, `type Vec2`, `type Vec3`, `LOOP_LENGTH`, `CORNERS: [number, number, number, number]`, `loopPoint(u): Vec2`, `loopTangent(u): Vec2`, `toPlane(plane, Vec2): Vec3`, `tubeRange(from, to, segments, radial): {start, count}`.
 
-- [ ] **Step 1: Install Three.js**
+- [x] **Step 1: Install Three.js**
 
 ```bash
 export PATH="/c/Users/letic/AppData/Roaming/nvm/v24.21.0:$PATH"; npm install three@^0.186.0 && npm install -D @types/three@^0.186.0
@@ -100,7 +100,7 @@ export PATH="/c/Users/letic/AppData/Roaming/nvm/v24.21.0:$PATH"; npm install thr
 
 Expected: `package.json` lists `"three": "^0.186.0"` in dependencies and `"@types/three": "^0.186.0"` in devDependencies.
 
-- [ ] **Step 2: Write the failing test** — `tests/unit/rings-geometry.test.ts`
+- [x] **Step 2: Write the failing test** — `tests/unit/rings-geometry.test.ts`
 
 ```ts
 import { describe, expect, it } from 'vitest';
@@ -209,12 +209,12 @@ describe('tubeRange', () => {
 });
 ```
 
-- [ ] **Step 3: Run it and watch it fail**
+- [x] **Step 3: Run it and watch it fail**
 
 Run: `export PATH="/c/Users/letic/AppData/Roaming/nvm/v24.21.0:$PATH"; npx vitest run tests/unit/rings-geometry.test.ts`
 Expected: FAIL — cannot resolve `../../src/lib/rings/config`.
 
-- [ ] **Step 4: Write `src/lib/rings/config.ts`**
+- [x] **Step 4: Write `src/lib/rings/config.ts`**
 
 ```ts
 /** Geometry, framing and timing of the Borromean rings (spec §9). Lengths are world units; the knot's centre is the origin. */
@@ -264,7 +264,7 @@ export const SLIDE = 0.85;
 export const FLOOR = { hero: 1, docked: 0.35, fallen: 1 } as const;
 ```
 
-- [ ] **Step 5: Write `src/lib/rings/math.ts`**
+- [x] **Step 5: Write `src/lib/rings/math.ts`**
 
 ```ts
 /** Scalar helpers for the rings story and layout. No DOM, no three.js — safe in the main bundle and in tests. */
@@ -299,7 +299,7 @@ export const damp = (current: number, target: number, rate: number, dt: number):
   lerp(current, target, 1 - Math.exp(-rate * dt));
 ```
 
-- [ ] **Step 6: Write `src/lib/rings/curve.ts`**
+- [x] **Step 6: Write `src/lib/rings/curve.ts`**
 
 ```ts
 import { RING } from './config';
@@ -382,12 +382,12 @@ export function tubeRange(from: number, to: number, segments: number, radial: nu
 }
 ```
 
-- [ ] **Step 7: Run the tests and see them pass**
+- [x] **Step 7: Run the tests and see them pass**
 
 Run: `export PATH="/c/Users/letic/AppData/Roaming/nvm/v24.21.0:$PATH"; npx vitest run tests/unit/rings-geometry.test.ts`
 Expected: PASS (11 tests).
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 git add package.json package-lock.json src/lib/rings tests/unit/rings-geometry.test.ts
@@ -408,7 +408,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 - Consumes: `BOUND_RADIUS` (config), `lerp` (math).
 - Produces: `interface Stage {x, y, size}` (centre and side in viewport pixels), `interface ViewOffset {fullWidth, fullHeight, x, y, width, height}`, `interface PinRange {start, end}`, `cameraDistance(fov, fill): number`, `viewOffset(stage, anchor, viewport): ViewOffset`, `pinnedY(natural, scroll, pin?): number`, `mixStages(a, b, t): Stage`, `stageInView(stage, viewport, margin = 0.5): boolean`, `progressAt(scroll, start, end): number`.
 
-- [ ] **Step 1: Write the failing test** — `tests/unit/rings-layout.test.ts`
+- [x] **Step 1: Write the failing test** — `tests/unit/rings-layout.test.ts`
 
 ```ts
 import { describe, expect, it } from 'vitest';
@@ -498,12 +498,12 @@ describe('stages', () => {
 });
 ```
 
-- [ ] **Step 2: Run it and watch it fail**
+- [x] **Step 2: Run it and watch it fail**
 
 Run: `export PATH="/c/Users/letic/AppData/Roaming/nvm/v24.21.0:$PATH"; npx vitest run tests/unit/rings-layout.test.ts`
 Expected: FAIL — cannot resolve `../../src/lib/rings/layout`.
 
-- [ ] **Step 3: Write `src/lib/rings/layout.ts`**
+- [x] **Step 3: Write `src/lib/rings/layout.ts`**
 
 ```ts
 import { BOUND_RADIUS } from './config';
@@ -578,12 +578,12 @@ export function progressAt(scroll: number, start: number, end: number): number {
 }
 ```
 
-- [ ] **Step 4: Run the tests and see them pass**
+- [x] **Step 4: Run the tests and see them pass**
 
 Run: `export PATH="/c/Users/letic/AppData/Roaming/nvm/v24.21.0:$PATH"; npx vitest run tests/unit/rings-layout.test.ts`
 Expected: PASS (12 tests).
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/lib/rings/layout.ts tests/unit/rings-layout.test.ts
@@ -619,7 +619,7 @@ The choreography (spec §9.5, refined):
 | 0.70 – 0.88 | they rise back along the same path and slide together |
 | 0.88 – 1.00 | the knot rolls back, the green ring closes again, labels redraw |
 
-- [ ] **Step 1: Write the failing test** — `tests/unit/rings-story.test.ts`
+- [x] **Step 1: Write the failing test** — `tests/unit/rings-story.test.ts`
 
 ```ts
 import { Vector3 } from 'three';
@@ -857,12 +857,12 @@ describe('the knot never cheats', () => {
 });
 ```
 
-- [ ] **Step 2: Run it and watch it fail**
+- [x] **Step 2: Run it and watch it fail**
 
 Run: `export PATH="/c/Users/letic/AppData/Roaming/nvm/v24.21.0:$PATH"; npx vitest run tests/unit/rings-story.test.ts`
 Expected: FAIL — cannot resolve `../../src/lib/rings/story`.
 
-- [ ] **Step 3: Write `src/lib/rings/story.ts`**
+- [x] **Step 3: Write `src/lib/rings/story.ts`**
 
 ```ts
 import { Euler, Matrix4, Quaternion, Vector3 } from 'three';
@@ -1109,12 +1109,12 @@ export function worldRing(key: RingKey, pose: Pose, count: number, from = 0, to 
 }
 ```
 
-- [ ] **Step 4: Run the tests and see them pass**
+- [x] **Step 4: Run the tests and see them pass**
 
 Run: `export PATH="/c/Users/letic/AppData/Roaming/nvm/v24.21.0:$PATH"; npx vitest run tests/unit/rings-story.test.ts`
 Expected: PASS (23 tests; the clearance tests take a few seconds).
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/lib/rings/story.ts tests/unit/rings-story.test.ts
@@ -1137,7 +1137,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 - Consumes: `RING`, `FLOOR_Y`, `LIGHT_DIRECTION` (config); `loopPoint`, `loopTangent`, `toPlane`, `tubeRange`, `type Plane` (curve); `cameraDistance`, `viewOffset`, `type Stage` (layout); `lerp` (math); `RING_KEYS`, `towardCamera`, `storyState`, `type RingKey`, `type SceneState`, `type StoryInput` (story).
 - Produces: `interface TubeDetail {segments, radial}`, `ringTube(plane, detail)`, `class DrawableRing {mesh, caps, show(from, to): boolean, dispose()}`; `tokenColors(root?)`, `ringMaterial(key, color)`; `class ContactShadow {group, set(opacity, spread), update(renderer, scene, blur), dispose()}`; `interface Quality`, `QUALITY {high, low}`, `interface Viewport {width, height}`, `type Weights = Record<RingKey, number>`, `interface RingsScene {camera, scene, apply(state, stage, viewport, weights), render(), dispose()}`, `createRingsScene(renderer, colors, quality)`; dev route `/dev/posters`, dev endpoint `POST /__posters?name=hero|approach`.
 
-- [ ] **Step 1: Write `src/scripts/rings/geometry.ts`**
+- [x] **Step 1: Write `src/scripts/rings/geometry.ts`**
 
 ```ts
 import { Curve, Mesh, SphereGeometry, TubeGeometry, Vector3, type Material } from 'three';
@@ -1230,7 +1230,7 @@ export class DrawableRing {
 }
 ```
 
-- [ ] **Step 2: Write `src/scripts/rings/materials.ts`**
+- [x] **Step 2: Write `src/scripts/rings/materials.ts`**
 
 ```ts
 import { Color, MeshPhysicalMaterial } from 'three';
@@ -1260,7 +1260,7 @@ export function ringMaterial(key: RingKey, color: string): MeshPhysicalMaterial 
 }
 ```
 
-- [ ] **Step 3: Write `src/scripts/rings/contact-shadow.ts`**
+- [x] **Step 3: Write `src/scripts/rings/contact-shadow.ts`**
 
 ```ts
 import {
@@ -1394,7 +1394,7 @@ export class ContactShadow {
 }
 ```
 
-- [ ] **Step 4: Write `src/scripts/rings/scene.ts`**
+- [x] **Step 4: Write `src/scripts/rings/scene.ts`**
 
 ```ts
 import {
@@ -1561,7 +1561,7 @@ export function createRingsScene(renderer: WebGLRenderer, colors: Record<RingKey
 }
 ```
 
-- [ ] **Step 5: Write the dev integration** — `src/dev/posters-integration.ts`
+- [x] **Step 5: Write the dev integration** — `src/dev/posters-integration.ts`
 
 ```ts
 import { writeFile } from 'node:fs/promises';
@@ -1608,7 +1608,7 @@ export function devPosters(): AstroIntegration {
 }
 ```
 
-- [ ] **Step 6: Register it** — `astro.config.ts` (add the import and the `integrations` line)
+- [x] **Step 6: Register it** — `astro.config.ts` (add the import and the `integrations` line)
 
 ```ts
 import { defineConfig, envField, fontProviders } from 'astro/config';
@@ -1623,7 +1623,7 @@ export default defineConfig({
 
 (the rest of the file is unchanged).
 
-- [ ] **Step 7: Write the studio page** — `src/dev/posters.astro`
+- [x] **Step 7: Write the studio page** — `src/dev/posters.astro`
 
 ```astro
 ---
@@ -1700,7 +1700,7 @@ const controls = [
 </html>
 ```
 
-- [ ] **Step 8: Write the studio script** — `src/dev/posters.ts`
+- [x] **Step 8: Write the studio script** — `src/dev/posters.ts`
 
 ```ts
 import { WebGLRenderer } from 'three';
@@ -1769,12 +1769,12 @@ document.querySelector('[data-save]')?.addEventListener('click', () => void save
 draw(fromForm());
 ```
 
-- [ ] **Step 9: Type-check**
+- [x] **Step 9: Type-check**
 
 Run: `export PATH="/c/Users/letic/AppData/Roaming/nvm/v24.21.0:$PATH"; npx astro check`
 Expected: `0 errors`.
 
-- [ ] **Step 10: Look at every state in the studio and tune the look**
+- [x] **Step 10: Look at every state in the studio and tune the look**
 
 Start `npm run dev -- --host 127.0.0.1 --port 4322` in the background and open `http://127.0.0.1:4322/dev/posters` with the Playwright MCP tools (1440×1000). For each state set the sliders via `browser_evaluate` (set `input.value`, dispatch `input`) and screenshot the canvas:
 
@@ -1789,7 +1789,7 @@ Start `npm run dev -- --host 127.0.0.1 --port 4322` in the background and open `
 
 Tune only these knobs and write down every change for the implementation notes: `scene.environmentIntensity`, the key light intensity, the hemisphere intensity, `STAIN`/`STAIN_OPACITY`, the blur range `lerp(3.2, 1.1, …)`, `renderer.toneMappingExposure`, material `FINISH`. Framing constants (`FRAMING`) change only if the hero no longer matches the reference composition — then re-run all unit tests.
 
-- [ ] **Step 11: Render the posters**
+- [x] **Step 11: Render the posters**
 
 In the studio click "Save hero + approach posters" and wait for `Saved hero.png and approach.png`. Then:
 
@@ -1799,7 +1799,7 @@ file src/assets/posters/hero.png src/assets/posters/approach.png
 
 Expected: both `PNG image data, 1360 x 1360, 8-bit/color RGBA`. Look at both files (Read tool): transparent background, no clipped shadow edge.
 
-- [ ] **Step 12: Commit**
+- [x] **Step 12: Commit**
 
 ```bash
 git add src/scripts/rings src/dev astro.config.ts src/assets/posters
@@ -1822,7 +1822,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 - Consumes: `cameraDistance` (layout); `cameraUp`, `RING_KEYS`, `storyState`, `towardCamera`, `worldRing`, `type CameraState`, `type RingKey` (story); `RING` (config); posters from Task 4.
 - Produces: `projectToStage(point, camera): {u, v, depth}`, `interface LabelAnchor {key, x, y, dir}`, `labelAnchors(): LabelAnchor[]`; markup `.stage-poster` (both stages), `.stage-labels > .stage-label[data-ring][data-dir][style="--x;--y"] > .stage-label-text`; `html[data-rings]` states `pending | poster | live | off`; CSS hooks `.rings-canvas`, `--draw`, `--mark`, `.is-dragging`.
 
-- [ ] **Step 1: Write the failing test** — `tests/unit/rings-labels.test.ts`
+- [x] **Step 1: Write the failing test** — `tests/unit/rings-labels.test.ts`
 
 ```ts
 import { Vector3 } from 'three';
@@ -1892,12 +1892,12 @@ describe('labelAnchors', () => {
 });
 ```
 
-- [ ] **Step 2: Run it and watch it fail**
+- [x] **Step 2: Run it and watch it fail**
 
 Run: `export PATH="/c/Users/letic/AppData/Roaming/nvm/v24.21.0:$PATH"; npx vitest run tests/unit/rings-labels.test.ts`
 Expected: FAIL — cannot resolve `../../src/lib/rings/labels`.
 
-- [ ] **Step 3: Write `src/lib/rings/labels.ts`**
+- [x] **Step 3: Write `src/lib/rings/labels.ts`**
 
 ```ts
 import type { Vector3 } from 'three';
@@ -1955,12 +1955,12 @@ export function labelAnchors(): LabelAnchor[] {
 }
 ```
 
-- [ ] **Step 4: Run the unit tests and see them pass**
+- [x] **Step 4: Run the unit tests and see them pass**
 
 Run: `export PATH="/c/Users/letic/AppData/Roaming/nvm/v24.21.0:$PATH"; npx vitest run tests/unit/rings-labels.test.ts`
 Expected: PASS (5 tests).
 
-- [ ] **Step 5: Update the dist tests first**
+- [x] **Step 5: Update the dist tests first**
 
 In `tests/dist/approach.test.ts`, replace the `'labels the diagram in the page language'` test with these two:
 
@@ -2034,7 +2034,7 @@ describe('build output', () => {
 });
 ```
 
-- [ ] **Step 6: Replace the approach figure** — `src/components/Approach.astro`
+- [x] **Step 6: Replace the approach figure** — `src/components/Approach.astro`
 
 Frontmatter:
 
@@ -2161,11 +2161,11 @@ Then delete the old diagram component:
 git rm src/components/art/ApproachDiagram.astro
 ```
 
-- [ ] **Step 7: Mark the hero poster** — `src/components/Hero.astro`
+- [x] **Step 7: Mark the hero poster** — `src/components/Hero.astro`
 
 Change the `Picture`'s `pictureAttributes={{ class: 'stage-picture' }}` to `pictureAttributes={{ class: 'stage-poster' }}`, and the matching style selector `.hero-stage :global(.stage-picture)` to `.hero-stage :global(.stage-poster)`.
 
-- [ ] **Step 8: Write `src/styles/rings.css`**
+- [x] **Step 8: Write `src/styles/rings.css`**
 
 ```css
 /* WebGL rings: the canvas, the poster hand-over and the live-only states (see scripts/motion/rings.ts).
@@ -2210,7 +2210,7 @@ Change the `Picture`'s `pictureAttributes={{ class: 'stage-picture' }}` to `pict
 }
 ```
 
-- [ ] **Step 9: Decide in the head, load the styles** — `src/layouts/Base.astro`
+- [x] **Step 9: Decide in the head, load the styles** — `src/layouts/Base.astro`
 
 Add `import '../styles/rings.css';` after the `motion.css` import, and replace the inline script with:
 
@@ -2234,11 +2234,11 @@ Add `import '../styles/rings.css';` after the `motion.css` import, and replace t
     </script>
 ```
 
-- [ ] **Step 10: Let the canvas show through the body** — `src/styles/base.css`
+- [x] **Step 10: Let the canvas show through the body** — `src/styles/base.css`
 
 Remove `background: var(--paper);` from the `body` rule (the `html` rule keeps the same paper background; a body background would paint over a canvas at `z-index: -1`).
 
-- [ ] **Step 11: Build and run every test**
+- [x] **Step 11: Build and run every test**
 
 ```bash
 export PATH="/c/Users/letic/AppData/Roaming/nvm/v24.21.0:$PATH"; npx astro check && npm test && npm run build && npm run test:dist
@@ -2246,11 +2246,11 @@ export PATH="/c/Users/letic/AppData/Roaming/nvm/v24.21.0:$PATH"; npx astro check
 
 Expected: `0 errors`; unit tests all pass; build completes; dist tests all pass (including the new `rings.test.ts`).
 
-- [ ] **Step 12: Look at poster mode**
+- [x] **Step 12: Look at poster mode**
 
 Restart the preview server on 4321 (stop the old one first) and, with the Playwright MCP tools, emulate `prefers-reduced-motion: reduce`, then screenshot `/` and `/bs/` at 1440×900 (hero; approach section) and 390×844 (approach section). Expected: the hero poster exactly where the old one was; the approach poster (three-fold knot) with DESIGN above, ENGINEERING hanging left, AUTOMATION hanging bottom right (DIZAJN / INŽENJERING / AUTOMATIZACIJA on `/bs/`), text crisp and inside the stage.
 
-- [ ] **Step 13: Commit**
+- [x] **Step 13: Commit**
 
 ```bash
 git add -A src tests
@@ -2271,7 +2271,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 - Consumes: everything above; `ScrollTrigger` instance (`start`, `end`, `pin`), `gsap.ticker`.
 - Produces: `createPointer(stage): Pointer {tilt, update(dt, active), takeSpin(), dispose()}`; `createOverlay(): Overlay {weights, ease(dt, docked), show(state), dispose()}`; `startRings({pin, intro, onLost}): Promise<RingsHandle {dispose()}>`; `initRings(): () => void`.
 
-- [ ] **Step 1: Write `src/scripts/rings/pointer.ts`**
+- [x] **Step 1: Write `src/scripts/rings/pointer.ts`**
 
 ```ts
 import { damp } from '../../lib/rings/math';
@@ -2370,7 +2370,7 @@ export function createPointer(stage: HTMLElement): Pointer {
 }
 ```
 
-- [ ] **Step 2: Write `src/scripts/rings/overlay.ts`**
+- [x] **Step 2: Write `src/scripts/rings/overlay.ts`**
 
 ```ts
 import { damp } from '../../lib/rings/math';
@@ -2449,7 +2449,7 @@ export function createOverlay(): Overlay {
 }
 ```
 
-- [ ] **Step 3: Write the driver** — `src/scripts/rings/index.ts`
+- [x] **Step 3: Write the driver** — `src/scripts/rings/index.ts`
 
 ```ts
 import { gsap } from 'gsap';
@@ -2641,7 +2641,7 @@ export async function startRings({ pin, intro, onLost }: RingsOptions): Promise<
 }
 ```
 
-- [ ] **Step 4: Write the main-bundle loader** — `src/scripts/motion/rings.ts`
+- [x] **Step 4: Write the main-bundle loader** — `src/scripts/motion/rings.ts`
 
 ```ts
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -2737,7 +2737,7 @@ export function initRings(): () => void {
 }
 ```
 
-- [ ] **Step 5: Start it first among the motion modules** — `src/scripts/motion/index.ts`
+- [x] **Step 5: Start it first among the motion modules** — `src/scripts/motion/index.ts`
 
 Add `import { initRings } from './rings';` with the other imports, and put `initRings()` right after `initSmoothScroll()` in the `cleanups` array (pins are created in document order: the approach pin before the process pin and before the reveals below it):
 
@@ -2754,7 +2754,7 @@ Add `import { initRings } from './rings';` with the other imports, and put `init
     ];
 ```
 
-- [ ] **Step 6: Check, build, test, measure the bundles**
+- [x] **Step 6: Check, build, test, measure the bundles**
 
 ```bash
 export PATH="/c/Users/letic/AppData/Roaming/nvm/v24.21.0:$PATH"; npx astro check && npm test && npm run build && npm run test:dist
@@ -2763,7 +2763,7 @@ for f in dist/_astro/*.js; do printf '%8s %s\n' "$(gzip -9 -c "$f" | wc -c)" "$f
 
 Expected: 0 errors, all tests pass. The chunk that contains three.js is ≤ 180 000 bytes gzip; the entry chunk(s) loaded by `index.html` stay ≤ 70 KB gzip in total (check which chunks `dist/index.html` references).
 
-- [ ] **Step 7: Verify the live experience in the browser**
+- [x] **Step 7: Verify the live experience in the browser**
 
 Restart the preview server on 4321, then at 1440×900 with the Playwright MCP tools (mouse wheel for scrolling, since Lenis drives the page):
 
@@ -2784,7 +2784,7 @@ Restart the preview server on 4321, then at 1440×900 with the Playwright MCP to
 
 Fix whatever these checks reveal and record every deviation for the implementation notes.
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 git add src/scripts tests
@@ -2801,11 +2801,11 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 - Replace (if the look changed during Task 6): `src/assets/posters/hero.png`, `src/assets/posters/approach.png`
 - Modify: `docs/superpowers/plans/2026-09-23-plan-3-webgl-rings.md` (implementation notes)
 
-- [ ] **Step 1: Re-render the posters if anything visual was tuned after Task 4**
+- [x] **Step 1: Re-render the posters if anything visual was tuned after Task 4**
 
 Run the studio (`npm run dev -- --host 127.0.0.1 --port 4322`), click Save, stop the dev server. Then rebuild and check the seamless hand-over. Temporarily set `root.dataset.rings = 'poster'` (so the poster shows), start the page, and compare a screenshot of the hero poster with the first live frame taken without the intro (reload scrolled 1 px so the intro is skipped, then scroll back). They must match.
 
-- [ ] **Step 2: Size check of the posters**
+- [x] **Step 2: Size check of the posters**
 
 ```bash
 ls -la dist/_astro/*.avif | sort -k5 -n | tail -8
@@ -2813,7 +2813,7 @@ ls -la dist/_astro/*.avif | sort -k5 -n | tail -8
 
 Expected: the largest hero AVIF (1360 w) ≤ 60 KB (spec §3).
 
-- [ ] **Step 3: Full test pass**
+- [x] **Step 3: Full test pass**
 
 ```bash
 export PATH="/c/Users/letic/AppData/Roaming/nvm/v24.21.0:$PATH"; npx astro check && npm test && npm run build && npm run test:dist
@@ -2821,15 +2821,15 @@ export PATH="/c/Users/letic/AppData/Roaming/nvm/v24.21.0:$PATH"; npx astro check
 
 Expected: 0 errors; all unit and dist tests pass.
 
-- [ ] **Step 4: Cross-viewport screenshots**
+- [x] **Step 4: Cross-viewport screenshots**
 
 `/` and `/bs/` at 390×844, 768×1024, 1024×768, 1440×900 and 1920×1080: hero (live), approach docked, sequence at 0.5, and the reduced-motion posters. Nothing overlaps text badly; labels stay inside the stage; the canvas never covers the header, mobile menu or contact sheet.
 
-- [ ] **Step 5: Write the implementation notes**
+- [x] **Step 5: Write the implementation notes**
 
 Append `## Implementation notes (deviations found during execution)` to this plan: a table of `| Where | Change | Why |` rows covering every tuned constant and every fix made during Tasks 4–7.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add -A

@@ -73,7 +73,7 @@ README.md                                (new)
 - Consumes: `createRingsScene`, `QUALITY` (scene), `tokenColors` (materials), `storyState` (story), `getDictionary` (i18n), `site` (config).
 - Produces: files at the paths above. `POST /__posters?name=hero|approach|fallen|og-en|og-bs|apple-touch-icon` writes each output.
 
-- [ ] **Step 1: Let the dev endpoint write every output** — replace `src/dev/posters-integration.ts`
+- [x] **Step 1: Let the dev endpoint write every output** — replace `src/dev/posters-integration.ts`
 
 ```ts
 import { writeFile } from 'node:fs/promises';
@@ -129,7 +129,7 @@ export function devPosters(): AstroIntegration {
 }
 ```
 
-- [ ] **Step 2: Load the brand font and show previews** — replace `src/dev/posters.astro`
+- [x] **Step 2: Load the brand font and show previews** — replace `src/dev/posters.astro`
 
 ```astro
 ---
@@ -226,7 +226,7 @@ const previews = ['og-en', 'og-bs', 'apple-touch-icon', 'fallen'];
 </html>
 ```
 
-- [ ] **Step 3: Compose the cards and the icon** — replace `src/dev/posters.ts`
+- [x] **Step 3: Compose the cards and the icon** — replace `src/dev/posters.ts`
 
 ```ts
 import { WebGLRenderer } from 'three';
@@ -382,12 +382,12 @@ draw(fromForm());
 if (new URLSearchParams(window.location.search).has('save')) void saveAll();
 ```
 
-- [ ] **Step 4: Type-check**
+- [x] **Step 4: Type-check**
 
 Run: `export PATH="/c/Users/letic/AppData/Roaming/nvm/v24.21.0:$PATH"; npx astro check`
 Expected: `0 errors`.
 
-- [ ] **Step 5: Render everything**
+- [x] **Step 5: Render everything**
 
 Start `npm run dev -- --host 127.0.0.1 --port 4322` in the background if it is not running, open `http://127.0.0.1:4322/dev/posters?save` with the Playwright MCP tools and wait for `Saved posters, social cards and the touch icon`. Then:
 
@@ -397,7 +397,7 @@ file public/og-en.jpg public/og-bs.jpg public/apple-touch-icon.png src/assets/po
 
 Expected: two `JPEG image data … 1200x630`, `PNG image data, 180 x 180`, `PNG image data, 1360 x 1360`. Look at all four (Read tool): the card text uses Host Grotesk (not a fallback serif) and never touches the knot; the headline is in the page's language; the icon's knot is centred with a margin; the fallen poster shows two rings lying apart.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add src/dev src/assets/posters/fallen.png public/og-en.jpg public/og-bs.jpg public/apple-touch-icon.png
@@ -423,7 +423,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
   - `SiteConfig.address.countryCode`
   - `readDist(path)` in the dist helpers.
 
-- [ ] **Step 1: Write the failing unit test** — `tests/unit/seo.test.ts`
+- [x] **Step 1: Write the failing unit test** — `tests/unit/seo.test.ts`
 
 ```ts
 import { describe, expect, it } from 'vitest';
@@ -494,12 +494,12 @@ describe('structuredData', () => {
 });
 ```
 
-- [ ] **Step 2: Run it and watch it fail**
+- [x] **Step 2: Run it and watch it fail**
 
 Run: `export PATH="/c/Users/letic/AppData/Roaming/nvm/v24.21.0:$PATH"; npx vitest run tests/unit/seo.test.ts`
 Expected: FAIL — cannot resolve `../../src/lib/seo`.
 
-- [ ] **Step 3: Add the country code** — `src/config/site.ts`
+- [x] **Step 3: Add the country code** — `src/config/site.ts`
 
 In `SiteConfig`, change the address line to:
 
@@ -509,7 +509,7 @@ In `SiteConfig`, change the address line to:
 
 and in `site.address` add `countryCode: 'BA',` after the `country` entry.
 
-- [ ] **Step 4: Write `src/lib/seo.ts`**
+- [x] **Step 4: Write `src/lib/seo.ts`**
 
 ```ts
 import type { SiteConfig } from '../config/site';
@@ -579,12 +579,12 @@ export function structuredData({ site, lang, pageUrl, imageUrl, description }: S
 }
 ```
 
-- [ ] **Step 5: Run the unit test and see it pass**
+- [x] **Step 5: Run the unit test and see it pass**
 
 Run: `export PATH="/c/Users/letic/AppData/Roaming/nvm/v24.21.0:$PATH"; npx vitest run tests/unit/seo.test.ts`
 Expected: PASS (5 tests).
 
-- [ ] **Step 6: Let `SITE_URL` override the site** — `astro.config.ts`
+- [x] **Step 6: Let `SITE_URL` override the site** — `astro.config.ts`
 
 Change `site: site.url,` to:
 
@@ -593,7 +593,7 @@ Change `site: site.url,` to:
   site: process.env.SITE_URL || site.url,
 ```
 
-- [ ] **Step 7: Rewrite the head** — replace `src/layouts/Base.astro`
+- [x] **Step 7: Rewrite the head** — replace `src/layouts/Base.astro`
 
 ```astro
 ---
@@ -690,7 +690,7 @@ const ld = index ? JSON.stringify(structuredData({ site, lang, pageUrl: href(lan
 </html>
 ```
 
-- [ ] **Step 8: Add a raw-file helper** — `tests/dist/helpers.ts`
+- [x] **Step 8: Add a raw-file helper** — `tests/dist/helpers.ts`
 
 Append:
 
@@ -701,7 +701,7 @@ export function readDist(path: string): string {
 }
 ```
 
-- [ ] **Step 9: Write the dist test** — `tests/dist/seo.test.ts`
+- [x] **Step 9: Write the dist test** — `tests/dist/seo.test.ts`
 
 ```ts
 import { existsSync } from 'node:fs';
@@ -750,7 +750,7 @@ describe.each(pages)('$path social cards and structured data', ({ path, lang }) 
 });
 ```
 
-- [ ] **Step 10: Build and run everything**
+- [x] **Step 10: Build and run everything**
 
 ```bash
 export PATH="/c/Users/letic/AppData/Roaming/nvm/v24.21.0:$PATH"; npx astro check && npm test && npm run build && npm run test:dist
@@ -758,7 +758,7 @@ export PATH="/c/Users/letic/AppData/Roaming/nvm/v24.21.0:$PATH"; npx astro check
 
 Expected: 0 errors; all unit tests pass (including `seo.test.ts`); build completes; all dist tests pass (including `seo.test.ts`).
 
-- [ ] **Step 11: Commit**
+- [x] **Step 11: Commit**
 
 ```bash
 git add src/lib/seo.ts src/config/site.ts src/layouts/Base.astro astro.config.ts tests/unit/seo.test.ts tests/dist/seo.test.ts tests/dist/helpers.ts
@@ -783,13 +783,13 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
   - `dist/404.html`
   - `Dictionary.notFound { title, body, home }`
 
-- [ ] **Step 1: Install the sitemap integration**
+- [x] **Step 1: Install the sitemap integration**
 
 ```bash
 export PATH="/c/Users/letic/AppData/Roaming/nvm/v24.21.0:$PATH"; npm install @astrojs/sitemap@^3.7.4
 ```
 
-- [ ] **Step 2: Extend the dist test first** — append to `tests/dist/seo.test.ts` (and add `readDist` to its helpers import)
+- [x] **Step 2: Extend the dist test first** — append to `tests/dist/seo.test.ts` (and add `readDist` to its helpers import)
 
 ```ts
 describe('sitemap and robots.txt', () => {
@@ -838,7 +838,7 @@ describe('404 page', () => {
 });
 ```
 
-- [ ] **Step 3: Register the sitemap** — `astro.config.ts`
+- [x] **Step 3: Register the sitemap** — `astro.config.ts`
 
 Add `import sitemap from '@astrojs/sitemap';` and change the integrations line to:
 
@@ -852,7 +852,7 @@ Add `import sitemap from '@astrojs/sitemap';` and change the integrations line t
   ],
 ```
 
-- [ ] **Step 4: Link it from the head** — `src/layouts/Base.astro`
+- [x] **Step 4: Link it from the head** — `src/layouts/Base.astro`
 
 After the `apple-touch-icon` link add:
 
@@ -860,7 +860,7 @@ After the `apple-touch-icon` link add:
     <link rel="sitemap" href="/sitemap-index.xml" />
 ```
 
-- [ ] **Step 5: Serve robots.txt** — `src/pages/robots.txt.ts`
+- [x] **Step 5: Serve robots.txt** — `src/pages/robots.txt.ts`
 
 ```ts
 import type { APIRoute } from 'astro';
@@ -875,7 +875,7 @@ export const GET: APIRoute = ({ site }) => {
 };
 ```
 
-- [ ] **Step 6: Add the 404 strings**
+- [x] **Step 6: Add the 404 strings**
 
 `src/i18n/types.ts` — after the `contact: { … };` block, before the closing `}` of `Dictionary`:
 
@@ -903,7 +903,7 @@ export const GET: APIRoute = ({ site }) => {
   },
 ```
 
-- [ ] **Step 7: Write the page** — `src/pages/404.astro`
+- [x] **Step 7: Write the page** — `src/pages/404.astro`
 
 ```astro
 ---
@@ -1015,7 +1015,7 @@ const bs = getDictionary('bs');
 </style>
 ```
 
-- [ ] **Step 8: Build and run everything**
+- [x] **Step 8: Build and run everything**
 
 ```bash
 export PATH="/c/Users/letic/AppData/Roaming/nvm/v24.21.0:$PATH"; npx astro check && npm test && npm run build && npm run test:dist
@@ -1023,11 +1023,11 @@ export PATH="/c/Users/letic/AppData/Roaming/nvm/v24.21.0:$PATH"; npx astro check
 
 Expected: 0 errors; unit tests pass (the i18n completeness test now also covers `notFound`); build lists `sitemap-index.xml`; dist tests pass.
 
-- [ ] **Step 9: Look at the 404 page**
+- [x] **Step 9: Look at the 404 page**
 
 With the preview server restarted, open `http://127.0.0.1:4321/nowhere` at 1440×900 and 390×844 (Playwright MCP). The response status must be 404; the two rings lie apart on the left (top on phones); the English and Bosnian copy read cleanly; both buttons work; there are no console errors.
 
-- [ ] **Step 10: Commit**
+- [x] **Step 10: Commit**
 
 ```bash
 git add package.json package-lock.json astro.config.ts src/layouts/Base.astro src/pages src/i18n tests/dist/seo.test.ts
@@ -1051,7 +1051,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
   - `.pj-shot` in a card when a screenshot is set, `.pr-img` in the photo frame when a team photo is set
   - `Dictionary.principles.photoAlt`
 
-- [ ] **Step 1: Pin the placeholder behaviour in a dist test** — add inside the `describe.each(pages)('$path principles', …)` block of `tests/dist/principles.test.ts`
+- [x] **Step 1: Pin the placeholder behaviour in a dist test** — add inside the `describe.each(pages)('$path principles', …)` block of `tests/dist/principles.test.ts`
 
 ```ts
   it('keeps the drawn placeholders while no photography is configured', () => {
@@ -1063,7 +1063,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 ```
 
 
-- [ ] **Step 2: Write `src/config/media.ts`**
+- [x] **Step 2: Write `src/config/media.ts`**
 
 ```ts
 import type { ImageMetadata } from 'astro';
@@ -1087,7 +1087,7 @@ export interface Media {
 export const media: Media = { projects: {} };
 ```
 
-- [ ] **Step 3: Use a screenshot when there is one** — `src/components/Work.astro`
+- [x] **Step 3: Use a screenshot when there is one** — `src/components/Work.astro`
 
 Add to the frontmatter imports:
 
@@ -1135,7 +1135,7 @@ Add to its styles (after `.pj-card :global(svg)`):
   }
 ```
 
-- [ ] **Step 4: Use the team photo when there is one** — `src/components/Principles.astro`
+- [x] **Step 4: Use the team photo when there is one** — `src/components/Principles.astro`
 
 Add to the frontmatter imports:
 
@@ -1189,7 +1189,7 @@ Add to its styles (after `.pr-frame .label`):
   }
 ```
 
-- [ ] **Step 5: Add the photo's alt text**
+- [x] **Step 5: Add the photo's alt text**
 
 `src/i18n/types.ts`, in `principles`, after `photo: string;`:
 
@@ -1209,7 +1209,7 @@ Add to its styles (after `.pr-frame .label`):
     photoAlt: 'Ljudi s kojima ćete raditi u {name}',
 ```
 
-- [ ] **Step 6: Drift the real photo (spec §8.7)** — `src/scripts/motion/principles.ts`
+- [x] **Step 6: Drift the real photo (spec §8.7)** — `src/scripts/motion/principles.ts`
 
 Before `return () => {` add:
 
@@ -1230,7 +1230,7 @@ and inside the returned cleanup, before the `for` loop:
     drift?.kill();
 ```
 
-- [ ] **Step 7: Check both branches**
+- [x] **Step 7: Check both branches**
 
 ```bash
 export PATH="/c/Users/letic/AppData/Roaming/nvm/v24.21.0:$PATH"; npx astro check && npm test && npm run build && npm run test:dist
@@ -1244,7 +1244,7 @@ Then set `export const media: Media = { team: approachPoster, projects: { shop: 
 2. The shop card shows the image edge to edge, and its parallax never shows a gap.
 3. The portal card still shows the drawn mockup.
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 git add src/config/media.ts src/components/Work.astro src/components/Principles.astro src/scripts/motion/principles.ts src/i18n tests/dist
@@ -1266,7 +1266,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 
 Why: today, devices without fast WebGL still download and evaluate the 142 KB rings chunk before falling back. They also get the Approach pin, and have it removed again, after `load`. Headless audit browsers render in software, so Lighthouse measures exactly that path.
 
-- [ ] **Step 1: Take the canvas from the loader** — `src/scripts/rings/index.ts`
+- [x] **Step 1: Take the canvas from the loader** — `src/scripts/rings/index.ts`
 
 In `RingsOptions` add:
 
@@ -1283,7 +1283,7 @@ Change the signature to `export async function startRings({ pin, intro, onLost, 
   canvas.setAttribute('aria-hidden', 'true');
 ```
 
-- [ ] **Step 2: Check first, then pin and load** — `src/scripts/motion/rings.ts`
+- [x] **Step 2: Check first, then pin and load** — `src/scripts/motion/rings.ts`
 
 Replace the start of `initRings` (from `const root = document.documentElement;` through the `ScrollTrigger.create({…});` call) with:
 
@@ -1320,7 +1320,7 @@ and change the import call to pass them:
       .then(({ startRings }) => startRings({ pin, intro, canvas, context, onLost: () => giveUp() }))
 ```
 
-- [ ] **Step 3: Check, build, test**
+- [x] **Step 3: Check, build, test**
 
 ```bash
 export PATH="/c/Users/letic/AppData/Roaming/nvm/v24.21.0:$PATH"; npx astro check && npm test && npm run build && npm run test:dist
@@ -1328,7 +1328,7 @@ export PATH="/c/Users/letic/AppData/Roaming/nvm/v24.21.0:$PATH"; npx astro check
 
 Expected: 0 errors; all tests pass.
 
-- [ ] **Step 4: Verify both paths in the browser**
+- [x] **Step 4: Verify both paths in the browser**
 
 Restart the preview server. Then check both paths:
 
@@ -1339,7 +1339,7 @@ Restart the preview server. Then check both paths:
   - The network log has no request for the `rings.*.js` chunk.
   - There are no console messages.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/scripts
@@ -1361,7 +1361,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 - Consumes: the header's contact tone trigger (Plan 2).
 - Produces: `html[data-tone="night"]` while the contact section or footer fills the view; `meta[name="theme-color"]` follows it.
 
-- [ ] **Step 1: Test for the headers file** — append to `tests/dist/seo.test.ts`
+- [x] **Step 1: Test for the headers file** — append to `tests/dist/seo.test.ts`
 
 ```ts
 describe('hosting headers', () => {
@@ -1375,7 +1375,7 @@ describe('hosting headers', () => {
 });
 ```
 
-- [ ] **Step 2: Write `public/_headers`** (read by Cloudflare Pages and Netlify)
+- [x] **Step 2: Write `public/_headers`** (read by Cloudflare Pages and Netlify)
 
 ```text
 /*
@@ -1389,7 +1389,7 @@ describe('hosting headers', () => {
   Cache-Control: public, max-age=31536000, immutable
 ```
 
-- [ ] **Step 3: Paper on the body, night below the footer** — `src/styles/base.css`
+- [x] **Step 3: Paper on the body, night below the footer** — `src/styles/base.css`
 
 In the `body` rule add:
 
@@ -1409,7 +1409,7 @@ and after the `html` rule add:
   }
 ```
 
-- [ ] **Step 4: Follow the tone on the root and in theme-color** — `src/scripts/motion/header.ts`
+- [x] **Step 4: Follow the tone on the root and in theme-color** — `src/scripts/motion/header.ts`
 
 Replace the `onToggle` body of the `tone` trigger with:
 
@@ -1423,7 +1423,7 @@ Replace the `onToggle` body of the `tone` trigger with:
         },
 ```
 
-- [ ] **Step 5: Ignore test and audit output** — `.gitignore`
+- [x] **Step 5: Ignore test and audit output** — `.gitignore`
 
 Append:
 
@@ -1433,7 +1433,7 @@ Append:
 /.lighthouse/
 ```
 
-- [ ] **Step 6: Write `README.md`**
+- [x] **Step 6: Write `README.md`**
 
 ````markdown
 # [NAME] — studio website
@@ -1531,7 +1531,7 @@ URL from `site.ts` for canonical links, social cards and the sitemap, which is u
 plans, each with notes on what changed during execution.
 ````
 
-- [ ] **Step 7: Build, test, look**
+- [x] **Step 7: Build, test, look**
 
 ```bash
 export PATH="/c/Users/letic/AppData/Roaming/nvm/v24.21.0:$PATH"; npx astro check && npm test && npm run build && npm run test:dist
@@ -1544,7 +1544,7 @@ Expected: 0 errors; all tests pass. Then check the live page at 1440×900:
 - Back up at the hero, the tone is `paper`.
 - No console errors.
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 git add public/_headers README.md src/styles/base.css src/scripts/motion/header.ts .gitignore tests/dist/seo.test.ts
@@ -1565,7 +1565,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 - Consumes: the built site (`astro preview`), the markup hooks listed above.
 - Produces: `npm run test:e2e`.
 
-- [ ] **Step 1: Install Playwright and its browsers**
+- [x] **Step 1: Install Playwright and its browsers**
 
 ```bash
 export PATH="/c/Users/letic/AppData/Roaming/nvm/v24.21.0:$PATH"; npm install -D @playwright/test@^1.63.0 && npx playwright install chromium firefox webkit
@@ -1577,7 +1577,7 @@ Add the script to `package.json`:
     "test:e2e": "npm run build && playwright test",
 ```
 
-- [ ] **Step 2: Write `playwright.config.ts`**
+- [x] **Step 2: Write `playwright.config.ts`**
 
 ```ts
 import { defineConfig, devices } from '@playwright/test';
@@ -1605,7 +1605,7 @@ export default defineConfig({
 });
 ```
 
-- [ ] **Step 3: Write `tests/e2e/site.spec.ts`**
+- [x] **Step 3: Write `tests/e2e/site.spec.ts`**
 
 ```ts
 import { expect, test, type Page } from '@playwright/test';
@@ -1748,7 +1748,7 @@ test('unknown pages answer 404 with the fallen rings', async ({ page }) => {
 });
 ```
 
-- [ ] **Step 4: Run it**
+- [x] **Step 4: Run it**
 
 ```bash
 export PATH="/c/Users/letic/AppData/Roaming/nvm/v24.21.0:$PATH"; npm run test:e2e
@@ -1756,7 +1756,7 @@ export PATH="/c/Users/letic/AppData/Roaming/nvm/v24.21.0:$PATH"; npm run test:e2
 
 Expected: every test passes, or is skipped as marked, in all five projects. If an engine disagrees, the error is the product's to fix: find the cause in the site, fix it, and record it. Never loosen a test to hide a real difference.
 
-- [ ] **Step 5: Type-check and commit**
+- [x] **Step 5: Type-check and commit**
 
 ```bash
 export PATH="/c/Users/letic/AppData/Roaming/nvm/v24.21.0:$PATH"; npx astro check
@@ -1774,7 +1774,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 - Modify: whatever the audits show needs fixing
 - Modify: `docs/superpowers/plans/2026-09-24-plan-4-launch-polish.md` (implementation notes)
 
-- [ ] **Step 1: Build for the local origin and serve it**
+- [x] **Step 1: Build for the local origin and serve it**
 
 ```bash
 export PATH="/c/Users/letic/AppData/Roaming/nvm/v24.21.0:$PATH"; SITE_URL=http://127.0.0.1:4500 npm run build && npm run preview -- --host 127.0.0.1 --port 4500
@@ -1782,7 +1782,7 @@ export PATH="/c/Users/letic/AppData/Roaming/nvm/v24.21.0:$PATH"; SITE_URL=http:/
 
 Run the preview in the background. Canonical URLs, social cards and the sitemap now point at the audited origin.
 
-- [ ] **Step 2: Audit both languages, mobile and desktop**
+- [x] **Step 2: Audit both languages, mobile and desktop**
 
 ```bash
 mkdir -p .lighthouse
@@ -1801,11 +1801,11 @@ Expected targets:
 | Mobile | ≥ 90 | ≥ 95 | ≥ 95 | 100 | ≤ 2.0 s | ≤ 0.02 |
 | Desktop | ≥ 95 | ≥ 95 | ≥ 95 | 100 | — | ≤ 0.02 |
 
-- [ ] **Step 3: Fix what falls short**
+- [x] **Step 3: Fix what falls short**
 
 For every audit below 100 in accessibility, best practices or SEO, and for every performance opportunity worth more than 100 ms, read the failing items in the JSON (`audits[id].details`). Fix the cause in the site, rebuild with `SITE_URL`, and re-run only the affected audit. Keep a row per fix for the notes. Stop when the targets hold on both languages.
 
-- [ ] **Step 4: Rebuild for the real configuration and re-run every test**
+- [x] **Step 4: Rebuild for the real configuration and re-run every test**
 
 ```bash
 export PATH="/c/Users/letic/AppData/Roaming/nvm/v24.21.0:$PATH"; npx astro check && npm test && npm run build && npm run test:dist && npx playwright test
@@ -1813,7 +1813,7 @@ export PATH="/c/Users/letic/AppData/Roaming/nvm/v24.21.0:$PATH"; npx astro check
 
 Expected: everything passes.
 
-- [ ] **Step 5: Write the implementation notes**
+- [x] **Step 5: Write the implementation notes**
 
 Append `## Implementation notes (deviations found during execution)` to this plan:
 
@@ -1822,7 +1822,7 @@ Append `## Implementation notes (deviations found during execution)` to this pla
 - bundle sizes;
 - the e2e results per engine.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add -A
@@ -1870,6 +1870,14 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
   | Inlined CSS + latin-ext preload | 90.1 | ~370 ms | 2.25–2.39 s |
 
   Inlining did make FCP earlier on some runs (1.36–1.40 s against 1.55 s), but it did not move LCP, which waits for the JS reveal.
+
+**INP** (spec §14: ≤ 200 ms). Lighthouse's navigation audit does not measure INP, so it was measured separately with the Event Timing API in Chrome over 16–17 interactions per run. The interactions: the header's Services link, three accordion rows, three form chips, typing into two fields, and Send with invalid fields. On phones, the menu opened and closed instead of the header link. The rings were live in every run, and the form's requests were blocked.
+
+| Profile | `/` | `/bs/` | Slowest interaction |
+|---|---|---|---|
+| Desktop 1440×900 | 64 ms | 64 ms | pressing an accordion row or the header link |
+| Desktop, CPU 4× slower | 88 ms | 56 ms | pressing an accordion row |
+| Phone 412×823 (touch), CPU 4× slower | 88 ms | 136 ms | opening or closing the menu |
 
 **Bundles (gzip):**
 

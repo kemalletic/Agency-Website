@@ -62,7 +62,7 @@ tests/unit/motion.test.ts, tests/unit/process.test.ts, tests/dist/motion.test.ts
 - Produces: `initSmoothScroll(): () => void` (no-op cleanup for coarse pointers).
 - Produces: `html.js-motion` (set before first paint when motion is allowed) and `html.motion-ready` (set by the bootstrap).
 
-- [ ] **Step 1: Install the libraries**
+- [x] **Step 1: Install the libraries**
 
 ```bash
 export PATH="/c/Users/letic/AppData/Roaming/nvm/v24.21.0:$PATH"
@@ -72,7 +72,7 @@ npm install gsap@^3.15.0 lenis@^1.3.26
 
 Expected: `added 2 packages`.
 
-- [ ] **Step 2: Write the failing unit tests**
+- [x] **Step 2: Write the failing unit tests**
 
 `tests/unit/motion.test.ts`:
 
@@ -158,12 +158,12 @@ describe('clamp', () => {
 });
 ```
 
-- [ ] **Step 3: Run to see it fail**
+- [x] **Step 3: Run to see it fail**
 
 Run: `npm test`
 Expected: FAIL — `Failed to resolve import "../../src/lib/motion"`.
 
-- [ ] **Step 4: Implement `src/lib/motion.ts`**
+- [x] **Step 4: Implement `src/lib/motion.ts`**
 
 ```ts
 export const REVEAL_TYPES = ['lines', 'chars', 'fade-up', 'fade', 'figure', 'rule', 'clip'] as const;
@@ -220,12 +220,12 @@ export function magneticOffset(pointerX: number, pointerY: number, box: Box, str
 }
 ```
 
-- [ ] **Step 5: Run the unit tests**
+- [x] **Step 5: Run the unit tests**
 
 Run: `npm test`
 Expected: PASS — `Tests 35 passed (35)`.
 
-- [ ] **Step 6: Create `src/styles/motion.css`**
+- [x] **Step 6: Create `src/styles/motion.css`**
 
 ```css
 /* Before the motion bundle has set start states, keep reveal targets invisible (only when motion is allowed). */
@@ -246,7 +246,7 @@ Expected: PASS — `Tests 35 passed (35)`.
 }
 ```
 
-- [ ] **Step 7: Create `src/scripts/motion/lenis.ts`**
+- [x] **Step 7: Create `src/scripts/motion/lenis.ts`**
 
 ```ts
 import { gsap } from 'gsap';
@@ -298,7 +298,7 @@ export function initSmoothScroll(): () => void {
 }
 ```
 
-- [ ] **Step 8: Create `src/scripts/motion/index.ts`**
+- [x] **Step 8: Create `src/scripts/motion/index.ts`**
 
 ```ts
 import { gsap } from 'gsap';
@@ -332,7 +332,7 @@ async function boot(): Promise<void> {
 void boot();
 ```
 
-- [ ] **Step 9: Wire the guard, stylesheet and entry into `src/layouts/Base.astro`**
+- [x] **Step 9: Wire the guard, stylesheet and entry into `src/layouts/Base.astro`**
 
 Add `import '../styles/motion.css';` after the `base.css` import. Directly after `<meta name="viewport" …/>` add:
 
@@ -357,7 +357,7 @@ and just before `</body>` add:
     </script>
 ```
 
-- [ ] **Step 10: Write the dist test**
+- [x] **Step 10: Write the dist test**
 
 `tests/dist/motion.test.ts`:
 
@@ -387,7 +387,7 @@ describe.each(pages)('$path motion hooks', ({ path }) => {
 });
 ```
 
-- [ ] **Step 11: Build, test, check in the browser**
+- [x] **Step 11: Build, test, check in the browser**
 
 Run: `npm run build && npm run test:dist && npm test && npm run check`
 Expected: dist 114 passed; unit 35 passed; `0 errors`.
@@ -400,7 +400,7 @@ Preview (`npm run preview -- --host 127.0.0.1 --port 4321` in the background), o
 
 Expected: classes contain `js-motion` and `motion-ready`; `lenis` is `true`. Scroll with `browser_run_code_unsafe` (`await page.mouse.wheel(0, 800)`) and confirm `window.scrollY` grows smoothly over ~1 s. Click the "Services" nav link: the page glides to `#services`, `location.hash === '#services'` and `document.activeElement.id === 'services'`. Console has no errors.
 
-- [ ] **Step 12: Commit**
+- [x] **Step 12: Commit**
 
 ```bash
 git add -A
@@ -422,7 +422,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 - Consumes: `parseReveal` (Task 1).
 - Produces: `initReveals(): () => void`. Reveal vocabulary (`data-reveal` + optional `data-reveal-delay` in seconds): `lines` (SplitText lines rise from masks), `chars` (characters rise, headings only), `fade-up`, `fade`, `figure` (fade + scale 0.96→1), `rule` (scaleX draw from left), `clip` (clip-path opens from the bottom). Classes created by SplitText: `split-line`, `split-line-mask`, `split-char`, `split-char-mask`.
 
-- [ ] **Step 1: Extend the dist test (fails first)**
+- [x] **Step 1: Extend the dist test (fails first)**
 
 Append to `tests/dist/motion.test.ts`:
 
@@ -455,7 +455,7 @@ describe.each(pages)('$path reveal markup', ({ path }) => {
 
 Run: `npm run build && npm run test:dist` → Expected: FAIL (no `data-reveal` on headings, no `.hero-word`).
 
-- [ ] **Step 2: Create `src/scripts/motion/reveal.ts`**
+- [x] **Step 2: Create `src/scripts/motion/reveal.ts`**
 
 ```ts
 import { gsap } from 'gsap';
@@ -530,7 +530,7 @@ export function initReveals(): () => void {
 }
 ```
 
-- [ ] **Step 3: Register it in `src/scripts/motion/index.ts`**
+- [x] **Step 3: Register it in `src/scripts/motion/index.ts`**
 
 Add `import { initReveals } from './reveal';` and change the cleanup list to:
 
@@ -538,7 +538,7 @@ Add `import { initReveals } from './reveal';` and change the cleanup list to:
     const cleanups: Cleanup[] = [initSmoothScroll(), initReveals()];
 ```
 
-- [ ] **Step 4: Hero — split the headline into words and add the CSS intro**
+- [x] **Step 4: Hero — split the headline into words and add the CSS intro**
 
 In `src/components/Hero.astro` frontmatter add after `const t = getDictionary(lang);`:
 
@@ -615,7 +615,7 @@ Add to the end of the component's `<style>` block (before `</style>`):
   }
 ```
 
-- [ ] **Step 5: Section headings — split title, fade intro, drawn rule**
+- [x] **Step 5: Section headings — split title, fade intro, drawn rule**
 
 Replace `src/components/ui/SectionHeading.astro` with:
 
@@ -693,7 +693,7 @@ const { id, title, count, intro } = Astro.props;
 </style>
 ```
 
-- [ ] **Step 6: Reveal attributes in the other sections**
+- [x] **Step 6: Reveal attributes in the other sections**
 
 `src/components/Approach.astro` — change the four opening tags:
 
@@ -752,12 +752,12 @@ const { id, title, count, intro } = Astro.props;
     <div class="ct-info" data-reveal="fade-up">
 ```
 
-- [ ] **Step 7: Build and run all tests**
+- [x] **Step 7: Build and run all tests**
 
 Run: `npm run build && npm run test:dist && npm test && npm run check`
 Expected: dist 122 passed; unit 35 passed; `0 errors`.
 
-- [ ] **Step 8: Browser check**
+- [x] **Step 8: Browser check**
 
 At 1440×900, reload `/`. Within 1.6 s the hero words rise, the rings poster fades/scales in, the lead and CTA fade up — screenshot at 200 ms (`t2-hero-early.png`, words partly risen) and at 2 s (`t2-hero-done.png`, identical to Plan 1's hero). Then:
 
@@ -767,7 +767,7 @@ At 1440×900, reload `/`. Within 1.6 s the hero words rise, the rings poster fad
 
 Expected `"0"` before scrolling. Wheel-scroll until `#services` is in view, wait 1.5 s, run it again → `"1"`; the heading lines are fully risen and the rule spans the full width. Scroll to `#contact`: the title builds from characters. Emulate `prefers-reduced-motion: reduce` (`browser_emulate_media`), reload: nothing animates, everything is visible immediately, `document.documentElement.classList.contains('js-motion') === false`.
 
-- [ ] **Step 9: Commit**
+- [x] **Step 9: Commit**
 
 ```bash
 git add -A
@@ -788,7 +788,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 - Consumes: `nextHeaderHidden`, `headerIsSolid` (Task 1).
 - Produces: `initHeader(options: { allowHide: boolean }): () => void`; header attributes `data-solid="true|false"`, `data-hidden="true|false"`, `data-tone="light|dark"`.
 
-- [ ] **Step 1: Create `src/scripts/motion/header.ts`**
+- [x] **Step 1: Create `src/scripts/motion/header.ts`**
 
 ```ts
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -832,7 +832,7 @@ export function initHeader({ allowHide }: { allowHide: boolean }): () => void {
 }
 ```
 
-- [ ] **Step 2: Start it from `index.ts` for every motion preference**
+- [x] **Step 2: Start it from `index.ts` for every motion preference**
 
 In `src/scripts/motion/index.ts` add `import { initHeader } from './header';` and, right after `const root = document.documentElement;`, add:
 
@@ -841,7 +841,7 @@ In `src/scripts/motion/index.ts` add `import { initHeader } from './header';` an
   initHeader({ allowHide: !reduced });
 ```
 
-- [ ] **Step 3: Header CSS for the three states and the magnetic CTA hook**
+- [x] **Step 3: Header CSS for the three states and the magnetic CTA hook**
 
 In `src/components/Header.astro` change the CTA to `<Button href="#contact" size="s" data-magnetic>{t.cta.start}</Button>` and replace the `.site-header { … }` rule with:
 
@@ -895,7 +895,7 @@ In `src/components/Header.astro` change the CTA to `<Button href="#contact" size
   }
 ```
 
-- [ ] **Step 4: Mobile menu entrance (CSS only)**
+- [x] **Step 4: Mobile menu entrance (CSS only)**
 
 In `src/components/MobileMenu.astro` give each nav link its index:
 
@@ -935,13 +935,13 @@ and append to its `<style>`:
   }
 ```
 
-- [ ] **Step 5: Build, test, browser check**
+- [x] **Step 5: Build, test, browser check**
 
 Run: `npm run build && npm run test:dist && npm run check` → all green (dist 122, `0 errors`).
 
 At 1440×900 on `/`: at the top `header.dataset.solid === 'false'` (no hairline, transparent). Wheel down 600 px → `data-hidden="true"`, header slides up. Wheel up 100 px → `data-hidden="false"`. Scroll into `#contact` → `data-tone="dark"`, screenshot `t3-header-dark.png` (night header, light CTA). Press Tab once while the header is hidden → header returns (focus lock). At 390×844 open the menu: links rise one after another; with reduced motion emulated they appear instantly.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add -A
@@ -961,7 +961,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 **Interfaces:**
 - Produces: `initServices(options: { animated: boolean }): () => void`. Markup hook: each panel is wrapped in `.svc-collapse` (the element whose height animates). Illustration hooks: `.art-cursor`, `.art-cta` (web), `.app-row`, `.app-toast`, `.app-bar` (apps), `.node` (systems).
 
-- [ ] **Step 1: Wrap each panel in a collapse box**
+- [x] **Step 1: Wrap each panel in a collapse box**
 
 In `src/components/Services.astro` replace the whole `<div class="svc-panel"> … </div>` block with:
 
@@ -998,7 +998,7 @@ and add to the `<style>`:
   }
 ```
 
-- [ ] **Step 2: Tag the chart bars in `src/components/art/ServiceApps.astro`**
+- [x] **Step 2: Tag the chart bars in `src/components/art/ServiceApps.astro`**
 
 Change the bar markup to:
 
@@ -1007,7 +1007,7 @@ Change the bar markup to:
       <rect class="acc app-bar" x="484" y="178" width="12" height="76" rx="3" />
 ```
 
-- [ ] **Step 3: Create `src/scripts/motion/services.ts`**
+- [x] **Step 3: Create `src/scripts/motion/services.ts`**
 
 ```ts
 import { gsap } from 'gsap';
@@ -1130,7 +1130,7 @@ export function initServices({ animated }: { animated: boolean }): () => void {
 }
 ```
 
-- [ ] **Step 4: Start it from `index.ts`**
+- [x] **Step 4: Start it from `index.ts`**
 
 Add `import { initServices } from './services';` and after the `initHeader(…)` line:
 
@@ -1138,7 +1138,7 @@ Add `import { initServices } from './services';` and after the `initHeader(…)`
   initServices({ animated: !reduced });
 ```
 
-- [ ] **Step 5: Build, test, browser check**
+- [x] **Step 5: Build, test, browser check**
 
 Run: `npm run build && npm run test:dist && npm run check` → green. (The static HTML keeps `name="services"`, so the Plan-1 test still passes; the script removes it at runtime.)
 
@@ -1150,7 +1150,7 @@ At 1440: scroll to `#services` — the open "Websites" illustration plays (curso
 
 Expected after 1 s: `{ open: [false, true, false], name: null }`. Keyboard: focus the third summary and press Enter → it animates open. With reduced motion emulated, rows switch instantly.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add -A
@@ -1171,7 +1171,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 - Produces: `initWork(): () => void`; markup hooks `.pj-parallax` (outer SVG group the scroll moves), `.pj-mock` (inner group the hover moves), `.cursor-pill` / `.cursor-pill-label`, card attributes `data-cursor`, `data-cursor-icon`.
 - Dictionary: `ProjectItem.cursor: string`.
 
-- [ ] **Step 1: Dictionary — cursor labels**
+- [x] **Step 1: Dictionary — cursor labels**
 
 `src/i18n/types.ts`: add `cursor: string;` to `ProjectItem` (after `cardLabel`).
 `src/i18n/en.ts`: portal gets `cursor: 'Ask about it'`, shop gets `cursor: 'Visit'`.
@@ -1179,11 +1179,11 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 
 Run `npm test` → 35 passed (the parity test covers the new keys).
 
-- [ ] **Step 2: Separate scroll parallax from hover lift in both mockups**
+- [x] **Step 2: Separate scroll parallax from hover lift in both mockups**
 
 In both `src/components/art/ProjectPortal.astro` and `src/components/art/ProjectShop.astro`: insert `<g class="pj-parallax">` on the line directly before `<g class="pj-mock">`, and insert one more `</g>` directly before `</svg>` (it closes the new group). Nothing else changes.
 
-- [ ] **Step 3: Work markup — cursor hooks, pill, SVG dashed border**
+- [x] **Step 3: Work markup — cursor hooks, pill, SVG dashed border**
 
 In `src/components/Work.astro`:
 
@@ -1281,7 +1281,7 @@ In its `<style>` remove `border: 1px dashed var(--line-dash);` from `.pj-next`, 
   }
 ```
 
-- [ ] **Step 4: Create `src/scripts/motion/work.ts`**
+- [x] **Step 4: Create `src/scripts/motion/work.ts`**
 
 ```ts
 import { gsap } from 'gsap';
@@ -1336,17 +1336,17 @@ export function initWork(): () => void {
 }
 ```
 
-- [ ] **Step 5: Register it**
+- [x] **Step 5: Register it**
 
 `index.ts`: `import { initWork } from './work';` and extend the list: `[initSmoothScroll(), initReveals(), initWork()]`.
 
-- [ ] **Step 6: Build, test, browser check**
+- [x] **Step 6: Build, test, browser check**
 
 Run: `npm run build && npm run test:dist && npm test && npm run check` → green.
 
 At 1440: scroll to `#work`; the cards open from the bottom edge upward and the mockups drift as you scroll (compare `.pj-parallax` transform at two scroll positions — the `y` differs). Hover the portal card: a dark pill "Ask about it →" follows the pointer 18 px below-right; the mockup still lifts on hover. Hover the shop card: "Visit ↗". Hover "Your project": dashes march. At 390 no pill appears (coarse pointer emulation via `browser_run_code_unsafe` with `page.emulateMedia` is not needed — resize alone keeps `pointer: fine`, so verify only that the page still has no horizontal overflow).
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add -A
@@ -1368,7 +1368,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 - Produces: `GO_LIVE = 85.714`; `PROCESS_BARS: readonly ProcessBar[]` (`{ start; end: number | null; tone; demos?; outAlign? }`); `barLength(bar): number | null`; `barSchedule(bar): { at: number; duration: number }` (fractions of a 0–1 timeline in which a cursor sweeps the track linearly); `initProcess(): () => void`.
 - Markup hooks: `.proc-body` wrapper around the list, `.proc-overlay > .proc-overlay-lane > .proc-golive-solid, .proc-cursor > .proc-cursor-dot`.
 
-- [ ] **Step 1: Failing unit test**
+- [x] **Step 1: Failing unit test**
 
 `tests/unit/process.test.ts`:
 
@@ -1406,7 +1406,7 @@ describe('process geometry', () => {
 
 Run `npm test` → FAIL (`Failed to resolve import "../../src/lib/process"`).
 
-- [ ] **Step 2: Implement `src/lib/process.ts`**
+- [x] **Step 2: Implement `src/lib/process.ts`**
 
 ```ts
 /** Timeline geometry in % of the track width (1 unit = 11.4286 %, go-live at 7.5 units). */
@@ -1442,7 +1442,7 @@ export function barSchedule(bar: ProcessBar): { at: number; duration: number } {
 
 Run `npm test` → PASS (39).
 
-- [ ] **Step 3: Use the shared geometry and add the overlay in `src/components/Process.astro`**
+- [x] **Step 3: Use the shared geometry and add the overlay in `src/components/Process.astro`**
 
 Frontmatter: delete the local `GO_LIVE`, `Bar` interface and `bars` array; import instead:
 
@@ -1519,7 +1519,7 @@ Append to the `<style>`:
   }
 ```
 
-- [ ] **Step 4: Create `src/scripts/motion/process.ts`**
+- [x] **Step 4: Create `src/scripts/motion/process.ts`**
 
 ```ts
 import { gsap } from 'gsap';
@@ -1586,11 +1586,11 @@ export function initProcess(): () => void {
 }
 ```
 
-- [ ] **Step 5: Register it**
+- [x] **Step 5: Register it**
 
 `index.ts`: `import { initProcess } from './process';` → list `[initSmoothScroll(), initReveals(), initWork(), initProcess()]`.
 
-- [ ] **Step 6: Build, test, browser check**
+- [x] **Step 6: Build, test, browser check**
 
 Run: `npm run build && npm run test:dist && npm test && npm run check` → dist 122, unit 39, `0 errors`.
 
@@ -1610,7 +1610,7 @@ At 1440×900 scroll until the Process figure is centred: it pins. Record progres
 
 Expected: `pinned: true`; `cursor` climbs 0 → 100 as you scroll; the Build bar's clip-path opens while the cursor crosses 23–77 %; the demo dots pop at 34/46/57/69 %; at 86 % the dashed go-live line turns solid; the green Run bar sweeps to the window edge at the end; then the page continues. Scroll back up: everything reverses. At 1440×700 the figure does not pin but still scrubs. At 390 each mini bar grows when its row enters.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add -A
@@ -1630,7 +1630,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 **Interfaces:**
 - Produces: `initPrinciples(): () => void` — every word of each `.pr-text` that is not inside `.pr-lead` tweens from `--label` to `--ink`, scrubbed from `top 82%` to `bottom 52%` of the paragraph.
 
-- [ ] **Step 1: Create `src/scripts/motion/principles.ts`**
+- [x] **Step 1: Create `src/scripts/motion/principles.ts`**
 
 ```ts
 import { gsap } from 'gsap';
@@ -1664,11 +1664,11 @@ export function initPrinciples(): () => void {
 }
 ```
 
-- [ ] **Step 2: Register it**
+- [x] **Step 2: Register it**
 
 `index.ts`: `import { initPrinciples } from './principles';` → add `initPrinciples()` to the list.
 
-- [ ] **Step 3: Build, test, browser check**
+- [x] **Step 3: Build, test, browser check**
 
 Run: `npm run build && npm run test:dist && npm run check` → green.
 
@@ -1680,7 +1680,7 @@ At 1440 scroll slowly through `#studio`; the grey part of each principle turns i
 
 Expected: `rgb(102, 100, 95)` before, `rgb(18, 18, 17)` after. Screen readers still get the full sentence (`aria: 'none'` keeps plain text).
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add -A
@@ -1702,11 +1702,11 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 - Consumes: `magneticOffset`, `Box` (Task 1).
 - Produces: `initContact(): () => void`, `initMagnetic(): () => void`; `.page-dim` overlay; `data-magnetic` hook; form attribute `data-msg-sent`; dictionary `contact.sent`.
 
-- [ ] **Step 1: Dictionary — sent label**
+- [x] **Step 1: Dictionary — sent label**
 
 `types.ts`: add `sent: string;` to `contact` (after `sending`). `en.ts`: `sent: 'Sent',`. `bs.ts`: `sent: 'Poslano',`.
 
-- [ ] **Step 2: Extend the dist test (fails first)**
+- [x] **Step 2: Extend the dist test (fails first)**
 
 Append to `tests/dist/motion.test.ts`:
 
@@ -1731,7 +1731,7 @@ describe.each(pages)('$path contact motion hooks', ({ path, lang }) => {
 
 Run `npm run build && npm run test:dist` → FAIL (no `.page-dim`, too few `[data-magnetic]`, no `data-msg-sent`).
 
-- [ ] **Step 3: Contact markup and styles**
+- [x] **Step 3: Contact markup and styles**
 
 In `src/components/Contact.astro`:
 
@@ -1816,7 +1816,7 @@ In `src/components/Footer.astro` add `position: relative; z-index: 2;` to `.site
 
 In `src/components/Hero.astro` make the hero CTA magnetic: `<Button href="#contact" size="l" data-magnetic>{t.cta.start}</Button>`.
 
-- [ ] **Step 4: Sent label and reset in `src/scripts/contact-form.ts`**
+- [x] **Step 4: Sent label and reset in `src/scripts/contact-form.ts`**
 
 Replace `setState` with:
 
@@ -1839,7 +1839,7 @@ and after the `focusout` listener add:
   });
 ```
 
-- [ ] **Step 5: Create `src/scripts/motion/contact.ts`**
+- [x] **Step 5: Create `src/scripts/motion/contact.ts`**
 
 ```ts
 import { gsap } from 'gsap';
@@ -1866,7 +1866,7 @@ export function initContact(): () => void {
 }
 ```
 
-- [ ] **Step 6: Create `src/scripts/motion/magnetic.ts`**
+- [x] **Step 6: Create `src/scripts/motion/magnetic.ts`**
 
 ```ts
 import { gsap } from 'gsap';
@@ -1912,7 +1912,7 @@ export function initMagnetic(): () => void {
 }
 ```
 
-- [ ] **Step 7: Register both and review the bootstrap**
+- [x] **Step 7: Register both and review the bootstrap**
 
 `src/scripts/motion/index.ts` final version:
 
@@ -1968,13 +1968,13 @@ async function boot(): Promise<void> {
 void boot();
 ```
 
-- [ ] **Step 8: Build, test, browser check**
+- [x] **Step 8: Build, test, browser check**
 
 Run: `npm run build && npm run test:dist && npm test && npm run check` → dist 128, unit 39, `0 errors`.
 
 At 1440 scroll from `#studio` into `#contact`: the dark section enters narrower with rounded top corners and widens to full bleed; the paper page behind dims up to 40 %; the header turns dark. Hover "Start a project" in the hero: the pill leans toward the pointer (≤ 14 px) and springs back on leave. Submit the form with a fake key to see states: in the console run `document.querySelector('[name=access_key]').value = 'test'`, fill valid values, click Send → spinner, then (Web3Forms rejects the key) error text with a mailto link; type in any field → back to idle. Screenshots: `t8-sheet-mid.png` (half-risen sheet), `t8-contact.png`.
 
-- [ ] **Step 9: Commit**
+- [x] **Step 9: Commit**
 
 ```bash
 git add -A
@@ -1993,7 +1993,7 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 **Interfaces:**
 - Consumes: everything above.
 
-- [ ] **Step 1: Reduced motion**
+- [x] **Step 1: Reduced motion**
 
 With `browser_emulate_media` `reducedMotion: 'reduce'`, reload `/` and `/bs/` at 1440 and 390. Check:
 
@@ -2009,7 +2009,7 @@ With `browser_emulate_media` `reducedMotion: 'reduce'`, reload `/` and `/bs/` at
 
 Expected: `jsMotion false`, `lenis false`, `pins 0`, `hiddenReveals 0`, every `barClips` entry `"none"`. Scrolling down never hides the header.
 
-- [ ] **Step 2: No JavaScript**
+- [x] **Step 2: No JavaScript**
 
 With `browser_run_code_unsafe` (the MCP browser uses a persistent context, so script execution is switched off through CDP; the page's own scripts never run during this load):
 
@@ -2030,11 +2030,11 @@ async (page) => {
 
 Expected: `hidden: 0`, `guard: false`; the screenshot shows the complete Plan-1 page.
 
-- [ ] **Step 3: Fail-safe when the bundle never loads**
+- [x] **Step 3: Fail-safe when the bundle never loads**
 
 With `browser_run_code_unsafe`: `await page.route('**/_astro/*.js', (r) => r.abort()); await page.goto('http://127.0.0.1:4321/'); await page.waitForTimeout(3300);` then count hidden reveal targets as above → `0` (the guard removed `js-motion`). Afterwards `await page.unroute('**/_astro/*.js')`.
 
-- [ ] **Step 4: JavaScript budget**
+- [x] **Step 4: JavaScript budget**
 
 ```bash
 cd /c/projects/nice && for f in dist/_astro/*.js; do printf "%7d  %s\n" "$(gzip -c "$f" | wc -c)" "$f"; done | sort -n
@@ -2042,7 +2042,7 @@ cd /c/projects/nice && for f in dist/_astro/*.js; do printf "%7d  %s\n" "$(gzip 
 
 Expected: the sum is ≤ 71 680 bytes (70 KB). If it is larger, list the heaviest chunk and report it before continuing.
 
-- [ ] **Step 5: Smoothness spot-check**
+- [x] **Step 5: Smoothness spot-check**
 
 At 1440×900 with `browser_run_code_unsafe`, record a performance trace while wheel-scrolling through Process and Principles:
 
@@ -2057,11 +2057,11 @@ async (page) => {
 
 Expected: no entry above 50 ms after the initial load; if one appears, identify the tween (usually SplitText re-splitting) and fix it.
 
-- [ ] **Step 6: Full visual pass with motion settled**
+- [x] **Step 6: Full visual pass with motion settled**
 
 For 390, 1024, 1440 and both languages: navigate, wheel through the whole page in 400 px steps with 150 ms pauses (so every reveal fires), scroll back to top, then take a full-page screenshot (scrollbar hidden with `html{scrollbar-width:none}` as in Plan 1). Every section must look exactly like its Plan-1 counterpart (reveals finished, bars fully drawn, principles fully inked). Console errors: none.
 
-- [ ] **Step 7: Run everything and commit**
+- [x] **Step 7: Run everything and commit**
 
 Run: `npm test && npm run build && npm run test:dist && npm run check` → unit 39, dist 128, `0 errors`.
 
