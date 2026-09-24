@@ -176,7 +176,10 @@ export async function startRings({ pin, intro, onLost, canvas, context }: RingsO
     measure();
     // Compile every shader before the first visible frame, off the main thread where the browser allows it.
     await breathe();
-    await renderer.compileAsync(rings.scene, rings.camera);
+    // Without KHR_parallel_shader_compile (Firefox) compiling is synchronous either way, and asking three for the
+    // extension would log a warning.
+    if (renderer.extensions.has('KHR_parallel_shader_compile')) await renderer.compileAsync(rings.scene, rings.camera);
+    else renderer.compile(rings.scene, rings.camera);
   } catch (error) {
     stop();
     throw error;

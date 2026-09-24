@@ -28,3 +28,9 @@
 [tabindex='-1']:focus {
   outline: none;
 }
+
+/* Scroll anchoring fights ScrollTrigger's pins (it "corrects" the scroll while a pin spacer is rearranged, e.g. on a
+   deep link past a pin); pins only exist with motion, so only then is it switched off. */
+html.js-motion {
+  overflow-anchor: none;
+}

@@ -1611,11 +1611,14 @@ export default defineConfig({
 import { expect, test, type Page } from '@playwright/test';
 
 /** Collects page errors and console errors (three's informational logs are not errors). */
-function watch(page: Page): string[] {
+function watch(page: Page, { expected404 }: { expected404?: string } = {}): string[] {
   const problems: string[] = [];
   page.on('pageerror', (error) => problems.push(error.message));
   page.on('console', (message) => {
-    if (message.type() === 'error') problems.push(message.text());
+    if (message.type() !== 'error') return;
+    // A 404 page is served with status 404; the browser logs that for the document itself.
+    if (expected404 && message.location().url.endsWith(expected404) && message.text().includes('404')) return;
+    problems.push(message.text());
   });
   return problems;
 }
@@ -1734,7 +1737,7 @@ test('the skip link jumps to the content', async ({ page, isMobile }) => {
 });
 
 test('unknown pages answer 404 with the fallen rings', async ({ page }) => {
-  const problems = watch(page);
+  const problems = watch(page, { expected404: '/nowhere-at-all' });
   const response = await page.goto('/nowhere-at-all');
   expect(response?.status()).toBe(404);
   await expect(page.locator('h1')).toBeVisible();

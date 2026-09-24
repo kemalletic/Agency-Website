@@ -14,7 +14,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:dist": "vitest run --config vitest.dist.config.ts",
-    "astro": "astro"
+    "astro": "astro",
+    "test:e2e": "npm run build && playwright test"
   },
   "allowScripts": {
     "esbuild": true
@@ -28,6 +29,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
+    "@playwright/test": "^1.63.0",
     "@types/node": "^24.13.6",
     "@types/three": "^0.186.0",
     "linkedom": "^0.18.13",

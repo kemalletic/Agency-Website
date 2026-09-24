@@ -76,6 +76,17 @@ export function initContactForm(): void {
 
   form.addEventListener('input', () => {
     if (form.dataset.state === 'success' || form.dataset.state === 'error') setState('idle');
+    // After a failed attempt a message goes as soon as its field is fixed (new ones still wait for blur or submit).
+    // Clearing on blur instead shifts the form under the pointer on its way to Send, and that click is lost.
+    if (!attempted) return;
+    const errors = validateContact(read(), messages);
+    for (const name of FIELDS) {
+      const slot = form.querySelector<HTMLElement>(`[data-error-for="${name}"]`);
+      if (errors[name] || !slot || slot.hidden) continue;
+      slot.hidden = true;
+      slot.textContent = '';
+      field(name)?.setAttribute('aria-invalid', 'false');
+    }
   });
 
   form.addEventListener('submit', async (event) => {
