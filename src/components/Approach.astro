@@ -3,6 +3,7 @@ import { Picture } from 'astro:assets';
 import approachPoster from '../assets/posters/approach.png';
 import { getDictionary, type Locale } from '../i18n';
 import { labelAnchors } from '../lib/rings/labels';
+import { noWidow } from '../lib/typography';
 import RingDot from './ui/RingDot.astro';
 
 interface Props {
@@ -39,7 +40,7 @@ const percent = (value: number): string => `${(value * 100).toFixed(2)}%`;
           }
         </div>
       </div>
-      <figcaption class="fig-caption"><span class="fig-num">{t.approach.fig}</span> — {t.approach.caption}</figcaption>
+      <figcaption class="fig-caption"><span class="fig-num">{t.approach.fig}</span> — {noWidow(t.approach.caption)}</figcaption>
     </figure>
     <div class="approach-text">
       <h2 id="approach-label" class="label" data-reveal="fade">{t.approach.label}</h2>

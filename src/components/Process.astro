@@ -1,6 +1,7 @@
 ---
 import { getDictionary, pad2, type Locale } from '../i18n';
 import { PROCESS_BARS, barLength, type ProcessBar } from '../lib/process';
+import { noWidow } from '../lib/typography';
 import SectionHeading from './ui/SectionHeading.astro';
 
 interface Props {
@@ -68,7 +69,7 @@ const barStyle = (bar: ProcessBar) => {
       <figcaption class="fig-caption proc-caption">
         <span class="fig-num">{t.process.fig}</span> — {t.process.captionBefore}{' '}
         <span class="proc-pill"><span class="visually-hidden">{t.process.pillAlt}</span></span>{' '}
-        {t.process.captionAfter}
+        {noWidow(t.process.captionAfter)}
       </figcaption>
     </figure>
   </div>

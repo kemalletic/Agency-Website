@@ -155,6 +155,13 @@
     white-space: nowrap;
     border: 0;
   }
+  /* Keeps a run of words on one line (the last words of headings, so none is left alone). Below 360px a lone word
+     is better than a heading wider than the screen. */
+  @media (min-width: 22.5rem) {
+    .nowrap {
+      white-space: nowrap;
+    }
+  }
   .skip-link {
     position: fixed;
     left: 1rem;

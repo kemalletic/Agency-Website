@@ -1,4 +1,6 @@
 ---
+import { widowTail } from '../../lib/typography';
+
 interface Props {
   id: string;
   title: string;
@@ -7,10 +9,12 @@ interface Props {
 }
 
 const { id, title, count, intro } = Astro.props;
+// The last two words and the count stay on one line: no lone word, and the count never drops to a line of its own.
+const [head, tail] = widowTail(title);
 ---
 
 <div class="sh">
-  <h2 id={id} class="sh-title" data-reveal="lines">{title}<span class="sh-count" aria-hidden="true">({count})</span></h2>
+  <h2 id={id} class="sh-title" data-reveal="lines">{head}<span class="nowrap">{tail}<span class="sh-count" aria-hidden="true">({count})</span></span></h2>
   <p class="sh-intro" data-reveal="fade-up" data-reveal-delay="0.15">{intro}</p>
   <span class="sh-rule" data-reveal="rule" aria-hidden="true"></span>
 </div>

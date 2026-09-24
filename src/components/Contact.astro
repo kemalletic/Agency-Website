@@ -2,6 +2,7 @@
 import { PUBLIC_WEB3FORMS_KEY } from 'astro:env/client';
 import { site } from '../config/site';
 import { getDictionary, type Locale } from '../i18n';
+import { widowTail } from '../lib/typography';
 import Button from './ui/Button.astro';
 
 interface Props {
@@ -10,6 +11,7 @@ interface Props {
 
 const { lang } = Astro.props;
 const c = getDictionary(lang).contact;
+const [titleHead, titleTail] = widowTail(c.title);
 const needs = [c.needs.web, c.needs.app, c.needs.sys, c.needs.unsure];
 ---
 
@@ -19,7 +21,7 @@ const needs = [c.needs.web, c.needs.app, c.needs.sys, c.needs.unsure];
     <div class="ct-grid">
       <div class="ct-intro">
         <span class="label ct-label" data-reveal="fade">{c.label}</span>
-        <h2 id="contact-title" class="ct-title" data-reveal="chars">{c.title}</h2>
+        <h2 id="contact-title" class="ct-title" data-reveal="chars">{titleHead}<span class="nowrap">{titleTail}</span></h2>
         <p class="ct-lead" data-reveal="fade-up" data-reveal-delay="0.1">{c.lead}</p>
         <a class="ct-mail" href={`mailto:${site.email}`} data-reveal="fade-up" data-reveal-delay="0.2">{site.email}</a>
       </div>

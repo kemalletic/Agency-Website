@@ -3,6 +3,7 @@ import { Picture } from 'astro:assets';
 import heroPoster from '../assets/posters/hero.png';
 import { site } from '../config/site';
 import { getDictionary, type Locale } from '../i18n';
+import { noWidow } from '../lib/typography';
 import Button from './ui/Button.astro';
 
 interface Props {
@@ -43,7 +44,7 @@ const words = t.hero.title.split(' ');
         <a class="hero-mail" href={`mailto:${site.email}`}>{site.email}</a>
       </div>
     </div>
-    <p class="hero-caption fig-caption"><span class="fig-num">{t.hero.fig}</span> — {t.hero.caption}</p>
+    <p class="hero-caption fig-caption"><span class="fig-num">{t.hero.fig}</span> — {noWidow(t.hero.caption)}</p>
   </div>
 </section>
 
