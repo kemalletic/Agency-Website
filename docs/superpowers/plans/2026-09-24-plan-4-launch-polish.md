@@ -1861,6 +1861,15 @@ Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 
 - **Before these fixes:** mobile scored 49–69 and desktop 71.
 - **Mobile LCP:** the English page misses the 2.0 s target by about 0.1 s. The LCP is the hero headline, which on simulated slow 4G waits for the HTML, the font file and the first reveal frame.
+- **Tried and rejected:** inlining all CSS into the HTML (`build.inlineStylesheets: 'always'`), with and without preloading the latin-ext font on Bosnian pages. An interleaved A/B test (three builds served side by side with gzip, 4 rounds × 2 languages) gave:
+
+  | Build | Mean mobile score | Median TBT | Median LCP |
+  |---|---|---|---|
+  | External CSS (kept) | 94.6 | ~200 ms | 2.09 s |
+  | Inlined CSS | 92.8 | 171–342 ms | 2.09–2.46 s |
+  | Inlined CSS + latin-ext preload | 90.1 | ~370 ms | 2.25–2.39 s |
+
+  Inlining did make FCP earlier on some runs (1.36–1.40 s against 1.55 s), but it did not move LCP, which waits for the JS reveal.
 
 **Bundles (gzip):**
 
