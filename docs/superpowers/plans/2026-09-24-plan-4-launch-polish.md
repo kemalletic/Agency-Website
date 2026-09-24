@@ -1830,3 +1830,52 @@ git commit -m "docs: record Lighthouse results and implementation notes for plan
 
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
 ```
+
+## Implementation notes (deviations found during execution)
+
+| Where | Change | Why |
+|---|---|---|
+| `src/dev/posters.ts` (Task 1) | The social cards load each font face together with its text (`document.fonts.load(font, text)`). The touch icon crops 0.8 of the render (plan 0.66). | Without the text, only the basic latin file loaded, so "š" fell back to another face. At 0.66 the knot touched the icon's edges. |
+| `tests/unit/seo.test.ts` (Task 2) | The placeholder check looks for `"[`, not `[`. | `[` also matched the JSON array `["en","bs"]`. |
+| `src/pages/404.astro` (Task 3) | The Bosnian link is a text button, and the actions gap is `16px 32px`. | The ghost button was invisible on paper. |
+| `src/scripts/motion/header.ts` (Task 6) | The tone trigger's end is `ScrollTrigger.maxScroll(window) + 1` with `refreshPriority: -1`. | `end: 'max'` was measured before the pins existed, so the header flipped back to light over the footer. |
+| `src/scripts/motion/menu.ts` (Task 7) | Escape and the close button return focus to the menu toggle explicitly. Link clicks do not. | WebKit did not restore focus by itself. |
+| `src/scripts/motion/index.ts`, `src/styles/motion.css` (Tasks 7–8) | `holdHashTarget()` keeps a deep-linked section under the header, frame by frame, until the reader's first input (or for 5 s). `html.js-motion` sets `overflow-anchor: none`. | Pins created above the target, Chrome's scroll anchoring and the rings dropping their pin moved deep links by 9–47 px. |
+| `src/scripts/contact-form.ts` (Task 7) | After a failed attempt, a fixed field's error clears on `input` (plan: on blur). | Clearing on blur shifted the Send button under the pointer, so the click missed it. |
+| `tests/e2e/site.spec.ts` (Task 7) | The language switch is found with `getByRole`. The skip-link test focuses the link on WebKit instead of pressing Tab. | Two elements matched the text. WebKit's Tab skips links by default. |
+| `playwright.config.ts` (Task 7) | `workers: 2`. | More parallel browsers overloaded the GPU and timed out. Only one `astro preview` can run at a time, so stop other previews before `npx playwright test`. |
+| `src/scripts/rings/index.ts` (Task 7) | `compileAsync` only when `KHR_parallel_shader_compile` exists, otherwise `compile`. | three.js warned on every start without the extension. |
+| `src/scripts/rings/scene.ts`, `materials.ts` (Task 8) | No `RoomEnvironment`/PMREM. A hemisphere light plus soft fill, top and rim lights replace it, and the green and graphite finishes get a little sheen. Posters, social cards and the touch icon were re-rendered. | Prefiltering the environment compiled shaders synchronously: 0.8–0.9 s on a cold cache, which made mobile TBT up to 4.4 s. The lights are also closer to the original shader, which had no environment either. |
+| `src/scripts/motion/rings.ts`, `src/scripts/rings/gpu-probe.ts`, `src/lib/rings/gpu.ts` (Task 8, replaces Task 5's early check) | The pin is created at boot again. After `load`, a worker creates a WebGL2 context on an `OffscreenCanvas` and reports whether the GPU is real. Software renderers (SwiftShader, llvmpipe…) are rejected by name. Only then, when the page is idle, does the page create its own context and import three.js. Where a worker cannot tell, the page checks on the main thread. | The check at boot cost 150–330 ms of main thread. Headless Chrome hands out SwiftShader even with `failIfMajorPerformanceCaveat`. The first WebGL context also pays a synchronous GPU set-up of up to ~110 ms, which now falls in the worker: the page's own context takes 6–8 ms (it was 22–110 ms), and Bosnian mobile TBT fell from ~540 to ~150 ms. |
+| `src/scripts/motion/near.ts`, `reveal.ts`, `principles.ts` (Task 8) | Reveals and the principles' word split are set up at boot only within one viewport of the screen. The rest are set up a viewport before they arrive (IntersectionObserver), inside one `gsap.context` that reduced motion still reverts. A new e2e test scrolls through the page and checks that every reveal plays. | The motion boot was one 0.76–1.13 s task at 4× CPU slowdown, and splitting text was 60 % of it. It is now 0.36–0.46 s. |
+| `src/dev/posters-integration.ts`, `src/dev/posters.ts` (Task 8) | Save posts all six images as one multipart form, and `?save` is removed from the URL before saving. | Writing the first poster makes the dev server reload the page, and `?save` then restarted the save in a loop. |
+
+**Lighthouse 13.5.0** (local build with `SITE_URL=http://127.0.0.1:4500`, simulated throttling, two runs per row; scores are performance / accessibility / best practices / SEO):
+
+| Page | Scores | FCP | LCP | TBT | CLS |
+|---|---|---|---|---|---|
+| Mobile `/` | 97 / 100 / 100 / 100 | 1.52 s | 2.09–2.10 s | 126–135 ms | 0 |
+| Mobile `/bs/` | 97 / 100 / 100 / 100 | 1.56–1.57 s | 1.96–2.03 s | 133–150 ms | 0 |
+| Desktop `/` | 100 / 100 / 100 / 100 | 0.38 s | 0.48 s | 6–10 ms | 0 |
+| Desktop `/bs/` | 100 / 100 / 100 / 100 | 0.39–0.41 s | 0.47–0.48 s | 6–7 ms | 0 |
+
+- **Before these fixes:** mobile scored 49–69 and desktop 71.
+- **Mobile LCP:** the English page misses the 2.0 s target by about 0.1 s. The LCP is the hero headline, which on simulated slow 4G waits for the HTML, the font file and the first reveal frame.
+
+**Bundles (gzip):**
+
+- Initial JS: 57.2 KB.
+- Rings chunk (three.js included): 141.4 KB.
+- GPU probe worker: 0.35 KB.
+
+**End-to-end** (12 tests per project, 53 passed, 7 skipped by design):
+
+| Project | Passed | Skipped by design |
+|---|---|---|
+| Chromium | 11 | 1 (phone menu) |
+| Firefox | 11 | 1 (phone menu) |
+| WebKit | 11 | 1 (phone menu) |
+| Pixel 7 | 10 | 2 (desktop language switch, skip link by keyboard) |
+| iPhone 14 | 10 | 2 (desktop language switch, skip link by keyboard) |
+
+Also passing: `astro check` (0 errors), 106 unit tests and 154 dist tests.
