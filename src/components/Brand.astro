@@ -16,7 +16,7 @@ const Tag = link ? 'a' : 'span';
 ---
 
 <Tag
-  class:list={['brand', `brand--${size}`, `brand--${tone}`, className]}
+  class:list={['brand', 'tap', `brand--${size}`, `brand--${tone}`, className]}
   href={link ? localePath(lang) : undefined}
   aria-label={link ? `${site.name} — ${t.a11y.home}` : undefined}
   {...rest}

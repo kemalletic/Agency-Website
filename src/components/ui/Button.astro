@@ -26,7 +26,7 @@ const path = icon === 'external' ? 'M3 11L11 3M5 3H11V9' : 'M2 7H12M8 3L12 7L8 1
 ---
 
 <Tag
-  class:list={['btn', `btn--${variant}`, variant !== 'text' && `btn--${size}`, className]}
+  class:list={['btn', `btn--${variant}`, variant !== 'text' && `btn--${size}`, variant === 'text' && 'tap', className]}
   href={Tag === 'a' ? href : undefined}
   type={Tag === 'button' ? type : undefined}
   {...rest}

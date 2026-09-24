@@ -162,6 +162,20 @@
       white-space: nowrap;
     }
   }
+  /* A tap area of at least 44px around small text links (touch guidelines), without changing how they look or sit:
+     an invisible layer centred on the link. */
+  .tap {
+    position: relative;
+  }
+  .tap::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -0.25rem;
+    left: -0.25rem;
+    height: max(100%, 2.75rem);
+    transform: translateY(-50%);
+  }
   .skip-link {
     position: fixed;
     left: 1rem;

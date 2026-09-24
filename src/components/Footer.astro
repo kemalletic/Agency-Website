@@ -21,7 +21,7 @@ const year = new Date().getFullYear();
         <span>© {year}</span>
       </div>
       <nav class="footer-nav" aria-label={t.a11y.footerNav}>
-        {site.socials.map((s) => <a href={s.href}>{s.label}</a>)}
+        {site.socials.map((s) => <a class="tap" href={s.href}>{s.label}</a>)}
       </nav>
       <p class="footer-geo">{t.clockCity} · {site.coordinates} · <Clock lang={lang} withOffset /></p>
     </div>
