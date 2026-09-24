@@ -56,9 +56,10 @@ Node 24.21 (see `.nvmrc`). npm 11.
 check that no ring ever passes through another). `src/scripts/rings/` renders them into one fixed canvas behind the
 page. `src/scripts/motion/rings.ts` pins the Approach section and loads the 3D once the page is idle.
 
-The 3D runs only with JavaScript, without `prefers-reduced-motion` and without Save-Data, and only on a GPU that
-renders WebGL2 without a major performance caveat. Everywhere else, and if the GPU drops the context, visitors get
-posters rendered from the same scene.
+The 3D runs only with JavaScript, without `prefers-reduced-motion` and without Save-Data, and only on a real GPU
+that renders WebGL2 (no major performance caveat, no software renderer such as SwiftShader). A small worker checks
+the GPU after `load`, so three.js is never downloaded where it would not run. Everywhere else, and if the GPU drops
+the context, visitors get posters rendered from the same scene.
 
 **Poster studio:** with `npm run dev`, open `/dev/posters`. Sliders scrub through the intro, the journey and "take one
 away". **Save** re-renders the stage posters (`src/assets/posters/`), the 404 poster, the social cards

@@ -1,25 +1,54 @@
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { isSoftwareRenderer, rendererName } from '../../lib/rings/gpu';
 
 interface Handle {
   dispose(): void;
 }
 
-/** Runs `run` once the page has loaded and the main thread is idle (half a second at the latest, so the intro follows the headline). */
-function whenIdle(run: () => void): () => void {
-  let idle = 0;
-  let timer = 0;
-  const schedule = (): void => {
-    // Safari has no requestIdleCallback; a short timeout after load is close enough there.
-    if (typeof requestIdleCallback === 'function') idle = requestIdleCallback(run, { timeout: 500 });
-    else timer = window.setTimeout(run, 200);
-  };
-  if (document.readyState === 'complete') schedule();
-  else window.addEventListener('load', schedule, { once: true });
-  return () => {
-    window.removeEventListener('load', schedule);
-    if (idle) window.cancelIdleCallback(idle);
-    window.clearTimeout(timer);
-  };
+/** Resolves once the page has loaded. */
+const loaded = (): Promise<void> =>
+  document.readyState === 'complete' ? Promise.resolve() : new Promise((resolve) => window.addEventListener('load', () => resolve(), { once: true }));
+
+/** Resolves when the main thread is idle, half a second at the latest (so the intro follows the headline). */
+const idle = (): Promise<void> =>
+  new Promise((resolve) => {
+    // Safari has no requestIdleCallback; a short timeout is close enough there.
+    if (typeof requestIdleCallback === 'function') requestIdleCallback(() => resolve(), { timeout: 500 });
+    else window.setTimeout(resolve, 200);
+  });
+
+/**
+ * Asks a worker whether WebGL2 runs on a real GPU: true, false, or null when it cannot tell. The worker also takes the
+ * GPU's first WebGL set-up — a synchronous wait of up to ~100 ms — off the main thread.
+ */
+function probeGpu(): Promise<boolean | null> {
+  if (typeof OffscreenCanvas !== 'function') return Promise.resolve(null);
+  return new Promise((resolve) => {
+    let worker: Worker;
+    try {
+      worker = new Worker(new URL('../rings/gpu-probe.ts', import.meta.url), { type: 'module' });
+    } catch {
+      resolve(null);
+      return;
+    }
+    const finish = (verdict: boolean | null): void => {
+      window.clearTimeout(timer);
+      worker.terminate();
+      resolve(verdict);
+    };
+    const timer = window.setTimeout(() => finish(null), 2000);
+    worker.onmessage = (event: MessageEvent<boolean | null>) => finish(event.data);
+    worker.onerror = () => finish(null);
+  });
+}
+
+/** A WebGL2 context on a real GPU, or null (the page's own check, and the only one where workers cannot tell). */
+function fastContext(canvas: HTMLCanvasElement): WebGL2RenderingContext | null {
+  const gl = canvas.getContext('webgl2', { alpha: true, antialias: true, failIfMajorPerformanceCaveat: true });
+  if (!gl) return null;
+  if (!isSoftwareRenderer(rendererName(gl))) return gl;
+  gl.getExtension('WEBGL_lose_context')?.loseContext();
+  return null;
 }
 
 /**
@@ -32,14 +61,6 @@ export function initRings(): () => void {
   if (root.dataset.rings !== 'pending' && root.dataset.rings !== 'poster') return () => {};
   const grid = document.querySelector<HTMLElement>('#approach .approach-grid');
   if (!grid) return () => {};
-
-  // Software rendering (and three.js' download) is not worth it: decide before pinning or importing anything.
-  const canvas = document.createElement('canvas');
-  const context = canvas.getContext('webgl2', { alpha: true, antialias: true, failIfMajorPerformanceCaveat: true });
-  if (!context) {
-    root.dataset.rings = 'off';
-    return () => {};
-  }
 
   const wide = window.matchMedia('(min-width: 64rem)');
   const pin = ScrollTrigger.create({
@@ -73,24 +94,29 @@ export function initRings(): () => void {
     else if (y > start) window.scrollTo(0, start);
   };
 
-  const cancel = whenIdle(() => {
+  const launch = async (): Promise<void> => {
+    await loaded();
     if (done) return;
+    // Without a fast GPU three.js is never downloaded: a software renderer found by the worker ends it here.
+    if ((await probeGpu()) === false) return giveUp();
+    await idle();
+    if (done) return;
+    const canvas = document.createElement('canvas');
+    const context = fastContext(canvas);
+    if (!context) return giveUp();
     const intro = root.dataset.rings === 'pending';
-    import('../rings/index')
-      .then(({ startRings }) => startRings({ pin, intro, canvas, context, onLost: () => giveUp() }))
-      .then((started) => {
-        if (done) {
-          started.dispose();
-          return;
-        }
-        handle = started;
-        root.dataset.rings = 'live';
-      })
-      .catch(giveUp);
-  });
+    const { startRings } = await import('../rings/index');
+    const started = await startRings({ pin, intro, canvas, context, onLost: () => giveUp() });
+    if (done) {
+      started.dispose();
+      return;
+    }
+    handle = started;
+    root.dataset.rings = 'live';
+  };
+  launch().catch(giveUp);
 
   return () => {
-    cancel();
     handle?.dispose();
     handle = null;
     if (!done) root.dataset.rings = 'off';
