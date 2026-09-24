@@ -6,13 +6,11 @@ import {
   NeutralToneMapping,
   PCFShadowMap,
   PerspectiveCamera,
-  PMREMGenerator,
   Scene,
   Vector3,
   type MeshPhysicalMaterial,
   type WebGLRenderer,
 } from 'three';
-import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { FLOOR_Y, LIGHT_DIRECTION } from '../../lib/rings/config';
 import { cameraDistance, viewOffset, type Stage } from '../../lib/rings/layout';
 import { lerp } from '../../lib/rings/math';
@@ -53,7 +51,7 @@ export interface RingsScene {
   dispose(): void;
 }
 
-/** Builds the scene on `renderer`; `pause` lets the page breathe after the heaviest step (prefiltering the environment). */
+/** Builds the scene on `renderer`; `pause` lets the page breathe between the heavier steps. */
 export async function createRingsScene(
   renderer: WebGLRenderer,
   colors: Record<RingKey, string>,
@@ -69,14 +67,6 @@ export async function createRingsScene(
   renderer.shadowMap.autoUpdate = false;
 
   const scene = new Scene();
-  const pmrem = new PMREMGenerator(renderer);
-  const room = new RoomEnvironment();
-  const environment = pmrem.fromScene(room, 0.04).texture;
-  room.dispose();
-  pmrem.dispose();
-  scene.environment = environment;
-  scene.environmentIntensity = 0.5;
-  await pause();
 
   // Key light from the original shader's direction; its shadow map carries the shadows the rings cast on each other.
   const key = new DirectionalLight(new Color(1, 0.972, 0.935), 2.3);
@@ -88,8 +78,18 @@ export async function createRingsScene(
   key.shadow.normalBias = 0.02;
   Object.assign(key.shadow.camera, { left: -2.6, right: 2.6, top: 2.6, bottom: -2.6, near: 1, far: 11 });
   key.shadow.camera.updateProjectionMatrix();
-  // Top-lit ambient with a paper-coloured bounce from below, like the original's sky and bounce terms.
-  scene.add(key, key.target, new HemisphereLight(0xffffff, new Color('#ebe9e4').multiplyScalar(0.45), 0.5));
+  // No environment map: prefiltering one (PMREM) compiles shaders synchronously — close to a second on a cold cache.
+  // The original shader had none either; its sky, bounce and fresnel terms become a hemisphere light and three soft
+  // lights (fill, top, rim) that give the clearcoat its sheen.
+  const sky = new HemisphereLight(new Color(0.95, 0.975, 1), new Color('#ebe9e4').multiplyScalar(0.35), 1.7);
+  const fill = new DirectionalLight(0xffffff, 0.8);
+  fill.position.set(0.8, 0.35, 1);
+  const top = new DirectionalLight(0xffffff, 0.7);
+  top.position.set(-0.1, 1, 0.35);
+  const rim = new DirectionalLight(0xffffff, 0.8);
+  rim.position.set(0.2, 0.6, -1);
+  scene.add(key, key.target, sky, fill, top, rim);
+  await pause();
 
   const materials: Record<RingKey, MeshPhysicalMaterial> = {
     design: ringMaterial('design', colors.design),
@@ -166,7 +166,6 @@ export async function createRingsScene(
       meshes.engineering.geometry.dispose();
       accent.dispose();
       floor.dispose();
-      environment.dispose();
     },
   };
 }
