@@ -53,11 +53,9 @@ const token = (name: string): string => getComputedStyle(document.documentElemen
 const toBlob = (source: HTMLCanvasElement, type = 'image/png', quality?: number): Promise<Blob> =>
   new Promise((resolve, reject) => source.toBlob((blob) => (blob ? resolve(blob) : reject(new Error('toBlob failed'))), type, quality));
 
-async function upload(name: string, blob: Blob): Promise<void> {
-  const response = await fetch(`/__posters?name=${name}`, { method: 'POST', body: blob });
-  if (!response.ok) throw new Error(`saving ${name} failed: ${response.status}`);
-  const preview = document.querySelector<HTMLImageElement>(`[data-preview="${name}"]`);
-  if (preview) preview.src = URL.createObjectURL(blob);
+function preview(name: string, blob: Blob): void {
+  const image = document.querySelector<HTMLImageElement>(`[data-preview="${name}"]`);
+  if (image) image.src = URL.createObjectURL(blob);
 }
 
 /** Greedy word wrap for canvas text. */
@@ -137,13 +135,18 @@ async function icon(): Promise<Blob> {
 
 async function saveAll(): Promise<void> {
   status.value = 'Saving…';
+  const images = new FormData();
   try {
     for (const name of Object.keys(POSTERS) as Array<keyof typeof POSTERS>) {
       draw(POSTERS[name]);
-      await upload(name, await toBlob(canvas));
+      images.append(name, await toBlob(canvas));
     }
-    for (const lang of ['en', 'bs'] as const) await upload(`og-${lang}`, await card(lang));
-    await upload('apple-touch-icon', await icon());
+    for (const lang of ['en', 'bs'] as const) images.append(`og-${lang}`, await card(lang));
+    images.append('apple-touch-icon', await icon());
+    for (const [name, blob] of images) if (blob instanceof Blob) preview(name, blob);
+    // All in one request: the first poster written makes the dev server reload this page.
+    const response = await fetch('/__posters', { method: 'POST', body: images });
+    if (!response.ok) throw new Error(`saving failed: ${response.status} ${await response.text()}`);
     status.value = 'Saved posters, social cards and the touch icon';
   } catch (error) {
     status.value = String(error);
@@ -154,4 +157,8 @@ async function saveAll(): Promise<void> {
 form.addEventListener('input', () => draw(fromForm()));
 document.querySelector('[data-save]')?.addEventListener('click', () => void saveAll());
 draw(fromForm());
-if (new URLSearchParams(window.location.search).has('save')) void saveAll();
+if (new URLSearchParams(window.location.search).has('save')) {
+  // Once: the reload that follows the save must not start another.
+  history.replaceState(null, '', window.location.pathname);
+  void saveAll();
+}

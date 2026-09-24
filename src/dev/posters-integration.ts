@@ -11,10 +11,22 @@ const OUTPUTS: Record<string, string> = {
   'apple-touch-icon': 'public/apple-touch-icon.png',
 };
 
+/** Writes every image in a multipart form to its output; unknown names reject the whole form. */
+async function save(root: URL, body: Uint8Array<ArrayBuffer>, type: string): Promise<void> {
+  const form = await new Response(body, { headers: { 'content-type': type } }).formData();
+  const files = [...form].map(([name, value]) => {
+    const target = Object.hasOwn(OUTPUTS, name) ? OUTPUTS[name] : undefined;
+    if (!target || typeof value === 'string') throw new Error(`not an output: ${name}`);
+    return { target, value };
+  });
+  await Promise.all(files.map(async ({ target, value }) => writeFile(new URL(`./${target}`, root), Buffer.from(await value.arrayBuffer()))));
+}
+
 /**
  * Dev-only poster studio (spec §9.6). `/dev/posters` renders the rings with the real scene and offers a story
- * scrubber; its Save button posts the images to `/__posters`, which writes them into the project. Neither the page
- * nor the endpoint exists outside `astro dev`.
+ * scrubber; its Save button posts all images in one form to `/__posters`, which writes them into the project (one
+ * request, because the first poster written makes the dev server reload the page). Neither the page nor the endpoint
+ * exists outside `astro dev`.
  */
 export function devPosters(): AstroIntegration {
   let root = new URL('file:///');
@@ -27,17 +39,15 @@ export function devPosters(): AstroIntegration {
       },
       'astro:server:setup': ({ server }) => {
         server.middlewares.use('/__posters', (req, res) => {
-          const name = new URL(req.url ?? '/', 'http://localhost').searchParams.get('name') ?? '';
-          const target = Object.hasOwn(OUTPUTS, name) ? OUTPUTS[name] : undefined;
-          if (req.method !== 'POST' || !target) {
-            res.statusCode = 400;
+          if (req.method !== 'POST') {
+            res.statusCode = 405;
             res.end();
             return;
           }
           const chunks: Buffer[] = [];
           req.on('data', (chunk: Buffer) => chunks.push(chunk));
           req.on('end', () => {
-            writeFile(new URL(`./${target}`, root), Buffer.concat(chunks))
+            save(root, new Uint8Array(Buffer.concat(chunks)), req.headers['content-type'] ?? '')
               .then(() => res.end('ok'))
               .catch((error: unknown) => {
                 res.statusCode = 500;
