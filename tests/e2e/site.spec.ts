@@ -140,6 +140,9 @@ test('the contact form validates and sends (intercepted)', async ({ page }) => {
     await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ success: true }) });
   });
   await page.goto('/#contact');
+  // The deep link is held in place until the reader's first input; a key press is that input, so the scrolling
+  // below (not an input) is not pulled back to the section top between Playwright's scroll and its click.
+  await page.keyboard.press('Shift');
   const form = page.locator('form[data-contact-form]');
   // The deep link lands on the section; bring the form itself into view so its reveal plays.
   await form.evaluate((element) => element.scrollIntoView({ block: 'center', behavior: 'instant' }));
