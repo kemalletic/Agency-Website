@@ -32,7 +32,9 @@ const year = new Date().getFullYear();
   .site-footer {
     position: relative;
     z-index: 2;
-    padding: clamp(6rem, 11vw, 10rem) 0 2.5rem;
+    /* The contact details above already end on a rule, so the footer needs only a short run-out, less than the
+       gap above those details. */
+    padding: clamp(4rem, 6vw, 6rem) 0 2.5rem;
     background: var(--night);
     /* Covers the sub-pixel seam where the contact section ends on a fractional pixel. */
     box-shadow: 0 -2px 0 var(--night);
