@@ -75,7 +75,9 @@ const percent = (value: number): string => `${(value * 100).toFixed(2)}%`;
     gap: 1.75rem;
     grid-column: 1 / -1;
     justify-self: center;
-    width: min(100%, 26rem);
+    /* While the grid is pinned its top stays in view: on short phones the stage gives up height so the caption, label
+       and lead (about 25rem below it) still fit under it. */
+    width: min(100%, 26rem, max(14rem, 100svh - 25rem));
   }
   .approach-figure .fig-caption {
     max-width: 24rem;
@@ -172,6 +174,23 @@ const percent = (value: number): string => `${(value * 100).toFixed(2)}%`;
     line-height: 1.6;
     color: var(--muted);
     text-wrap: pretty;
+  }
+  /* A phone on its side has no height for the stacked grid: stage and text side by side, as on desktop, so the pinned
+     grid shows the rings and the lead together. */
+  @media (orientation: landscape) and (max-width: 63.99rem) and (max-height: 30rem) {
+    .approach-grid {
+      grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+      /* Top-aligned: the text column runs past the viewport, and a centred figure would drop its caption below it. */
+      align-items: start;
+    }
+    .approach-figure {
+      grid-column: 1;
+      width: min(100%, 100svh - 7rem);
+    }
+    .approach-text {
+      grid-column: 2;
+      gap: 1.5rem;
+    }
   }
   @media (min-width: 64rem) {
     .approach-figure {
