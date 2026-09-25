@@ -191,3 +191,15 @@ test('unknown pages answer 404 with the fallen rings', async ({ page }) => {
   await expect(page).toHaveURL(/\/$/);
   expect(problems).toEqual([]);
 });
+
+test('under /bs/ the 404 page leads in Bosnian', async ({ page }) => {
+  const problems = watch(page, { expected404: '/bs/nigdje-nema' });
+  const response = await page.goto('/bs/nigdje-nema');
+  expect(response?.status()).toBe(404);
+  await expect(page.locator('html')).toHaveAttribute('lang', 'bs');
+  // The heading holds both titles; only the Bosnian one is shown.
+  await expect(page.locator('h1')).toHaveText('Ova stranica se raspala.', { useInnerText: true });
+  await page.getByRole('link', { name: 'Nazad na početnu' }).click();
+  await expect(page).toHaveURL(/\/bs\/$/);
+  expect(problems).toEqual([]);
+});

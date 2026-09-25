@@ -13,19 +13,31 @@ const bs = getDictionary('bs');
 
 <Base lang="en" title={`404 — ${site.name}`} description={en.notFound.body} index={false}>
   <main id="main" class="nf container">
-    <Brand lang="en" class="nf-brand" />
+    {/* One static page answers every missing path; under /bs/ it leads in Bosnian. Set before first paint. */}
+    <script is:inline>
+      if (/^\/bs(\/|$)/.test(location.pathname)) {
+        document.documentElement.dataset.nf = 'bs';
+        document.documentElement.lang = 'bs';
+      }
+    </script>
+    <Brand lang="en" class="nf-brand" data-for="en" />
+    <Brand lang="bs" class="nf-brand" data-for="bs" />
     <div class="nf-body">
       <figure class="nf-stage" aria-hidden="true">
         <Picture src={fallen} alt="" formats={['avif', 'webp']} widths={[420, 640, 900]} sizes="(min-width: 64rem) 40vw, 90vw" />
       </figure>
       <div class="nf-text">
         <p class="label">404</p>
-        <h1 class="nf-title">{en.notFound.title}</h1>
-        <p class="nf-copy">{en.notFound.body}</p>
-        <p class="nf-copy nf-copy--bs" lang="bs"><strong>{bs.notFound.title}</strong> {bs.notFound.body}</p>
+        <h1 class="nf-title"><span data-for="en">{en.notFound.title}</span><span data-for="bs" lang="bs">{bs.notFound.title}</span></h1>
+        <p class="nf-copy" data-for="en">{en.notFound.body}</p>
+        <p class="nf-copy" data-for="bs" lang="bs">{bs.notFound.body}</p>
+        <p class="nf-copy nf-copy--other" data-for="en" lang="bs"><strong>{bs.notFound.title}</strong> {bs.notFound.body}</p>
+        <p class="nf-copy nf-copy--other" data-for="bs" lang="en"><strong>{en.notFound.title}</strong> {en.notFound.body}</p>
         <div class="nf-actions">
-          <Button href={localePath('en')}>{en.notFound.home}</Button>
-          <Button href={localePath('bs')} variant="text" hreflang="bs" lang="bs">{bs.notFound.home}</Button>
+          <Button href={localePath('en')} data-for="en">{en.notFound.home}</Button>
+          <Button href={localePath('bs')} data-for="bs" hreflang="bs" lang="bs">{bs.notFound.home}</Button>
+          <Button href={localePath('bs')} variant="text" data-for="en" hreflang="bs" lang="bs">{bs.notFound.home}</Button>
+          <Button href={localePath('en')} variant="text" data-for="bs" hreflang="en" lang="en">{en.notFound.home}</Button>
         </div>
       </div>
     </div>
@@ -33,6 +45,12 @@ const bs = getDictionary('bs');
 </Base>
 
 <style>
+  /* English leads by default (and without JavaScript); the script at the top of the page flips it under /bs/.
+     Global, because the buttons and the logo are other components' elements. */
+  :global(html:not([data-nf='bs']) [data-for='bs']),
+  :global(html[data-nf='bs'] [data-for='en']) {
+    display: none;
+  }
   .nf {
     display: grid;
     align-content: start;
@@ -72,11 +90,11 @@ const bs = getDictionary('bs');
     color: var(--muted);
     text-wrap: pretty;
   }
-  .nf-copy--bs {
+  .nf-copy--other {
     padding-top: 1.25rem;
     border-top: 1px solid var(--line);
   }
-  .nf-copy--bs strong {
+  .nf-copy--other strong {
     font-weight: 500;
     color: var(--ink);
   }
