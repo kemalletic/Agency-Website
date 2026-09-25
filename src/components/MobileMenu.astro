@@ -5,6 +5,7 @@ import Brand from './Brand.astro';
 import Clock from './Clock.astro';
 import LangSwitch from './LangSwitch.astro';
 import Button from './ui/Button.astro';
+import MenuIcon from './ui/MenuIcon.astro';
 
 interface Props {
   lang: Locale;
@@ -18,7 +19,7 @@ const t = getDictionary(lang);
 <dialog id="site-menu" class="menu" aria-label={t.a11y.menu} data-menu>
   <div class="container menu-bar">
     <Brand lang={lang} />
-    <button class="menu-close" type="button" data-menu-close>{t.a11y.close}</button>
+    <button class="menu-close" type="button" aria-label={t.a11y.close} data-menu-close><MenuIcon close /></button>
   </div>
   <nav class="container menu-nav" aria-label={t.a11y.mainNav}>
     {
@@ -74,12 +75,13 @@ const t = getDictionary(lang);
     border-bottom: 1px solid var(--line);
   }
   .menu-close {
-    height: 2.5rem;
-    padding: 0 1rem;
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
     border: 1px solid var(--line);
     border-radius: 999px;
-    font-size: 0.875rem;
-    font-weight: 500;
+    -webkit-tap-highlight-color: transparent;
   }
   .menu-nav {
     display: flex;

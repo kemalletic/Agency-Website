@@ -5,6 +5,7 @@ import Clock from './Clock.astro';
 import LangSwitch from './LangSwitch.astro';
 import MobileMenu from './MobileMenu.astro';
 import Button from './ui/Button.astro';
+import MenuIcon from './ui/MenuIcon.astro';
 
 interface Props {
   lang: Locale;
@@ -30,7 +31,7 @@ const links = [
       <span class="header-clock">{t.clockCity} <Clock lang={lang} /></span>
       <div class="header-lang"><LangSwitch lang={lang} /></div>
       <div class="header-cta"><Button href="#contact" size="s" data-magnetic>{t.cta.start}</Button></div>
-      <button class="menu-toggle" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="site-menu" data-menu-open>{t.a11y.menu}</button>
+      <button class="menu-toggle" type="button" aria-label={t.a11y.menu} aria-haspopup="dialog" aria-expanded="false" aria-controls="site-menu" data-menu-open><MenuIcon /></button>
     </div>
   </div>
   <MobileMenu lang={lang} links={links} />
@@ -133,12 +134,17 @@ const links = [
     color: var(--muted);
   }
   .menu-toggle {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
     height: 2.75rem;
-    padding: 0 1rem;
     border: 1px solid var(--line);
     border-radius: 999px;
-    font-size: 0.875rem;
-    font-weight: 500;
+    transition: border-color 0.25s var(--ease-std);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .menu-toggle:hover {
+    border-color: currentColor;
   }
   @media (min-width: 64rem) {
     .header-inner {

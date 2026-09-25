@@ -1,0 +1,52 @@
+---
+interface Props {
+  /** The crossed variant, for closing the menu. */
+  close?: boolean;
+}
+
+const { close = false } = Astro.props;
+---
+
+<span class:list={['menu-icon', close && 'menu-icon--close']} aria-hidden="true"><span></span><span></span></span>
+
+<style>
+  /* Two thin lines, the weight of the site's rules; crossed, they close the menu. */
+  .menu-icon {
+    position: relative;
+    display: block;
+    width: 1rem;
+    height: 0.5rem;
+  }
+  .menu-icon span {
+    position: absolute;
+    right: 0;
+    left: 0;
+    /* A whole pixel: 1.5px lines snap to 1px and 2px, and the pair looks uneven. */
+    height: 1px;
+    background: currentColor;
+  }
+  .menu-icon span:first-child {
+    top: 0;
+  }
+  .menu-icon span:last-child {
+    bottom: 0;
+  }
+  .menu-icon--close span:first-child {
+    transform: translateY(calc(0.25rem - 0.5px)) rotate(45deg);
+  }
+  .menu-icon--close span:last-child {
+    transform: translateY(calc(-0.25rem + 0.5px)) rotate(-45deg);
+  }
+  /* The menu opens over the header with its close button in the same place: its lines start parallel and turn into
+     the cross, so the button seems to change in place. */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(dialog[open]) .menu-icon--close span {
+      animation: menu-cross 0.45s var(--ease-out) 0.05s backwards;
+    }
+  }
+  @keyframes menu-cross {
+    from {
+      transform: none;
+    }
+  }
+</style>
