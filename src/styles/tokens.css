@@ -22,7 +22,8 @@
   /* Type — fluid between 390px and 1440px viewports */
   --fs-hero: clamp(2.75rem, 1.6357rem + 4.5714vw, 5.75rem);
   --fs-display: clamp(3.5rem, 2.2rem + 5.3333vw, 7rem);
-  --fs-h2: clamp(2.75rem, 2.0071rem + 3.0476vw, 4.75rem);
+  /* Section headings keep the hero's 1.2 : 1 lead at every width (36px against 44px on phones, 76 against 92). */
+  --fs-h2: clamp(2.25rem, 1.3214rem + 3.8095vw, 4.75rem);
   --fs-service: clamp(2rem, 1.4893rem + 2.0952vw, 3.375rem);
   --fs-lead: clamp(1.75rem, 1.3321rem + 1.7143vw, 2.875rem);
   --fs-project: clamp(2rem, 1.8143rem + 0.7619vw, 2.5rem);
