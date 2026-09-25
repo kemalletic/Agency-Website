@@ -19,6 +19,8 @@ describe.each(pages)('$path approach', ({ path, lang }) => {
       'engineering',
       'automation',
     ]);
+    // Plain words: no coloured dots or other glyphs in the sentence.
+    for (const word of Array.from(lead?.querySelectorAll('[data-ring]') ?? [])) expect(word.children).toHaveLength(0);
     expect(Array.from(lead?.querySelectorAll('[data-mark]') ?? []).map((e) => e.getAttribute('data-mark'))).toEqual([
       'take',
       'fall',

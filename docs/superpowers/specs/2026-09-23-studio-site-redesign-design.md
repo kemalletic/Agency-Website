@@ -92,7 +92,7 @@ nice/
 │  │  │  Process.astro, Principles.astro, Contact.astro, Footer.astro
 │  │  ├─ art/                  # SVG/HTML ilustracije: ServiceWeb, ServiceApps, ServiceFlow,
 │  │  │                        # ProjectPortal, ProjectShop
-│  │  └─ ui/                   # Button, SectionHeading, FigCaption, Chip, RingDot
+│  │  └─ ui/                   # Button, SectionHeading, FigCaption, Chip
 │  ├─ scripts/
 │  │  ├─ motion/               # lenis, reveals, header, services, work, process,
 │  │  │                        # principles, contact, magnetic, cursor-pill
@@ -193,15 +193,19 @@ fluidno 96 → 176 px. Radijusi 10–12 px za kartice, 999 px za dugmad i chipov
 
 ### 8.3 Approach (Fig. 2)
 
-- Desktop: bina kolone 1–5; tekst kolone 7–12 (etiketa, lead s tačkama u boji prstenova, manji
-  paragraf). Mobitel: bina iznad teksta.
+- Desktop: bina kolone 1–5; tekst kolone 7–12 (etiketa, lead, manji paragraf). Mobitel: bina iznad teksta.
 - Nad binom SVG overlay (DOM, lokalizovan): tri tanke linije-vodilice s tačkom i etiketom
   DESIGN / ENGINEERING / AUTOMATION, pozicionirane po projekciji finalnog izometrijskog pogleda.
 - Pinovana sekvenca „Take one away“ — detalji u §9.5. Paralelno se u lead tekstu fraze
   „take one away“ i „the whole thing falls apart“ boje iz `--label` u `--ink` u trenucima kad se to
   dešava prstenovima.
-- Hover na riječi Design / engineering / automation (desktop, samo u 3D modu) ističe odgovarajući
-  prsten (ostali na 15 % opaciteta). U poster modu hover ne radi ništa.
+- Etikete se na kraju putovanja čvora crtaju jedna za drugom (design, engineering, automation), a
+  uz svaku se njena riječ u lead tekstu oboji iz `--label` u `--ink` i takva ostaje kroz sekvencu.
+  Riječi nemaju tačke ni druge oznake: vezu s prstenom pokazuje samo to zajedničko bojenje.
+- Isticanje jednog prstena (samo u 3D modu, dok je čvor usidren): mišem preko samog prstena
+  (raycast), njegove etikete ili njegove riječi; na dodir tapom na bilo koje od toga (drugi tap
+  ili tap drugdje pušta). Ostala dva prstena idu na 15 % opaciteta, njihove etikete na 30 %, a
+  riječ istaknutog prstena se podvuče kao link. U poster modu ništa od ovoga ne radi.
 - Opis: „Fig. 2 — The same rings, flattened. Take one away and the other two come apart.“ /
   „Sl. 2 — Isti prstenovi, spljošteni. Makni jedan i druga dva se razdvoje.“ Manji paragraf
   („One team from the first sketch…“) je van pina.

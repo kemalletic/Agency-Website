@@ -4,7 +4,6 @@ import approachPoster from '../assets/posters/approach.png';
 import { getDictionary, type Locale } from '../i18n';
 import { labelAnchors } from '../lib/rings/labels';
 import { noWidow } from '../lib/typography';
-import RingDot from './ui/RingDot.astro';
 
 interface Props {
   lang: Locale;
@@ -48,7 +47,7 @@ const percent = (value: number): string => `${(value * 100).toFixed(2)}%`;
         {
           t.approach.lead.map((seg) =>
             typeof seg === 'string' ? seg
-            : 'ring' in seg ? <span class="hl" data-ring={seg.ring}><RingDot ring={seg.ring} />{seg.text}</span>
+            : 'ring' in seg ? <span class="hl" data-ring={seg.ring}>{seg.text}</span>
             : <span class="mark" data-mark={seg.mark}>{seg.text}</span>,
           )
         }
@@ -104,6 +103,11 @@ const percent = (value: number): string => `${(value * 100).toFixed(2)}%`;
     position: absolute;
     left: var(--x);
     top: var(--y);
+    transition: opacity 0.3s var(--ease-std);
+  }
+  /* While one ring is singled out (scripts/rings/overlay.ts) the other two labels step back with their rings. */
+  .stage-labels[data-focus] .stage-label:not([data-lit]) {
+    opacity: 0.3;
   }
   .stage-label::before {
     content: '';
@@ -164,9 +168,14 @@ const percent = (value: number): string => `${(value * 100).toFixed(2)}%`;
     letter-spacing: -0.032em;
     text-wrap: pretty;
   }
+  /* A ring's word; underlined while its ring is singled out, the way links underline on hover. */
   .hl {
     cursor: default;
-    white-space: nowrap;
+    background: linear-gradient(currentColor, currentColor) 0 94% / 0 max(1px, 0.035em) no-repeat;
+    transition: background-size 0.35s var(--ease-std);
+  }
+  .hl[data-lit] {
+    background-size: 100% max(1px, 0.035em);
   }
   .approach-body {
     max-width: 29.5rem;

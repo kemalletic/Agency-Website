@@ -4,11 +4,11 @@ import { WebGLRenderer } from 'three';
 import { INTRO, SPIN_SPEED } from '../../lib/rings/config';
 import { mixStages, pinnedY, progressAt, stageInView, type PinRange, type Stage } from '../../lib/rings/layout';
 import { damp } from '../../lib/rings/math';
-import { heroOrientation, nearestSymmetry, storyState } from '../../lib/rings/story';
+import { heroOrientation, nearestSymmetry, RING_KEYS, storyState } from '../../lib/rings/story';
 import { tokenColors } from './materials';
 import { createOverlay } from './overlay';
 import { createPointer } from './pointer';
-import { createRingsScene, QUALITY, type Viewport } from './scene';
+import { createRingsScene, QUALITY, type RingsScene, type Viewport } from './scene';
 
 export interface RingsOptions {
   /** ScrollTrigger pinning the approach grid for the "take one away" sequence (created by scripts/motion/rings.ts). */
@@ -55,6 +55,32 @@ export async function startRings({ pin, intro, onLost, canvas, context }: RingsO
   document.body.append(canvas);
   const overlay = createOverlay();
   const pointer = createPointer(heroStage);
+
+  // Singling out a ring in the docked view: the mouse over the approach stage is hit-tested against the rings every
+  // frame it moves or they do; a tap on a ring, label or ring word picks one (see overlay.ts).
+  const hoverable = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  let docked = false;
+  let aim: { x: number; y: number } | null = null;
+  let aimStale = false;
+  const onAim = (event: PointerEvent): void => {
+    if (event.pointerType !== 'mouse') return;
+    const over = event.target instanceof Element && event.target.closest('[data-stage="approach"]');
+    aim = over ? { x: event.clientX, y: event.clientY } : null;
+    aimStale = true;
+  };
+  const onAimOut = (): void => {
+    aim = null;
+    aimStale = true;
+  };
+  const pickAt = (x: number, y: number): ReturnType<RingsScene['pick']> =>
+    painted && viewport.width > 0 && viewport.height > 0 ? rings.pick(x / viewport.width, y / viewport.height) : null;
+  const onTap = (event: MouseEvent): void => {
+    if (hoverable || !docked) return;
+    const target = event.target instanceof Element ? event.target : null;
+    const named = target?.closest<HTMLElement>('#approach [data-ring]')?.dataset.ring;
+    const ring = RING_KEYS.find((key) => key === named) ?? (target?.closest('[data-stage="approach"]') ? pickAt(event.clientX, event.clientY) : null);
+    overlay.tap(ring);
+  };
 
   let viewport: Viewport = { width: 0, height: 0 };
   let last: number[] | null = null;
@@ -118,7 +144,11 @@ export async function startRings({ pin, intro, onLost, canvas, context }: RingsO
     // Latch the nearest approach orientation as the knot leaves the hero, so the turn never flips mid-way.
     if (journey === 0) symmetry = -1;
     else if (symmetry < 0) symmetry = nearestSymmetry(heroOrientation(spin, pointer.tilt));
-    overlay.ease(dt, journey > 0.9);
+    docked = journey > 0.9;
+    if (!docked || !aim) overlay.point(null);
+    else if (aimStale) overlay.point(pickAt(aim.x, aim.y));
+    aimStale = false;
+    overlay.ease(dt, docked);
 
     const stage = { hero: { x: hero.x, y: hero.y - scroll, size: hero.size }, approach: { x: approach.x, y: pinnedY(approach.y, scroll, pinRange), size: approach.size } };
     const w = overlay.weights;
@@ -142,6 +172,8 @@ export async function startRings({ pin, intro, onLost, canvas, context }: RingsO
     rings.apply(state, at, viewport, w);
     rings.render();
     painted = true;
+    // The rings moved under a resting mouse: hit-test again next frame.
+    if (aim) aimStale = true;
   };
 
   const tick = (_time: number, deltaMs: number): void => frame(Math.min(Math.max(deltaMs, 0) / 1000, 0.1));
@@ -157,6 +189,9 @@ export async function startRings({ pin, intro, onLost, canvas, context }: RingsO
     gsap.ticker.remove(tick);
     ScrollTrigger.removeEventListener('refresh', measure);
     window.removeEventListener('resize', onResize);
+    window.removeEventListener('pointermove', onAim);
+    document.documentElement.removeEventListener('pointerleave', onAimOut);
+    window.removeEventListener('click', onTap);
     window.clearTimeout(resizeTimer);
     canvas.removeEventListener('webglcontextlost', lost);
     pointer.dispose();
@@ -186,6 +221,10 @@ export async function startRings({ pin, intro, onLost, canvas, context }: RingsO
   }
   ScrollTrigger.addEventListener('refresh', measure);
   window.addEventListener('resize', onResize);
+  if (hoverable) {
+    window.addEventListener('pointermove', onAim, { passive: true });
+    document.documentElement.addEventListener('pointerleave', onAimOut);
+  } else window.addEventListener('click', onTap);
   canvas.addEventListener('webglcontextlost', lost);
 
   const scroll = window.scrollY;

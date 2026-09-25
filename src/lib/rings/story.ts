@@ -36,8 +36,10 @@ export interface SceneState {
   /** 0 = the knot sits in the hero stage, 1 = in the approach stage. */
   stageMix: number;
   floor: { opacity: number; sharpness: number; spread: number };
-  /** 0..1: how far the approach labels are drawn. */
-  labels: number;
+  /** 0..1 per ring: how far its approach label is drawn. */
+  labels: Record<RingKey, number>;
+  /** 0..1 per ring: how far its word in the approach lead has turned to ink (with its label, and it stays). */
+  words: Record<RingKey, number>;
   /** 0..1: how far each story phrase in the approach lead has turned to ink. */
   marks: { take: number; fall: number };
 }
@@ -163,6 +165,15 @@ function fall(from: Pose, to: Pose, f: number): Pose {
   };
 }
 
+/** The journey's last stretch, in which the labels draw one after another, each inking its word in the lead. */
+const LABEL_IN: Record<RingKey, readonly [number, number]> = { design: [0.8, 0.9], engineering: [0.85, 0.95], automation: [0.9, 1] };
+
+const perRing = (value: (key: RingKey) => number): Record<RingKey, number> => ({
+  design: value('design'),
+  engineering: value('engineering'),
+  automation: value('automation'),
+});
+
 /** Height of the one small hop after the rings land. */
 const HOP = 0.07;
 
@@ -226,7 +237,11 @@ export function storyState(input: StoryInput): SceneState {
       sharpness: crane,
       spread: lerp(1.25, 2.2, crane),
     },
-    labels: p > 0 ? (back ? phase(p, 0.93, 1) : 1 - phase(p, S.hold, S.hold + 0.08)) : phase(input.journey, 0.82, 1),
+    // In the sequence the labels make way together and come back together; the words stay inked throughout.
+    labels: perRing((key) =>
+      p > 0 ? (back ? phase(p, 0.93, 1) : 1 - phase(p, S.hold, S.hold + 0.08)) : phase(input.journey, ...LABEL_IN[key]),
+    ),
+    words: perRing((key) => (p > 0 ? 1 : phase(input.journey, ...LABEL_IN[key]))),
     marks: { take: phase(p, S.hold, 0.24), fall: phase(p, 0.47, 0.58) },
   };
 }

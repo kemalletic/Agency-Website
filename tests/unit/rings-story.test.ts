@@ -105,8 +105,20 @@ describe('journey', () => {
     const state = storyState(docked);
     expect(state.stageMix).toBe(1);
     expect(state.camera).toMatchObject({ fov: FRAMING.approach.fov, fill: FRAMING.approach.fill });
-    expect(state.labels).toBe(1);
-    expect(storyState({ ...hero, journey: 0.5 }).labels).toBe(0);
+    expect(state.labels).toEqual({ design: 1, engineering: 1, automation: 1 });
+    expect(storyState({ ...hero, journey: 0.5 }).labels).toEqual({ design: 0, engineering: 0, automation: 0 });
+  });
+
+  it('draws the labels one after another, each inking its word in the lead', () => {
+    const early = storyState({ ...hero, journey: 0.5 });
+    expect(early.words).toEqual({ design: 0, engineering: 0, automation: 0 });
+    const drawing = storyState({ ...hero, journey: 0.87 });
+    expect(drawing.labels.design).toBeGreaterThan(drawing.labels.engineering);
+    expect(drawing.labels.engineering).toBeGreaterThan(drawing.labels.automation);
+    expect(drawing.labels.design).toBeLessThan(1);
+    expect(drawing.labels.automation).toBe(0);
+    expect(drawing.words).toEqual(drawing.labels);
+    expect(storyState(docked).words).toEqual({ design: 1, engineering: 1, automation: 1 });
   });
 
   it('turns smoothly all the way', () => {
@@ -147,7 +159,7 @@ describe('take one away', () => {
   it('holds the docked view with the labels on until 0.12', () => {
     const start = storyState(docked);
     const held = storyState({ ...docked, sequence: SEQUENCE.hold });
-    expect(held.labels).toBe(1);
+    expect(held.labels).toEqual({ design: 1, engineering: 1, automation: 1 });
     expect(drawn(held)).toBeCloseTo(1, 12);
     for (const key of RING_KEYS) expect(held.poses[key].quaternion.angleTo(start.poses[key].quaternion)).toBeLessThan(1e-6);
   });
@@ -172,6 +184,12 @@ describe('take one away', () => {
     }
   });
 
+  it('keeps the ring words inked while the labels make way for the sequence', () => {
+    const taking = storyState({ ...docked, sequence: 0.5 });
+    expect(taking.labels).toEqual({ design: 0, engineering: 0, automation: 0 });
+    expect(taking.words).toEqual({ design: 1, engineering: 1, automation: 1 });
+  });
+
   it('inks the two story phrases as they happen', () => {
     expect(storyState({ ...docked, sequence: 0.1 }).marks).toEqual({ take: 0, fall: 0 });
     expect(storyState({ ...docked, sequence: SEQUENCE.taken }).marks.take).toBe(1);
@@ -192,7 +210,8 @@ describe('take one away', () => {
       expect(end.poses[key].quaternion.angleTo(start.poses[key].quaternion)).toBeLessThan(1e-6);
     }
     expect(drawn(end)).toBeCloseTo(1, 12);
-    expect(end.labels).toBe(1);
+    expect(end.labels).toEqual({ design: 1, engineering: 1, automation: 1 });
+    expect(end.words).toEqual({ design: 1, engineering: 1, automation: 1 });
     expect(end.camera).toEqual(start.camera);
   });
 });
