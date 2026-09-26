@@ -327,14 +327,16 @@ fluidno 96 → 176 px. Radijusi 10–12 px za kartice, 999 px za dugmad i chipov
 2. **Idle** (hero): rotacija oko Y 0.14 rad/s; nagib prema mišu (lerp 0.07); prevlačenje dodaje
    ugaonu brzinu s prigušenjem ~0.95/frejm; `touch-action: pan-y` (horizontalni swipe rotira,
    vertikalni skroluje).
-3. **Putovanje** (scrub: Approach od `top bottom` do `top top`): pozicija = lerp(hero rect,
+3. **Putovanje** (scrub: od trenutka kad vrh Approach sekcije uđe u ekran do 0.2 visine ekrana prije
+   mjesta gdje mreža stane, `DOCK_LEAD` — čvor zadnji dio prođe sa svojom binom, a nazad prema heru
+   krene tek nakon tog komada skrola): pozicija = lerp(hero rect,
    approach rect); orijentacija = slerp(idle, izometrijska) — dijagonala (1,1,1) prema kameri,
    simetrija 3 reda; dolly-zoom fov 30° → 10° uz korekciju udaljenosti (perspektiva se spljošti);
    riječi u leadu se oboje pri kraju (etikete tek nakon sekvence).
 4. **Sekvenca „Take one away“** (vremenska, bez pina, jednom po učitavanju stranice). Kreće odmah
    kad čvor (skoro) sjedne u approach binu — od 95 % putovanja (`PLAY.dock`), da je ne zaustavi skrol
    koji stane koji piksel prije — i bina je na ekranu; počinje od 0.12 (mirna faza se preskače) i
-   traje 3.6 s (`PLAY.duration`). Završena ostaje takva: sljedeći dolasci pokazuju cijeli čvor, a
+   traje 2 s (`PLAY.duration`). Završena ostaje takva: sljedeći dolasci pokazuju cijeli čvor, a
    etikete se crtaju pri kraju putovanja. Ako čitalac ode nazad dok još traje, čvor se sastavi usput
    (kraćim putem, prateći skrol), a etikete i riječi prate putovanje; vraćen unazad do 0 sekvenca se
    kasnije pušta ponovo. Mišem/trackpadom (Lenis), prvi skrol nadolje koji bi prošao sekciju tu stane

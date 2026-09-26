@@ -243,6 +243,32 @@ describe('take one away', () => {
   });
 });
 
+describe('heading back while the sequence plays', () => {
+  // As scripts/rings/index.ts does: the sequence runs on or back from where it was, in step with the journey home.
+  it('moves the rings home without a jump, from any point of the sequence', () => {
+    const symmetry = nearestSymmetry(heroOrientation(0, [0, 0]));
+    for (const from of [0.4, 0.5, 0.55, 0.62, 0.66, 0.75, 0.85]) {
+      const forward = from > 0.5;
+      let last: ReturnType<typeof storyState> | null = null;
+      for (let i = 0; i <= 400; i++) {
+        const journey = PLAY.dock * (1 - i / 400);
+        const t = journey / PLAY.dock;
+        const sequence = forward ? 1 - (1 - from) * t : from * t;
+        const state = storyState({ ...hero, journey, sequence, symmetry });
+        if (last) {
+          for (const key of RING_KEYS) {
+            const moved = state.poses[key].position.distanceTo(last.poses[key].position);
+            const turned = state.poses[key].quaternion.angleTo(last.poses[key].quaternion);
+            expect(moved, `${key} from ${from} at journey ${journey.toFixed(3)}`).toBeLessThan(0.08);
+            expect(turned, `${key} from ${from} at journey ${journey.toFixed(3)}`).toBeLessThan(0.08);
+          }
+        }
+        last = state;
+      }
+    }
+  });
+});
+
 describe('the knot never cheats', () => {
   it('keeps every tube clear of the others and above the floor during the intro', () => {
     for (let i = 0; i <= 120; i++) {

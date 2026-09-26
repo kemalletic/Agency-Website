@@ -49,7 +49,13 @@ export const SEQUENCE = { hold: 0.12, taken: 0.3, apart: 0.45, fallen: 0.62, ris
  * opening (`SEQUENCE.hold`) is skipped. `dock`: share of the journey from which the knot counts as docked, so a scroll
  * that stops a hair short still starts it. `duration`: seconds for the rest of the sequence.
  */
-export const PLAY = { dock: 0.95, duration: 3.6 } as const;
+export const PLAY = { dock: 0.95, duration: 2 } as const;
+
+/**
+ * The knot docks this share of a viewport before the approach grid reaches its resting place: it rides in with its
+ * stage for the last stretch, and heading back it stays a moment before it sets off for the hero.
+ */
+export const DOCK_LEAD = 0.2;
 
 /** How far the two freed rings slide apart along their free axis before they fall. */
 export const SLIDE = 0.85;

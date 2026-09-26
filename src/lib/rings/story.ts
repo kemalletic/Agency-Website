@@ -131,22 +131,14 @@ function flatten(key: RingKey, q: Quaternion, yaw: number): Quaternion {
   return new Quaternion().setFromAxisAngle(Y, yaw).multiply(tip).multiply(q);
 }
 
-interface Fall {
-  from: Record<'design' | 'engineering', Pose>;
-  to: Record<'design' | 'engineering', Pose>;
-}
-
-/** Start (slid apart, knot rolled a quarter turn) and end (lying on the floor) of the fall, per symmetry. */
-const FALLS: Fall[] = SYMMETRY.map((symmetry, i) => {
+/** Where the two freed rings come to lie on the floor, per symmetry: each tipped flat from the docked knot, slid apart. */
+const FLOOR_POSES: Record<'design' | 'engineering', Pose>[] = SYMMETRY.map((symmetry, i) => {
   const from = assembled(roll(-Math.PI / 2).multiply(approachOrientation(i)), new Vector3(), SLIDE * symmetry.side);
   return {
-    from,
-    to: {
-      design: { position: new Vector3(-0.98, FLOOR_Y + RING.tube, -0.2), quaternion: flatten('design', from.design.quaternion, 0.1) },
-      engineering: {
-        position: new Vector3(0.98, FLOOR_Y + RING.tube, 0.2),
-        quaternion: flatten('engineering', from.engineering.quaternion, -0.15),
-      },
+    design: { position: new Vector3(-0.98, FLOOR_Y + RING.tube, -0.2), quaternion: flatten('design', from.design.quaternion, 0.1) },
+    engineering: {
+      position: new Vector3(0.98, FLOOR_Y + RING.tube, 0.2),
+      quaternion: flatten('engineering', from.engineering.quaternion, -0.15),
     },
   };
 });
@@ -213,9 +205,11 @@ export function storyState(input: StoryInput): SceneState {
   const knot = new Vector3(0, INTRO.settle * settle, 0);
   const poses = assembled(roll(-(Math.PI / 2) * turn).multiply(q), knot, introSlide + slide * symmetry.side);
   if (f > 0) {
-    const { from, to } = FALLS[input.symmetry] ?? FALLS[0]!;
-    poses.design = fall(from.design, to.design, f);
-    poses.engineering = fall(from.engineering, to.engineering, f);
+    // From the knot as it is turned now (the approach view, or on its way back to the hero), so a fall that is undone
+    // on the way home ends where the rest of the knot is, without a jump.
+    const lying = FLOOR_POSES[input.symmetry] ?? FLOOR_POSES[0]!;
+    poses.design = fall(poses.design, lying.design, f);
+    poses.engineering = fall(poses.engineering, lying.engineering, f);
     poses.design.position.y += hop;
     poses.engineering.position.y += hop;
   }

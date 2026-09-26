@@ -1,7 +1,7 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { WebGLRenderer } from 'three';
-import { INTRO, PLAY, SPIN_SPEED } from '../../lib/rings/config';
+import { DOCK_LEAD, INTRO, PLAY, SPIN_SPEED } from '../../lib/rings/config';
 import { mixStages, playTime, progressAt, sequenceAt, stageInView, type ScrollRange, type Stage } from '../../lib/rings/layout';
 import { damp } from '../../lib/rings/math';
 import { holdScroll, scrollHeading, scrollingByHand } from '../motion/hold';
@@ -100,6 +100,8 @@ export async function startRings({ dock, intro, onLost, canvas, context }: Rings
   let hero: Stage = { x: 0, y: 0, size: 0 };
   let approach: Stage = { x: 0, y: 0, size: 0 };
   let journeyRange: ScrollRange = { start: 0, end: 0 };
+  // Where the grid comes to rest, and a flung scroll is caught.
+  let dockY = 0;
   const measure = (): void => {
     const scroll = window.scrollY;
     // The box centre and offsetWidth ignore the hero's CSS scale-in, so measuring during it is still exact.
@@ -107,8 +109,11 @@ export async function startRings({ dock, intro, onLost, canvas, context }: Rings
     hero = { x: heroBox.left + heroBox.width / 2, y: heroBox.top + heroBox.height / 2 + scroll, size: heroStage.offsetWidth };
     const stageBox = approachStage.getBoundingClientRect();
     approach = { x: stageBox.left + stageBox.width / 2, y: stageBox.top + scroll + stageBox.height / 2, size: approachStage.offsetWidth };
-    // The knot sets off as the approach section's top enters the viewport and docks where the dock trigger starts.
-    journeyRange = { start: Math.max(0, section.getBoundingClientRect().top + scroll - window.innerHeight), end: dock.start };
+    // The knot sets off as the approach section's top enters the viewport and docks a little before the dock trigger
+    // starts (`DOCK_LEAD`), where the grid comes to rest.
+    const start = Math.max(0, section.getBoundingClientRect().top + scroll - window.innerHeight);
+    journeyRange = { start, end: Math.max(start + 1, dock.start - DOCK_LEAD * window.innerHeight) };
+    dockY = dock.start;
     last = null;
   };
 
@@ -172,7 +177,6 @@ export async function startRings({ dock, intro, onLost, canvas, context }: Rings
     }
     // Caught as soon as Lenis's glide heads past the dock. Touch screens keep their native momentum, which a script
     // cannot reliably stop.
-    const dockY = journeyRange.end;
     if (!rested && smoothScroller() && lastScroll >= 0 && lastScroll < dockY && scrollHeading() >= dockY && scrollingByHand()) {
       rested = true;
       release = holdScroll(dockY);
