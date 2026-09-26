@@ -1,5 +1,6 @@
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { isSoftwareRenderer, rendererName } from '../../lib/rings/gpu';
+import { pinLength } from '../../lib/rings/layout';
 
 interface Handle {
   dispose(): void;
@@ -68,7 +69,7 @@ export function initRings(): () => void {
     pin: true,
     // Centred when the grid fits the viewport; otherwise its top — stage, label and lead — stays in view.
     start: () => (grid.offsetHeight <= window.innerHeight - 32 ? 'center center' : 'top top+=16'),
-    end: () => `+=${Math.round(window.innerHeight * (wide.matches ? 2.2 : 1.6))}`,
+    end: () => `+=${Math.round(window.innerHeight * pinLength(wide.matches))}`,
     anticipatePin: 1,
     invalidateOnRefresh: true,
     onToggle: (self) => root.classList.toggle('is-pinned', self.isActive),

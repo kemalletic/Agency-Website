@@ -41,6 +41,12 @@ export const INTRO = { duration: 1.8, slide: 0.9, slideEnd: 1.1, drawFrom: 0.6, 
 /** Phase boundaries of the pinned "take one away" sequence (progress 0..1, spec §9.5). */
 export const SEQUENCE = { hold: 0.12, taken: 0.3, apart: 0.45, fallen: 0.62, rise: 0.7, landed: 0.82, joined: 0.88 } as const;
 
+/**
+ * Share of the pinned scroll that holds the docked view, labels on, before the sequence moves: room to read the lead,
+ * and to rest there for the ring demo (lib/rings/demo.ts). Wide enough for a few wheel notches.
+ */
+export const PIN_HOLD = 0.3;
+
 /** How far the two freed rings slide apart along their free axis before they fall. */
 export const SLIDE = 0.85;
 

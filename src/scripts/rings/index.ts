@@ -2,7 +2,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { WebGLRenderer } from 'three';
 import { INTRO, SEQUENCE, SPIN_SPEED } from '../../lib/rings/config';
-import { mixStages, pinnedY, progressAt, stageInView, type PinRange, type Stage } from '../../lib/rings/layout';
+import { mixStages, pinnedY, progressAt, sequenceAt, stageInView, type PinRange, type Stage } from '../../lib/rings/layout';
 import { damp } from '../../lib/rings/math';
 import { heroOrientation, nearestSymmetry, RING_KEYS, storyState } from '../../lib/rings/story';
 import { tokenColors } from './materials';
@@ -137,7 +137,7 @@ export async function startRings({ pin, intro, onLost, canvas, context }: RingsO
     clock += dt;
     const scroll = window.scrollY;
     const journey = progressAt(scroll, journeyRange.start, journeyRange.end);
-    const target = progressAt(scroll, pinRange.start, pinRange.end);
+    const target = sequenceAt(progressAt(scroll, pinRange.start, pinRange.end));
     sequence = sequence < 0 || Math.abs(target - sequence) < 1e-4 ? target : damp(sequence, target, FOLLOW, dt);
     pointer.update(dt, journey === 0);
     const introTime = introAt === null ? Infinity : clock - introAt;

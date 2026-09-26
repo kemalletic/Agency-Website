@@ -335,7 +335,10 @@ fluidno 96 → 176 px. Radijusi 10–12 px za kartice, 999 px za dugmad i chipov
    approach rect); orijentacija = slerp(idle, izometrijska) — dijagonala (1,1,1) prema kameri,
    simetrija 3 reda; dolly-zoom fov 30° → 10° uz korekciju udaljenosti (perspektiva se spljošti);
    etikete se iscrtaju pri kraju (DrawSVG).
-4. **Sekvenca „Take one away“** (pin Approach sekcije, ~220 % visine viewporta; mobitel ~160 %; scrub):
+4. **Sekvenca „Take one away“** (pin Approach sekcije, ~277 % visine viewporta; mobitel ~201 %; scrub).
+   Prvih 30 % pina (`PIN_HOLD`) drži fazu 0.00–0.12 — mirni pogled s etiketama, dovoljno za čitanje
+   leada i za demo (nekoliko okretaja točkića); ostatak teče istim tempom kao ranije (~220 % / ~160 %
+   za cijelu sekvencu):
 
    | Progres | Događaj |
    |---|---|

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { BOUND_RADIUS } from '../../src/lib/rings/config';
-import { cameraDistance, mixStages, pinnedY, progressAt, stageInView, viewOffset } from '../../src/lib/rings/layout';
+import { BOUND_RADIUS, PIN_HOLD, SEQUENCE } from '../../src/lib/rings/config';
+import { cameraDistance, mixStages, pinLength, pinnedY, progressAt, sequenceAt, stageInView, viewOffset } from '../../src/lib/rings/layout';
 
 describe('cameraDistance', () => {
   it('shows the bounding sphere at the requested share of the stage', () => {
@@ -81,5 +81,27 @@ describe('stages', () => {
     expect(progressAt(200, 100, 300)).toBe(0.5);
     expect(progressAt(400, 100, 300)).toBe(1);
     expect(progressAt(100, 100, 100)).toBe(1);
+  });
+});
+
+describe('the pinned stretch', () => {
+  it('holds the docked view for its first part, then runs the sequence at its old pace', () => {
+    expect(sequenceAt(0)).toBe(0);
+    expect(sequenceAt(PIN_HOLD / 2)).toBeLessThan(SEQUENCE.hold);
+    expect(sequenceAt(PIN_HOLD)).toBeCloseTo(SEQUENCE.hold, 12);
+    expect(sequenceAt(1)).toBe(1);
+    expect(sequenceAt(-1)).toBe(0);
+    expect(sequenceAt(2)).toBe(1);
+    for (let i = 1; i <= 100; i++) expect(sequenceAt(i / 100)).toBeGreaterThan(sequenceAt((i - 1) / 100));
+  });
+
+  it('gives the hold most of a screen of scrolling, leaving the moving part as long as before', () => {
+    for (const [wide, before] of [
+      [true, 2.2],
+      [false, 1.6],
+    ] as const) {
+      expect(pinLength(wide) * PIN_HOLD).toBeGreaterThan(0.5);
+      expect(pinLength(wide) * (1 - PIN_HOLD)).toBeCloseTo(before * (1 - SEQUENCE.hold), 12);
+    }
   });
 });
