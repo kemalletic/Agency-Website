@@ -56,18 +56,7 @@ describe.each(pages)('$path approach', ({ path, lang }) => {
 
   it('gives the stage an accessible description and caption', () => {
     expect(section?.querySelector('[data-stage="approach"]')?.getAttribute('aria-label')).toBe(t.approach.diagramAlt);
-    const caption = section?.querySelector('figcaption');
-    expect(text(caption?.querySelector('.fig-variant:not([data-ring])'))).toBe(`${t.approach.fig} — ${t.approach.caption}`);
-  });
-
-  it('keeps a caption for each ring, shown while that ring is singled out', () => {
-    const notes = Array.from(section?.querySelectorAll('figcaption .fig-variant[data-ring]') ?? []);
-    expect(notes.map((note) => note.getAttribute('data-ring'))).toEqual(['design', 'engineering', 'automation']);
-    for (const note of notes) {
-      const key = note.getAttribute('data-ring') as keyof typeof t.approach.notes;
-      expect(text(note)).toBe(norm(`${t.approach.fig} — ${t.approach.notes[key]}`));
-      expect(note.getAttribute('aria-hidden')).toBe('true');
-    }
+    expect(text(section?.querySelector('figcaption'))).toBe(`${t.approach.fig} — ${t.approach.caption}`);
   });
 
   it('uses the section label as its heading', () => {

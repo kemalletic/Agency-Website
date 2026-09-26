@@ -49,11 +49,6 @@ export const bs: Dictionary = {
     caption: 'Isti prstenovi, spljošteni. Ukloni jedan i druga dva se razdvoje.',
     diagramAlt: 'Dijagram tri spljoštena prstena: dizajn, inženjering i automatizacija.',
     rings: { design: 'Dizajn', engineering: 'Inženjering', automation: 'Automatizacija' },
-    notes: {
-      design: 'Dizajn je ono što ljudi vide i koriste: brend, interfejsi, struktura sadržaja.',
-      engineering: 'Inženjering čini da sve radi: stranice, web i mobilne aplikacije, API-ji i podaci.',
-      automation: 'Automatizacija uklanja prepisivanje: integracije, e-fakturisanje, AI koraci.',
-    },
   },
   services: {
     title: 'Usluge',

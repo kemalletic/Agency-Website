@@ -49,11 +49,6 @@ export const en: Dictionary = {
     caption: 'The same rings, flattened. Take one away and the other two come apart.',
     diagramAlt: 'Diagram of the three rings, flattened: design, engineering and automation.',
     rings: { design: 'Design', engineering: 'Engineering', automation: 'Automation' },
-    notes: {
-      design: 'Design is what people see and use: brand, interfaces, content structure.',
-      engineering: 'Engineering makes it work: websites, web and mobile apps, APIs and data.',
-      automation: 'Automation takes the retyping away: integrations, e-invoicing, AI steps.',
-    },
   },
   services: {
     title: 'Services',

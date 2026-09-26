@@ -1,6 +1,5 @@
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { isSoftwareRenderer, rendererName } from '../../lib/rings/gpu';
-import { pinLength } from '../../lib/rings/layout';
 
 interface Handle {
   dispose(): void;
@@ -53,9 +52,9 @@ function fastContext(canvas: HTMLCanvasElement): WebGL2RenderingContext | null {
 }
 
 /**
- * The rings set piece (spec §9). Pins the approach grid for the "take one away" sequence, then brings in the WebGL
- * scene once the page is idle. Runs only where the head script expected 3D (html[data-rings]); on any failure the
- * posters stay, the pin goes and the reader keeps their place.
+ * The rings set piece (spec §9). Marks where the knot docks at the approach grid, then brings in the WebGL scene once
+ * the page is idle; there the "take one away" sequence plays by itself, the page held while it does. Runs only where
+ * the head script expected 3D (html[data-rings]); on any failure the posters stay and nothing holds the page.
  */
 export function initRings(): () => void {
   const root = document.documentElement;
@@ -63,16 +62,11 @@ export function initRings(): () => void {
   const grid = document.querySelector<HTMLElement>('#approach .approach-grid');
   if (!grid) return () => {};
 
-  const wide = window.matchMedia('(min-width: 64rem)');
-  const pin = ScrollTrigger.create({
+  const dock = ScrollTrigger.create({
     trigger: grid,
-    pin: true,
-    // Centred when the grid fits the viewport; otherwise its top — stage, label and lead — stays in view.
+    // Centred when the grid fits the viewport; otherwise when its top — stage, label and lead — is in view.
     start: () => (grid.offsetHeight <= window.innerHeight - 32 ? 'center center' : 'top top+=16'),
-    end: () => `+=${Math.round(window.innerHeight * pinLength(wide.matches))}`,
-    anticipatePin: 1,
     invalidateOnRefresh: true,
-    onToggle: (self) => root.classList.toggle('is-pinned', self.isActive),
   });
 
   let handle: Handle | null = null;
@@ -85,14 +79,7 @@ export function initRings(): () => void {
     handle?.dispose();
     handle = null;
     root.dataset.rings = 'off';
-    // Without the rings the pinned stretch would scroll past a still picture: drop it, keep the reader's place.
-    const { start, end } = pin;
-    const y = window.scrollY;
-    pin.kill(true);
-    root.classList.remove('is-pinned');
-    ScrollTrigger.refresh();
-    if (y > end) window.scrollTo(0, y - (end - start));
-    else if (y > start) window.scrollTo(0, start);
+    dock.kill();
   };
 
   const launch = async (): Promise<void> => {
@@ -107,7 +94,7 @@ export function initRings(): () => void {
     if (!context) return giveUp();
     const intro = root.dataset.rings === 'pending';
     const { startRings } = await import('../rings/index');
-    const started = await startRings({ pin, intro, canvas, context, onLost: () => giveUp() });
+    const started = await startRings({ dock, intro, canvas, context, onLost: () => giveUp() });
     if (done) {
       started.dispose();
       return;
@@ -122,6 +109,6 @@ export function initRings(): () => void {
     handle = null;
     if (!done) root.dataset.rings = 'off';
     done = true;
-    root.classList.remove('is-pinned');
+    dock.kill();
   };
 }

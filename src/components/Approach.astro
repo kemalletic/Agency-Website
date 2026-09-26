@@ -3,7 +3,6 @@ import { Picture } from 'astro:assets';
 import approachPoster from '../assets/posters/approach.png';
 import { getDictionary, type Locale } from '../i18n';
 import { labelAnchors } from '../lib/rings/labels';
-import { RING_KEYS } from '../lib/rings/story';
 import { noWidow } from '../lib/typography';
 
 interface Props {
@@ -40,16 +39,7 @@ const percent = (value: number): string => `${(value * 100).toFixed(2)}%`;
           }
         </div>
       </div>
-      <figcaption class="fig-caption">
-        <span class="fig-variant"><span class="fig-num">{t.approach.fig}</span> — {noWidow(t.approach.caption)}</span>
-        {
-          RING_KEYS.map((key) => (
-            <span class="fig-variant" data-ring={key} aria-hidden="true">
-              <span class="fig-num">{t.approach.fig}</span> — {noWidow(t.approach.notes[key])}
-            </span>
-          ))
-        }
-      </figcaption>
+      <figcaption class="fig-caption"><span class="fig-num">{t.approach.fig}</span> — {noWidow(t.approach.caption)}</figcaption>
     </figure>
     <div class="approach-text">
       <h2 id="approach-label" class="label" data-reveal="fade">{t.approach.label}</h2>
@@ -83,34 +73,16 @@ const percent = (value: number): string => `${(value * 100).toFixed(2)}%`;
     flex-direction: column;
     gap: 1.75rem;
     grid-column: 1 / -1;
+    justify-self: center;
+    /* Where the knot docks the grid's top is in view: on short phones the stage gives up height so the caption, label
+       and lead (about 25rem below it) still fit under it while the sequence plays. */
+    width: min(100%, 26rem, max(14rem, 100svh - 25rem));
   }
-  /* The caption and one note per ring share a cell, so the caption is as tall as the longest and never moves the
-     pinned grid; while a ring is singled out (scripts/rings/overlay.ts) its note takes the caption's place. */
   .approach-figure .fig-caption {
-    display: grid;
     max-width: 24rem;
   }
-  .fig-variant {
-    grid-area: 1 / 1;
-    transition: opacity 0.3s var(--ease-std);
-  }
-  .fig-variant[data-ring] {
-    opacity: 0;
-    pointer-events: none;
-  }
-  .fig-caption[data-focus] .fig-variant:not([data-ring]) {
-    opacity: 0;
-  }
-  .fig-caption .fig-variant[data-lit] {
-    opacity: 1;
-  }
-  /* Centred above a caption that runs the full column, on the text's left edge. While the grid is pinned its top
-     stays in view: on short phones the stage gives up height so the caption, label and lead (about 25rem below it)
-     still fit under it. */
   .approach-stage {
     position: relative;
-    width: min(100%, 26rem, max(14rem, 100svh - 25rem));
-    margin-inline: auto;
     aspect-ratio: 1;
     container-type: inline-size;
   }
@@ -212,7 +184,7 @@ const percent = (value: number): string => `${(value * 100).toFixed(2)}%`;
     color: var(--muted);
     text-wrap: pretty;
   }
-  /* A phone on its side has no height for the stacked grid: stage and text side by side, as on desktop, so the pinned
+  /* A phone on its side has no height for the stacked grid: stage and text side by side, as on desktop, so the docked
      grid shows the rings and the lead together. */
   @media (orientation: landscape) and (max-width: 63.99rem) and (max-height: 30rem) {
     .approach-grid {
@@ -222,10 +194,7 @@ const percent = (value: number): string => `${(value * 100).toFixed(2)}%`;
     }
     .approach-figure {
       grid-column: 1;
-    }
-    .approach-stage {
       width: min(100%, 100svh - 7rem);
-      margin-inline: 0;
     }
     .approach-text {
       grid-column: 2;
@@ -235,12 +204,13 @@ const percent = (value: number): string => `${(value * 100).toFixed(2)}%`;
   @media (min-width: 64rem) {
     .approach-figure {
       grid-column: 1 / span 5;
+      justify-self: stretch;
+      width: auto;
     }
     /* The rings sit half a gutter into the margin so their drawn edge, not the square around them, meets the grid;
        the caption below stays on the grid line. */
     .approach-stage {
-      width: auto;
-      margin-inline: -0.5rem 0;
+      margin-left: -0.5rem;
     }
     .approach-text {
       grid-column: 7 / span 6;

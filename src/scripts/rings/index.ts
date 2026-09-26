@@ -1,9 +1,11 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { WebGLRenderer } from 'three';
-import { INTRO, SEQUENCE, SPIN_SPEED } from '../../lib/rings/config';
-import { mixStages, pinnedY, progressAt, sequenceAt, stageInView, type PinRange, type Stage } from '../../lib/rings/layout';
+import { INTRO, PLAY, SPIN_SPEED } from '../../lib/rings/config';
+import { mixStages, playTime, progressAt, sequenceAt, stageInView, type ScrollRange, type Stage } from '../../lib/rings/layout';
 import { damp } from '../../lib/rings/math';
+import { holdScroll, scrollHeading, scrollingByHand } from '../motion/hold';
+import { smoothScroller } from '../motion/lenis';
 import { heroOrientation, nearestSymmetry, RING_KEYS, storyState } from '../../lib/rings/story';
 import { tokenColors } from './materials';
 import { createOverlay } from './overlay';
@@ -11,8 +13,8 @@ import { createPointer } from './pointer';
 import { createRingsScene, QUALITY, type RingsScene, type Viewport } from './scene';
 
 export interface RingsOptions {
-  /** ScrollTrigger pinning the approach grid for the "take one away" sequence (created by scripts/motion/rings.ts). */
-  pin: ScrollTrigger;
+  /** ScrollTrigger on the approach grid; the knot docks at its start (created by scripts/motion/rings.ts). */
+  dock: ScrollTrigger;
   /** Assemble the knot in the hero — only when no poster was on screen first. */
   intro: boolean;
   /** Called once if the GPU drops the WebGL context. */
@@ -28,19 +30,16 @@ export interface RingsHandle {
 
 /** Most pixels the canvas may have, so large or dense screens never render 4K frames for three rings. */
 const MAX_PIXELS = 5_000_000;
-/** How quickly the sequence follows the scroll (1/s): a little weight on top of the scroll itself. */
-const FOLLOW = 14;
 
 /** Lets the browser paint and handle input between the heavier start-up steps, so none becomes a long task. */
 const breathe = (): Promise<void> => new Promise((resolve) => setTimeout(resolve, 0));
 
 /** Starts the live rings; resolves after the first frame is on the canvas, rejects if WebGL is unsuitable. */
-export async function startRings({ pin, intro, onLost, canvas, context }: RingsOptions): Promise<RingsHandle> {
+export async function startRings({ dock, intro, onLost, canvas, context }: RingsOptions): Promise<RingsHandle> {
   const heroStage = document.querySelector<HTMLElement>('[data-stage="hero"]');
   const approachStage = document.querySelector<HTMLElement>('[data-stage="approach"]');
   const section = document.getElementById('approach');
-  const grid = pin.pin instanceof HTMLElement ? pin.pin : null;
-  if (!heroStage || !approachStage || !section || !grid) throw new Error('rings: stage markup missing');
+  if (!heroStage || !approachStage || !section) throw new Error('rings: stage markup missing');
 
   const low = window.matchMedia('(max-width: 47.99rem), (pointer: coarse)').matches;
   const coarse = window.matchMedia('(pointer: coarse)').matches;
@@ -60,9 +59,6 @@ export async function startRings({ pin, intro, onLost, canvas, context }: RingsO
   // frame it moves or they do; a tap on a ring, label or ring word picks one (see overlay.ts).
   const hoverable = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   let docked = false;
-  // How long the docked view, labels drawn and before the sequence, has stood still (for the demo).
-  let resting = 0;
-  let restScroll = -1;
   let aim: { x: number; y: number } | null = null;
   let aimStale = false;
   const onAim = (event: PointerEvent): void => {
@@ -80,7 +76,7 @@ export async function startRings({ pin, intro, onLost, canvas, context }: RingsO
   const onTap = (event: MouseEvent): void => {
     if (hoverable || !docked) return;
     const target = event.target instanceof Element ? event.target : null;
-    const named = target?.closest<HTMLElement>('.approach-lead [data-ring], .stage-label[data-ring]')?.dataset.ring;
+    const named = target?.closest<HTMLElement>('#approach [data-ring]')?.dataset.ring;
     const ring = RING_KEYS.find((key) => key === named) ?? (target?.closest('[data-stage="approach"]') ? pickAt(event.clientX, event.clientY) : null);
     overlay.tap(ring);
   };
@@ -103,25 +99,16 @@ export async function startRings({ pin, intro, onLost, canvas, context }: RingsO
   // Stage geometry in page coordinates, measured again whenever ScrollTrigger refreshes (resize, fonts, pins).
   let hero: Stage = { x: 0, y: 0, size: 0 };
   let approach: Stage = { x: 0, y: 0, size: 0 };
-  let pinRange: PinRange = { start: 0, end: 0 };
-  let journeyRange: PinRange = { start: 0, end: 0 };
+  let journeyRange: ScrollRange = { start: 0, end: 0 };
   const measure = (): void => {
     const scroll = window.scrollY;
     // The box centre and offsetWidth ignore the hero's CSS scale-in, so measuring during it is still exact.
     const heroBox = heroStage.getBoundingClientRect();
     hero = { x: heroBox.left + heroBox.width / 2, y: heroBox.top + heroBox.height / 2 + scroll, size: heroStage.offsetWidth };
-    // The approach stage moves with the pinned grid; measure it against the pin spacer, which never leaves the flow.
-    const spacer = grid.parentElement?.classList.contains('pin-spacer') ? grid.parentElement : grid;
-    const gridBox = grid.getBoundingClientRect();
     const stageBox = approachStage.getBoundingClientRect();
-    approach = {
-      x: stageBox.left + stageBox.width / 2,
-      y: spacer.getBoundingClientRect().top + scroll + (stageBox.top - gridBox.top) + stageBox.height / 2,
-      size: approachStage.offsetWidth,
-    };
-    pinRange = { start: pin.start, end: pin.end };
-    // The knot sets off as the approach section's top enters the viewport and docks as the pin begins.
-    journeyRange = { start: Math.max(0, section.getBoundingClientRect().top + scroll - window.innerHeight), end: pin.start };
+    approach = { x: stageBox.left + stageBox.width / 2, y: stageBox.top + scroll + stageBox.height / 2, size: approachStage.offsetWidth };
+    // The knot sets off as the approach section's top enters the viewport and docks where the dock trigger starts.
+    journeyRange = { start: Math.max(0, section.getBoundingClientRect().top + scroll - window.innerHeight), end: dock.start };
     last = null;
   };
 
@@ -129,7 +116,16 @@ export async function startRings({ pin, intro, onLost, canvas, context }: RingsO
   let introAt: number | null = null;
   let spin = 0;
   let spinRate = 0;
-  let sequence = -1;
+  // The "take one away" sequence plays by itself, by time, once a page view: from when the knot has (all but) docked
+  // with its stage on screen. Heading back while it plays, the knot comes together again on the way, by scroll
+  // (`leaving`). With a mouse or trackpad, the first scroll down that would carry past the dock stops there, however
+  // hard it was flung (motion/hold.ts; the next scroll carries on at once).
+  let sequence = 0;
+  let dockedAt: number | null = null;
+  let leaving: { from: number; forward: boolean } | null = null;
+  let lastScroll = -1;
+  let release: (() => void) | null = null;
+  let rested = false;
   let symmetry = -1;
   let painted = false;
 
@@ -137,8 +133,6 @@ export async function startRings({ pin, intro, onLost, canvas, context }: RingsO
     clock += dt;
     const scroll = window.scrollY;
     const journey = progressAt(scroll, journeyRange.start, journeyRange.end);
-    const target = sequenceAt(progressAt(scroll, pinRange.start, pinRange.end));
-    sequence = sequence < 0 || Math.abs(target - sequence) < 1e-4 ? target : damp(sequence, target, FOLLOW, dt);
     pointer.update(dt, journey === 0);
     const introTime = introAt === null ? Infinity : clock - introAt;
     // Idle spin only in the hero, after the intro, easing in and out.
@@ -147,16 +141,49 @@ export async function startRings({ pin, intro, onLost, canvas, context }: RingsO
     // Latch the nearest approach orientation as the knot leaves the hero, so the turn never flips mid-way.
     if (journey === 0) symmetry = -1;
     else if (symmetry < 0) symmetry = nearestSymmetry(heroOrientation(spin, pointer.tilt));
-    docked = journey > 0.9;
-    const ready = journey >= 1 && sequence < SEQUENCE.hold;
-    resting = ready && scroll === restScroll ? resting + dt : 0;
-    restScroll = scroll;
+    // A ring can be singled out once the labels are drawn, after the sequence (last frame's value is close enough).
+    docked = journey > 0.9 && sequence === 1;
     if (!docked || !aim) overlay.point(null);
     else if (aimStale) overlay.point(pickAt(aim.x, aim.y));
     aimStale = false;
-    overlay.ease(dt, docked, resting);
+    overlay.ease(dt, docked);
 
-    const stage = { hero: { x: hero.x, y: hero.y - scroll, size: hero.size }, approach: { x: approach.x, y: pinnedY(approach.y, scroll, pinRange), size: approach.size } };
+    const stage = { hero: { x: hero.x, y: hero.y - scroll, size: hero.size }, approach: { x: approach.x, y: approach.y - scroll, size: approach.size } };
+    if (dockedAt !== null && journey < PLAY.dock) {
+      // Rings apart as the reader heads back: rejoin them by the hero, the shorter way (on through the sequence, or
+      // back through it); scrolling down again picks the sequence up where it was.
+      leaving = { from: sequence, forward: sequence > 0.5 };
+      dockedAt = null;
+      release?.();
+      release = null;
+    }
+    if (leaving) {
+      if (journey >= PLAY.dock) {
+        dockedAt = clock - playTime(leaving.from);
+        leaving = null;
+      } else {
+        const t = journey / PLAY.dock;
+        sequence = leaving.forward ? 1 - (1 - leaving.from) * t : leaving.from * t;
+        if (journey === 0) leaving = null;
+      }
+    }
+    if (dockedAt === null && !leaving && sequence === 0 && journey >= PLAY.dock && stageInView(stage.approach, viewport, 0)) {
+      dockedAt = clock;
+    }
+    // Caught as soon as Lenis's glide heads past the dock. Touch screens keep their native momentum, which a script
+    // cannot reliably stop.
+    const dockY = journeyRange.end;
+    if (!rested && smoothScroller() && lastScroll >= 0 && lastScroll < dockY && scrollHeading() >= dockY && scrollingByHand()) {
+      rested = true;
+      release = holdScroll(dockY);
+    }
+    lastScroll = scroll;
+    if (dockedAt !== null) sequence = sequenceAt(clock - dockedAt);
+    if (sequence === 1) {
+      dockedAt = null;
+      release?.();
+      release = null;
+    }
     const w = overlay.weights;
     // The state is a pure function of these inputs: when none of them moved, the last frame still stands.
     const inputs = [
@@ -192,6 +219,7 @@ export async function startRings({ pin, intro, onLost, canvas, context }: RingsO
   const stop = (): void => {
     if (stopped) return;
     stopped = true;
+    release?.();
     gsap.ticker.remove(tick);
     ScrollTrigger.removeEventListener('refresh', measure);
     window.removeEventListener('resize', onResize);

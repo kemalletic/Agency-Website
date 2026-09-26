@@ -1,5 +1,5 @@
 import { Euler, Matrix4, Quaternion, Vector3 } from 'three';
-import { FLOOR, FLOOR_Y, FRAMING, INTRO, PITCH, RING, SEQUENCE, SLIDE } from './config';
+import { FLOOR, FLOOR_Y, FRAMING, INTRO, PITCH, PLAY, RING, SEQUENCE, SLIDE } from './config';
 import { CORNERS, loopPoint, toPlane, type Plane } from './curve';
 import { expoOut, lerp, phase, power2InOut, smoothstep } from './math';
 
@@ -36,9 +36,9 @@ export interface SceneState {
   /** 0 = the knot sits in the hero stage, 1 = in the approach stage. */
   stageMix: number;
   floor: { opacity: number; sharpness: number; spread: number };
-  /** 0..1 per ring: how far its approach label is drawn. */
+  /** 0..1 per ring: how far its approach label is drawn (only after the sequence, the knot whole again). */
   labels: Record<RingKey, number>;
-  /** 0..1 per ring: how far its word in the approach lead has turned to ink (with its label, and it stays). */
+  /** 0..1 per ring: how far its word in the approach lead has turned to ink (on the way in, and it stays). */
   words: Record<RingKey, number>;
   /** 0..1: how far each story phrase in the approach lead has turned to ink. */
   marks: { take: number; fall: number };
@@ -53,7 +53,7 @@ export interface StoryInput {
   tilt: [number, number];
   /** 0..1 from the hero stage to the approach stage. */
   journey: number;
-  /** 0..1 through the pinned "take one away" sequence. */
+  /** 0..1 through the "take one away" sequence, which plays by itself once the knot has docked. */
   sequence: number;
   /** Which of the four identical approach orientations to turn to (`nearestSymmetry`), latched while the journey runs. */
   symmetry: number;
@@ -165,8 +165,15 @@ function fall(from: Pose, to: Pose, f: number): Pose {
   };
 }
 
-/** The journey's last stretch, in which the labels draw one after another, each inking its word in the lead. */
-const LABEL_IN: Record<RingKey, readonly [number, number]> = { design: [0.8, 0.9], engineering: [0.85, 0.95], automation: [0.9, 1] };
+/** The journey's last stretch, in which the ring words in the lead ink one after another. */
+const WORD_IN: Record<RingKey, readonly [number, number]> = { design: [0.8, 0.9], engineering: [0.85, 0.95], automation: [0.9, 1] };
+
+/** The sequence's last stretch, after the knot is whole again (`SEQUENCE.closed`): the labels draw one after another. */
+const LABEL_IN: Record<RingKey, readonly [number, number]> = {
+  design: [SEQUENCE.closed, 0.97],
+  engineering: [0.955, 0.985],
+  automation: [0.97, 1],
+};
 
 const perRing = (value: (key: RingKey) => number): Record<RingKey, number> => ({
   design: value('design'),
@@ -192,10 +199,10 @@ export function storyState(input: StoryInput): SceneState {
   // Orientation: the idle hero pose, turning to the nearest approach view.
   const q = heroOrientation(input.spin, input.tilt, INTRO.twist * settle).slerp(approachOrientation(input.symmetry), journey);
 
-  // The pinned sequence; its second half (`back`) retraces the first.
+  // The sequence; its second half (`back`) retraces the first.
   const back = p >= (S.fallen + S.rise) / 2;
-  const turn = back ? 1 - power2InOut(phase(p, S.joined, S.joined + 0.08)) : power2InOut(phase(p, S.hold, S.taken));
-  const gap = back ? 1 - power2InOut(phase(p, S.joined, 1)) : power2InOut(phase(p, S.hold, S.taken));
+  const turn = back ? 1 - power2InOut(phase(p, S.joined, S.closed)) : power2InOut(phase(p, S.hold, S.taken));
+  const gap = back ? 1 - power2InOut(phase(p, S.joined, S.closed)) : power2InOut(phase(p, S.hold, S.taken));
   const slide = SLIDE * (back ? 1 - power2InOut(phase(p, S.landed, S.joined)) : power2InOut(phase(p, S.taken, S.apart)));
   const landing = phase(p, S.apart, S.fallen);
   const f = back ? 1 - smoothstep(phase(p, S.rise, S.landed)) : Math.min(landing / 0.8, 1);
@@ -237,11 +244,10 @@ export function storyState(input: StoryInput): SceneState {
       sharpness: crane,
       spread: lerp(1.25, 2.2, crane),
     },
-    // In the sequence the labels make way together and come back together; the words stay inked throughout.
-    labels: perRing((key) =>
-      p > 0 ? (back ? phase(p, 0.93, 1) : 1 - phase(p, S.hold, S.hold + 0.08)) : phase(input.journey, ...LABEL_IN[key]),
-    ),
-    words: perRing((key) => (p > 0 ? 1 : phase(input.journey, ...LABEL_IN[key]))),
+    // The labels wait for the sequence and draw only once the knot is whole again; the words ink on the way in and stay
+    // so. The sequence plays by itself, so it can run on as the knot heads back: labels and words follow the journey.
+    labels: perRing((key) => phase(p, ...LABEL_IN[key]) * phase(input.journey, PLAY.dock - 0.1, PLAY.dock)),
+    words: perRing((key) => phase(input.journey, ...WORD_IN[key])),
     marks: { take: phase(p, S.hold, 0.24), fall: phase(p, 0.47, 0.58) },
   };
 }

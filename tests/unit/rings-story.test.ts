@@ -1,6 +1,6 @@
 import { Vector3 } from 'three';
 import { describe, expect, it } from 'vitest';
-import { FLOOR_Y, FRAMING, INTRO, PITCH, RING, SEQUENCE } from '../../src/lib/rings/config';
+import { FLOOR_Y, FRAMING, INTRO, PITCH, PLAY, RING, SEQUENCE } from '../../src/lib/rings/config';
 import { CORNERS } from '../../src/lib/rings/curve';
 import {
   heroOrientation,
@@ -101,23 +101,22 @@ describe('approach view', () => {
 });
 
 describe('journey', () => {
-  it('ends in the approach framing with the labels drawn', () => {
+  it('ends in the approach framing, the labels still to come', () => {
     const state = storyState(docked);
     expect(state.stageMix).toBe(1);
     expect(state.camera).toMatchObject({ fov: FRAMING.approach.fov, fill: FRAMING.approach.fill });
-    expect(state.labels).toEqual({ design: 1, engineering: 1, automation: 1 });
-    expect(storyState({ ...hero, journey: 0.5 }).labels).toEqual({ design: 0, engineering: 0, automation: 0 });
+    expect(state.labels).toEqual({ design: 0, engineering: 0, automation: 0 });
+    for (let i = 0; i <= 20; i++) expect(storyState({ ...hero, journey: i / 20 }).labels).toEqual({ design: 0, engineering: 0, automation: 0 });
   });
 
-  it('draws the labels one after another, each inking its word in the lead', () => {
+  it('inks the ring words in the lead one after another', () => {
     const early = storyState({ ...hero, journey: 0.5 });
     expect(early.words).toEqual({ design: 0, engineering: 0, automation: 0 });
-    const drawing = storyState({ ...hero, journey: 0.87 });
-    expect(drawing.labels.design).toBeGreaterThan(drawing.labels.engineering);
-    expect(drawing.labels.engineering).toBeGreaterThan(drawing.labels.automation);
-    expect(drawing.labels.design).toBeLessThan(1);
-    expect(drawing.labels.automation).toBe(0);
-    expect(drawing.words).toEqual(drawing.labels);
+    const inking = storyState({ ...hero, journey: 0.87 });
+    expect(inking.words.design).toBeGreaterThan(inking.words.engineering);
+    expect(inking.words.engineering).toBeGreaterThan(inking.words.automation);
+    expect(inking.words.design).toBeLessThan(1);
+    expect(inking.words.automation).toBe(0);
     expect(storyState(docked).words).toEqual({ design: 1, engineering: 1, automation: 1 });
   });
 
@@ -156,10 +155,10 @@ describe('intro', () => {
 });
 
 describe('take one away', () => {
-  it('holds the docked view with the labels on until 0.12', () => {
+  it('holds the docked view still until 0.12', () => {
     const start = storyState(docked);
     const held = storyState({ ...docked, sequence: SEQUENCE.hold });
-    expect(held.labels).toEqual({ design: 1, engineering: 1, automation: 1 });
+    expect(held.labels).toEqual({ design: 0, engineering: 0, automation: 0 });
     expect(drawn(held)).toBeCloseTo(1, 12);
     for (const key of RING_KEYS) expect(held.poses[key].quaternion.angleTo(start.poses[key].quaternion)).toBeLessThan(1e-6);
   });
@@ -213,6 +212,34 @@ describe('take one away', () => {
     expect(end.labels).toEqual({ design: 1, engineering: 1, automation: 1 });
     expect(end.words).toEqual({ design: 1, engineering: 1, automation: 1 });
     expect(end.camera).toEqual(start.camera);
+  });
+
+  it('draws the labels one after another at the end', () => {
+    const drawing = storyState({ ...docked, sequence: 0.965 });
+    expect(drawing.labels.design).toBeGreaterThan(drawing.labels.engineering);
+    expect(drawing.labels.engineering).toBeGreaterThan(drawing.labels.automation);
+    expect(drawing.labels.design).toBeLessThan(1);
+    expect(drawing.labels.automation).toBe(0);
+  });
+
+  it('shows the labels whole wherever the knot counts as docked', () => {
+    expect(storyState({ ...docked, journey: PLAY.dock, sequence: 1 }).labels).toEqual({ design: 1, engineering: 1, automation: 1 });
+    expect(storyState({ ...docked, journey: PLAY.dock - 0.1, sequence: 1 }).labels).toEqual({ design: 0, engineering: 0, automation: 0 });
+  });
+
+  it('draws the labels only once the knot is whole again', () => {
+    const start = storyState(docked);
+    for (let i = 0; i <= 40; i++) {
+      const sequence = SEQUENCE.fallen + ((1 - SEQUENCE.fallen) * i) / 40;
+      const state = storyState({ ...docked, sequence });
+      if (RING_KEYS.every((key) => state.labels[key] === 0)) continue;
+      expect(sequence).toBeGreaterThanOrEqual(SEQUENCE.closed);
+      expect(drawn(state)).toBeCloseTo(1, 12);
+      for (const key of RING_KEYS) {
+        expect(state.poses[key].position.distanceTo(start.poses[key].position)).toBeLessThan(1e-9);
+        expect(state.poses[key].quaternion.angleTo(start.poses[key].quaternion)).toBeLessThan(1e-6);
+      }
+    }
   });
 });
 

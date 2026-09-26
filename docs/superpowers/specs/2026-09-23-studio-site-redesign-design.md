@@ -196,22 +196,18 @@ fluidno 96 → 176 px. Radijusi 10–12 px za kartice, 999 px za dugmad i chipov
 - Desktop: bina kolone 1–5; tekst kolone 7–12 (etiketa, lead, manji paragraf). Mobitel: bina iznad teksta.
 - Nad binom SVG overlay (DOM, lokalizovan): tri tanke linije-vodilice s tačkom i etiketom
   DESIGN / ENGINEERING / AUTOMATION, pozicionirane po projekciji finalnog izometrijskog pogleda.
-- Pinovana sekvenca „Take one away“ — detalji u §9.5. Paralelno se u lead tekstu fraze
+- Sekvenca „Take one away“ se jednom odvrti sama kad čvor sjedne u binu — detalji u §9.5. Paralelno se u lead tekstu fraze
   „take one away“ i „the whole thing falls apart“ boje iz `--label` u `--ink` u trenucima kad se to
   dešava prstenovima.
-- Etikete se na kraju putovanja čvora crtaju jedna za drugom (design, engineering, automation), a
-  uz svaku se njena riječ u lead tekstu oboji iz `--label` u `--ink` i takva ostaje kroz sekvencu.
-  Riječi nemaju tačke ni druge oznake: vezu s prstenom pokazuje samo to zajedničko bojenje.
-- Isticanje jednog prstena (samo u 3D modu, dok je čvor usidren): mišem preko samog prstena
+- Na kraju putovanja čvora riječi design, engineering, automation u lead tekstu se jedna za drugom
+  oboje iz `--label` u `--ink` i takve ostaju. Etikete (tačka, linija, tekst) čekaju sekvencu: crtaju
+  se jedna za drugom tek kad se čvor na njenom kraju ponovo sastavi. Riječi nemaju tačke ni druge
+  oznake.
+- Isticanje jednog prstena (samo u 3D modu, dok je čvor usidren i etikete iscrtane, tj. nakon
+  sekvence): mišem preko samog prstena
   (raycast), njegove etikete ili njegove riječi; na dodir tapom na bilo koje od toga (drugi tap
   ili tap drugdje pušta). Ostala dva prstena idu na 15 % opaciteta, njihove etikete na 30 %, a
-  riječ istaknutog prstena se podvuče kao link. Opis slike se za to vrijeme zamijeni kratkim opisom
-  tog prstena (`approach.notes`, počinje imenom prstena, npr. „Fig. 2 — Engineering makes it work:
-  …“); opis i tri bilješke dijele istu ćeliju, pa se visina ne mijenja. U poster modu ništa od ovoga
-  ne radi.
-- Jednom po posjeti (sessionStorage): kad čitalac 1,5 s miruje na usidrenom pogledu s nacrtanim
-  etiketama (prije sekvence), prstenovi se sami istaknu redom design → engineering → automation, po
-  1,2 s, s podvučenom riječi i bilješkom. Bilo kakav skrol ili vlastito isticanje prekida to odmah.
+  riječ istaknutog prstena se podvuče kao link. U poster modu ništa od ovoga ne radi.
 - Opis: „Fig. 2 — The same rings, flattened. Take one away and the other two come apart.“ /
   „Sl. 2 — Isti prstenovi, spljošteni. Makni jedan i druga dva se razdvoje.“ Manji paragraf
   („One team from the first sketch…“) je van pina.
@@ -334,23 +330,31 @@ fluidno 96 → 176 px. Radijusi 10–12 px za kartice, 999 px za dugmad i chipov
 3. **Putovanje** (scrub: Approach od `top bottom` do `top top`): pozicija = lerp(hero rect,
    approach rect); orijentacija = slerp(idle, izometrijska) — dijagonala (1,1,1) prema kameri,
    simetrija 3 reda; dolly-zoom fov 30° → 10° uz korekciju udaljenosti (perspektiva se spljošti);
-   etikete se iscrtaju pri kraju (DrawSVG).
-4. **Sekvenca „Take one away“** (pin Approach sekcije, ~277 % visine viewporta; mobitel ~201 %; scrub).
-   Prvih 30 % pina (`PIN_HOLD`) drži fazu 0.00–0.12 — mirni pogled s etiketama, dovoljno za čitanje
-   leada i za demo (nekoliko okretaja točkića); ostatak teče istim tempom kao ranije (~220 % / ~160 %
-   za cijelu sekvencu):
+   riječi u leadu se oboje pri kraju (etikete tek nakon sekvence).
+4. **Sekvenca „Take one away“** (vremenska, bez pina, jednom po učitavanju stranice). Kreće odmah
+   kad čvor (skoro) sjedne u approach binu — od 95 % putovanja (`PLAY.dock`), da je ne zaustavi skrol
+   koji stane koji piksel prije — i bina je na ekranu; počinje od 0.12 (mirna faza se preskače) i
+   traje 3.6 s (`PLAY.duration`). Završena ostaje takva: sljedeći dolasci pokazuju cijeli čvor, a
+   etikete se crtaju pri kraju putovanja. Ako čitalac ode nazad dok još traje, čvor se sastavi usput
+   (kraćim putem, prateći skrol), a etikete i riječi prate putovanje; vraćen unazad do 0 sekvenca se
+   kasnije pušta ponovo. Mišem/trackpadom (Lenis), prvi skrol nadolje koji bi prošao sekciju tu stane
+   koliko god jak bio zamah (`motion/hold.ts`): Lenis se preusmjeri i uspori tačno na nju, proguta se
+   samo ostatak tog zamaha (dok ne zastane 180 ms, najviše 2.5 s); sljedeći skrol, tipke za skrol ili
+   scrollbar nastavljaju odmah, skrol nazad gore uvijek. Na dodirnim ekranima se ne hvata (nativna
+   inercija se iz skripte ne da pouzdano zaustaviti).
 
    | Progres | Događaj |
    |---|---|
-   | 0.00–0.12 | etikete vidljive, pogled miruje |
-   | 0.12–0.30 | accent prsten se odcrtava (procjep se otvara naprijed i širi u oba smjera); u tekstu „take one away“ → ink; etikete fade out |
+   | 0.00–0.12 | pogled miruje (preskače se) |
+   | 0.12–0.30 | accent prsten se odcrtava (procjep se otvara naprijed i širi u oba smjera); u tekstu „take one away“ → ink |
    | 0.30–0.45 | porculanski i grafitni kliznu jedan iz drugog duž slobodne ose (relativno ±X) |
    | 0.45–0.62 | padnu na pod i polegnu uz mali odskok; kontaktne sjene se izoštre; „the whole thing falls apart“ → ink |
    | 0.62–0.70 | pauza |
    | 0.70–0.88 | podignu se i vrate istim putem |
-   | 0.88–1.00 | accent se ponovo iscrta; etikete se vrate; čvor zaključan |
+   | 0.88–0.94 | accent se ponovo iscrta, čvor se vrati u početni položaj |
+   | 0.94–1.00 | tek sa cijelim čvorom etikete se iscrtaju jedna za drugom; čvor zaključan |
 
-5. **Završeno:** statičan izometrijski pogled; hover isticanje riječi ↔ prsten aktivno.
+5. **Završeno:** statičan izometrijski pogled s etiketama; hover isticanje riječi ↔ prsten aktivno.
 
 Provjera putanja: porculanski (XY) i grafitni (YZ) prsten nisu međusobno spojeni; relativno
 klizanje duž X drži razmak između cijevi ≥ 0.3 > 2 × 0.076, pa nema presijecanja. Sekvenca
