@@ -205,7 +205,13 @@ fluidno 96 → 176 px. Radijusi 10–12 px za kartice, 999 px za dugmad i chipov
 - Isticanje jednog prstena (samo u 3D modu, dok je čvor usidren): mišem preko samog prstena
   (raycast), njegove etikete ili njegove riječi; na dodir tapom na bilo koje od toga (drugi tap
   ili tap drugdje pušta). Ostala dva prstena idu na 15 % opaciteta, njihove etikete na 30 %, a
-  riječ istaknutog prstena se podvuče kao link. U poster modu ništa od ovoga ne radi.
+  riječ istaknutog prstena se podvuče kao link. Opis slike se za to vrijeme zamijeni kratkim opisom
+  tog prstena (`approach.notes`, počinje imenom prstena, npr. „Fig. 2 — Engineering makes it work:
+  …“); opis i tri bilješke dijele istu ćeliju, pa se visina ne mijenja. U poster modu ništa od ovoga
+  ne radi.
+- Jednom po posjeti (sessionStorage): kad čitalac 1,5 s miruje na usidrenom pogledu s nacrtanim
+  etiketama (prije sekvence), prstenovi se sami istaknu redom design → engineering → automation, po
+  1,2 s, s podvučenom riječi i bilješkom. Bilo kakav skrol ili vlastito isticanje prekida to odmah.
 - Opis: „Fig. 2 — The same rings, flattened. Take one away and the other two come apart.“ /
   „Sl. 2 — Isti prstenovi, spljošteni. Makni jedan i druga dva se razdvoje.“ Manji paragraf
   („One team from the first sketch…“) je van pina.

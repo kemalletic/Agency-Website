@@ -1,7 +1,7 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { WebGLRenderer } from 'three';
-import { INTRO, SPIN_SPEED } from '../../lib/rings/config';
+import { INTRO, SEQUENCE, SPIN_SPEED } from '../../lib/rings/config';
 import { mixStages, pinnedY, progressAt, stageInView, type PinRange, type Stage } from '../../lib/rings/layout';
 import { damp } from '../../lib/rings/math';
 import { heroOrientation, nearestSymmetry, RING_KEYS, storyState } from '../../lib/rings/story';
@@ -60,6 +60,9 @@ export async function startRings({ pin, intro, onLost, canvas, context }: RingsO
   // frame it moves or they do; a tap on a ring, label or ring word picks one (see overlay.ts).
   const hoverable = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   let docked = false;
+  // How long the docked view, labels drawn and before the sequence, has stood still (for the demo).
+  let resting = 0;
+  let restScroll = -1;
   let aim: { x: number; y: number } | null = null;
   let aimStale = false;
   const onAim = (event: PointerEvent): void => {
@@ -77,7 +80,7 @@ export async function startRings({ pin, intro, onLost, canvas, context }: RingsO
   const onTap = (event: MouseEvent): void => {
     if (hoverable || !docked) return;
     const target = event.target instanceof Element ? event.target : null;
-    const named = target?.closest<HTMLElement>('#approach [data-ring]')?.dataset.ring;
+    const named = target?.closest<HTMLElement>('.approach-lead [data-ring], .stage-label[data-ring]')?.dataset.ring;
     const ring = RING_KEYS.find((key) => key === named) ?? (target?.closest('[data-stage="approach"]') ? pickAt(event.clientX, event.clientY) : null);
     overlay.tap(ring);
   };
@@ -145,10 +148,13 @@ export async function startRings({ pin, intro, onLost, canvas, context }: RingsO
     if (journey === 0) symmetry = -1;
     else if (symmetry < 0) symmetry = nearestSymmetry(heroOrientation(spin, pointer.tilt));
     docked = journey > 0.9;
+    const ready = journey >= 1 && sequence < SEQUENCE.hold;
+    resting = ready && scroll === restScroll ? resting + dt : 0;
+    restScroll = scroll;
     if (!docked || !aim) overlay.point(null);
     else if (aimStale) overlay.point(pickAt(aim.x, aim.y));
     aimStale = false;
-    overlay.ease(dt, docked);
+    overlay.ease(dt, docked, resting);
 
     const stage = { hero: { x: hero.x, y: hero.y - scroll, size: hero.size }, approach: { x: approach.x, y: pinnedY(approach.y, scroll, pinRange), size: approach.size } };
     const w = overlay.weights;

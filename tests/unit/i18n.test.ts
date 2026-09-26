@@ -45,6 +45,14 @@ describe('dictionaries', () => {
     }
   });
 
+  it('describe each ring in a caption that starts with its name', () => {
+    for (const dict of [en, bs]) {
+      for (const key of ['design', 'engineering', 'automation'] as const) {
+        expect(dict.approach.notes[key].startsWith(`${dict.approach.rings[key]} `), `${key}: ${dict.approach.notes[key]}`).toBe(true);
+      }
+    }
+  });
+
   it('are returned per locale', () => {
     expect(getDictionary('en')).toBe(en);
     expect(getDictionary('bs')).toBe(bs);

@@ -57,6 +57,8 @@ export interface Dictionary {
     caption: string;
     diagramAlt: string;
     rings: Record<RingKey, string>;
+    /** The figure caption while one ring is singled out; starts with the ring's name. */
+    notes: Record<RingKey, string>;
   };
   services: {
     title: string;
