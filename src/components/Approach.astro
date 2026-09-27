@@ -4,7 +4,6 @@ import approachPoster from '../assets/posters/approach.png';
 import { getDictionary, type Locale } from '../i18n';
 import { labelAnchors } from '../lib/rings/labels';
 import { noWidow } from '../lib/typography';
-import RingDot from './ui/RingDot.astro';
 
 interface Props {
   lang: Locale;
@@ -48,7 +47,7 @@ const percent = (value: number): string => `${(value * 100).toFixed(2)}%`;
         {
           t.approach.lead.map((seg) =>
             typeof seg === 'string' ? seg
-            : 'ring' in seg ? <span class="hl" data-ring={seg.ring}><RingDot ring={seg.ring} />{seg.text}</span>
+            : 'ring' in seg ? <span class="hl" data-ring={seg.ring}>{seg.text}</span>
             : <span class="mark" data-mark={seg.mark}>{seg.text}</span>,
           )
         }
@@ -75,7 +74,9 @@ const percent = (value: number): string => `${(value * 100).toFixed(2)}%`;
     gap: 1.75rem;
     grid-column: 1 / -1;
     justify-self: center;
-    width: min(100%, 26rem);
+    /* Where the knot docks the grid's top is in view: on short phones the stage gives up height so the caption, label
+       and lead (about 25rem below it) still fit under it while the sequence plays. */
+    width: min(100%, 26rem, max(14rem, 100svh - 25rem));
   }
   .approach-figure .fig-caption {
     max-width: 24rem;
@@ -102,6 +103,11 @@ const percent = (value: number): string => `${(value * 100).toFixed(2)}%`;
     position: absolute;
     left: var(--x);
     top: var(--y);
+    transition: opacity 0.3s var(--ease-std);
+  }
+  /* While one ring is singled out (scripts/rings/overlay.ts) the other two labels step back with their rings. */
+  .stage-labels[data-focus] .stage-label:not([data-lit]) {
+    opacity: 0.3;
   }
   .stage-label::before {
     content: '';
@@ -162,9 +168,14 @@ const percent = (value: number): string => `${(value * 100).toFixed(2)}%`;
     letter-spacing: -0.032em;
     text-wrap: pretty;
   }
+  /* A ring's word; underlined while its ring is singled out, the way links underline on hover. */
   .hl {
     cursor: default;
-    white-space: nowrap;
+    background: linear-gradient(currentColor, currentColor) 0 94% / 0 max(1px, 0.035em) no-repeat;
+    transition: background-size 0.35s var(--ease-std);
+  }
+  .hl[data-lit] {
+    background-size: 100% max(1px, 0.035em);
   }
   .approach-body {
     max-width: 29.5rem;
@@ -172,6 +183,23 @@ const percent = (value: number): string => `${(value * 100).toFixed(2)}%`;
     line-height: 1.6;
     color: var(--muted);
     text-wrap: pretty;
+  }
+  /* A phone on its side has no height for the stacked grid: stage and text side by side, as on desktop, so the docked
+     grid shows the rings and the lead together. */
+  @media (orientation: landscape) and (max-width: 63.99rem) and (max-height: 30rem) {
+    .approach-grid {
+      grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+      /* Top-aligned: the text column runs past the viewport, and a centred figure would drop its caption below it. */
+      align-items: start;
+    }
+    .approach-figure {
+      grid-column: 1;
+      width: min(100%, 100svh - 7rem);
+    }
+    .approach-text {
+      grid-column: 2;
+      gap: 1.5rem;
+    }
   }
   @media (min-width: 64rem) {
     .approach-figure {

@@ -60,6 +60,13 @@ test('without WebGL the rings stay posters and three.js is never downloaded', as
   await page.waitForTimeout(1500);
   expect(chunks).toEqual([]);
   await expect(page.locator('[data-stage="hero"] img')).toBeVisible();
+  // With posters the ring words are plain ink like the rest of the lead, and the labels are not interactive.
+  const lead = page.locator('#approach .approach-lead');
+  const ink = await lead.evaluate((el) => getComputedStyle(el).color);
+  for (const word of await lead.locator('[data-ring]').all()) expect(await word.evaluate((el) => getComputedStyle(el).color)).toBe(ink);
+  for (const label of await page.locator('#approach .stage-label-text').all()) {
+    expect(await label.evaluate((el) => getComputedStyle(el).pointerEvents)).toBe('none');
+  }
 });
 
 test('switches language and keeps the page', async ({ page, isMobile }) => {

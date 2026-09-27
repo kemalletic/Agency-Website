@@ -42,7 +42,7 @@ export function initProcess(): () => void {
             invalidateOnRefresh: true,
             onToggle: (self) => root.classList.toggle('is-pinned', self.isActive),
           }
-        : { trigger: figure, start: 'top 70%', end: 'bottom 45%', scrub: 0.6, invalidateOnRefresh: true },
+        : { trigger: figure, start: 'top 70%', end: 'bottom 45%', scrub: 0.3, invalidateOnRefresh: true },
     });
 
     tl.fromTo(cursor, { x: 0, autoAlpha: 1 }, { x: () => lane.offsetWidth, duration: 1 }, 0);

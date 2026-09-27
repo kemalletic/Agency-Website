@@ -51,9 +51,8 @@ async function boot(): Promise<void> {
 
 /**
  * The browser jumps to a deep-linked section (#contact, #process…) before this script runs; the pins created above
- * it then push it down, and later layout moves it again (refreshes, the rings dropping their pin where WebGL is too
- * slow). Keep the reader on the section they asked for, frame by frame, until they scroll themselves (or for five
- * seconds).
+ * it then push it down, and later layout moves it again (refreshes). Keep the reader on the section they asked for,
+ * frame by frame, until they scroll themselves (or for five seconds).
  */
 function holdHashTarget(): void {
   const id = decodeURIComponent(window.location.hash.slice(1));

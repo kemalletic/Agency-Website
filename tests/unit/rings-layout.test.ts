@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { BOUND_RADIUS } from '../../src/lib/rings/config';
-import { cameraDistance, mixStages, pinnedY, progressAt, stageInView, viewOffset } from '../../src/lib/rings/layout';
+import { BOUND_RADIUS, PLAY, SEQUENCE } from '../../src/lib/rings/config';
+import { cameraDistance, mixStages, playTime, progressAt, sequenceAt, stageInView, viewOffset } from '../../src/lib/rings/layout';
 
 describe('cameraDistance', () => {
   it('shows the bounding sphere at the requested share of the stage', () => {
@@ -42,27 +42,6 @@ describe('viewOffset', () => {
   });
 });
 
-describe('pinnedY', () => {
-  const pin = { start: 1000, end: 3000 };
-
-  it('scrolls with the page before the pin', () => {
-    expect(pinnedY(1500, 600, pin)).toBe(900);
-  });
-
-  it('holds still while pinned', () => {
-    expect(pinnedY(1500, 1000, pin)).toBe(500);
-    expect(pinnedY(1500, 2200, pin)).toBe(500);
-  });
-
-  it('scrolls on after the pin, displaced by its length', () => {
-    expect(pinnedY(1500, 3400, pin)).toBe(100);
-  });
-
-  it('is plain scrolling without a pin', () => {
-    expect(pinnedY(1500, 2200)).toBe(-700);
-  });
-});
-
 describe('stages', () => {
   it('blends two stages', () => {
     expect(mixStages({ x: 0, y: 0, size: 100 }, { x: 100, y: 200, size: 300 }, 0.25)).toEqual({ x: 25, y: 50, size: 150 });
@@ -81,5 +60,20 @@ describe('stages', () => {
     expect(progressAt(200, 100, 300)).toBe(0.5);
     expect(progressAt(400, 100, 300)).toBe(1);
     expect(progressAt(100, 100, 100)).toBe(1);
+  });
+});
+
+describe('the sequence', () => {
+  it('plays by itself, moving at once, then stays finished', () => {
+    expect(sequenceAt(0)).toBe(SEQUENCE.hold);
+    expect(sequenceAt(PLAY.duration / 2)).toBeCloseTo((1 + SEQUENCE.hold) / 2, 12);
+    expect(sequenceAt(PLAY.duration)).toBe(1);
+    expect(sequenceAt(60)).toBe(1);
+    for (let i = 1; i <= 100; i++) expect(sequenceAt((PLAY.duration * i) / 100)).toBeGreaterThan(sequenceAt((PLAY.duration * (i - 1)) / 100));
+  });
+
+  it('knows how far into the play a point of the sequence is', () => {
+    for (const p of [SEQUENCE.hold, 0.3, 0.62, 0.9, 1]) expect(sequenceAt(playTime(p))).toBeCloseTo(p, 12);
+    expect(playTime(0)).toBe(0);
   });
 });

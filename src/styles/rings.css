@@ -34,7 +34,16 @@
   cursor: grabbing;
 }
 
-/* The two story phrases turn from label grey to ink as the rings act them out. */
+/* The two story phrases turn from label grey to ink as the rings act them out, and each ring's word as its label
+   draws. */
 [data-rings='live'] .approach-lead [data-mark] {
   color: color-mix(in srgb, var(--ink) calc(var(--mark, 0) * 100%), var(--label));
+}
+[data-rings='live'] .approach-lead [data-ring] {
+  color: color-mix(in srgb, var(--ink) calc(var(--word, 0) * 100%), var(--label));
+}
+
+/* The labels answer hover and taps only over the live rings, which they can single out. */
+[data-rings='live'] .stage-label-text {
+  pointer-events: auto;
 }

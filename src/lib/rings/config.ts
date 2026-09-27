@@ -38,8 +38,24 @@ export const SPIN_SPEED = 0.14;
 /** Intro timings (seconds) and distances: the two free rings slide home, then the green one is drawn through them. */
 export const INTRO = { duration: 1.8, slide: 0.9, slideEnd: 1.1, drawFrom: 0.6, drawTo: 1.6, twist: 0.6, settle: 0.06 } as const;
 
-/** Phase boundaries of the pinned "take one away" sequence (progress 0..1, spec §9.5). */
-export const SEQUENCE = { hold: 0.12, taken: 0.3, apart: 0.45, fallen: 0.62, rise: 0.7, landed: 0.82, joined: 0.88 } as const;
+/**
+ * Phase boundaries of the "take one away" sequence (progress 0..1, spec §9.5). By `closed` the knot is whole again, the
+ * green ring drawn through; only then do the labels come back.
+ */
+export const SEQUENCE = { hold: 0.12, taken: 0.3, apart: 0.45, fallen: 0.62, rise: 0.7, landed: 0.82, joined: 0.88, closed: 0.94 } as const;
+
+/**
+ * The sequence plays by itself, once a page view, moving the moment the knot docks at the approach stage: its still
+ * opening (`SEQUENCE.hold`) is skipped. `dock`: share of the journey from which the knot counts as docked, so a scroll
+ * that stops a hair short still starts it. `duration`: seconds for the rest of the sequence.
+ */
+export const PLAY = { dock: 0.95, duration: 2 } as const;
+
+/**
+ * The knot docks this share of a viewport before the approach grid reaches its resting place: it rides in with its
+ * stage for the last stretch, and heading back it stays a moment before it sets off for the hero.
+ */
+export const DOCK_LEAD = 0.2;
 
 /** How far the two freed rings slide apart along their free axis before they fall. */
 export const SLIDE = 0.85;

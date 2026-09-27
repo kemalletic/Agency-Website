@@ -1,5 +1,5 @@
 import { Euler, Matrix4, Quaternion, Vector3 } from 'three';
-import { FLOOR, FLOOR_Y, FRAMING, INTRO, PITCH, RING, SEQUENCE, SLIDE } from './config';
+import { FLOOR, FLOOR_Y, FRAMING, INTRO, PITCH, PLAY, RING, SEQUENCE, SLIDE } from './config';
 import { CORNERS, loopPoint, toPlane, type Plane } from './curve';
 import { expoOut, lerp, phase, power2InOut, smoothstep } from './math';
 
@@ -36,8 +36,10 @@ export interface SceneState {
   /** 0 = the knot sits in the hero stage, 1 = in the approach stage. */
   stageMix: number;
   floor: { opacity: number; sharpness: number; spread: number };
-  /** 0..1: how far the approach labels are drawn. */
-  labels: number;
+  /** 0..1 per ring: how far its approach label is drawn (only after the sequence, the knot whole again). */
+  labels: Record<RingKey, number>;
+  /** 0..1 per ring: how far its word in the approach lead has turned to ink (on the way in, and it stays). */
+  words: Record<RingKey, number>;
   /** 0..1: how far each story phrase in the approach lead has turned to ink. */
   marks: { take: number; fall: number };
 }
@@ -51,7 +53,7 @@ export interface StoryInput {
   tilt: [number, number];
   /** 0..1 from the hero stage to the approach stage. */
   journey: number;
-  /** 0..1 through the pinned "take one away" sequence. */
+  /** 0..1 through the "take one away" sequence, which plays by itself once the knot has docked. */
   sequence: number;
   /** Which of the four identical approach orientations to turn to (`nearestSymmetry`), latched while the journey runs. */
   symmetry: number;
@@ -129,22 +131,14 @@ function flatten(key: RingKey, q: Quaternion, yaw: number): Quaternion {
   return new Quaternion().setFromAxisAngle(Y, yaw).multiply(tip).multiply(q);
 }
 
-interface Fall {
-  from: Record<'design' | 'engineering', Pose>;
-  to: Record<'design' | 'engineering', Pose>;
-}
-
-/** Start (slid apart, knot rolled a quarter turn) and end (lying on the floor) of the fall, per symmetry. */
-const FALLS: Fall[] = SYMMETRY.map((symmetry, i) => {
+/** Where the two freed rings come to lie on the floor, per symmetry: each tipped flat from the docked knot, slid apart. */
+const FLOOR_POSES: Record<'design' | 'engineering', Pose>[] = SYMMETRY.map((symmetry, i) => {
   const from = assembled(roll(-Math.PI / 2).multiply(approachOrientation(i)), new Vector3(), SLIDE * symmetry.side);
   return {
-    from,
-    to: {
-      design: { position: new Vector3(-0.98, FLOOR_Y + RING.tube, -0.2), quaternion: flatten('design', from.design.quaternion, 0.1) },
-      engineering: {
-        position: new Vector3(0.98, FLOOR_Y + RING.tube, 0.2),
-        quaternion: flatten('engineering', from.engineering.quaternion, -0.15),
-      },
+    design: { position: new Vector3(-0.98, FLOOR_Y + RING.tube, -0.2), quaternion: flatten('design', from.design.quaternion, 0.1) },
+    engineering: {
+      position: new Vector3(0.98, FLOOR_Y + RING.tube, 0.2),
+      quaternion: flatten('engineering', from.engineering.quaternion, -0.15),
     },
   };
 });
@@ -162,6 +156,22 @@ function fall(from: Pose, to: Pose, f: number): Pose {
     quaternion: from.quaternion.clone().slerp(to.quaternion, smoothstep(phase(f, 0.05, 0.75))),
   };
 }
+
+/** The journey's last stretch, in which the ring words in the lead ink one after another. */
+const WORD_IN: Record<RingKey, readonly [number, number]> = { design: [0.8, 0.9], engineering: [0.85, 0.95], automation: [0.9, 1] };
+
+/** The sequence's last stretch, after the knot is whole again (`SEQUENCE.closed`): the labels draw one after another. */
+const LABEL_IN: Record<RingKey, readonly [number, number]> = {
+  design: [SEQUENCE.closed, 0.97],
+  engineering: [0.955, 0.985],
+  automation: [0.97, 1],
+};
+
+const perRing = (value: (key: RingKey) => number): Record<RingKey, number> => ({
+  design: value('design'),
+  engineering: value('engineering'),
+  automation: value('automation'),
+});
 
 /** Height of the one small hop after the rings land. */
 const HOP = 0.07;
@@ -181,10 +191,10 @@ export function storyState(input: StoryInput): SceneState {
   // Orientation: the idle hero pose, turning to the nearest approach view.
   const q = heroOrientation(input.spin, input.tilt, INTRO.twist * settle).slerp(approachOrientation(input.symmetry), journey);
 
-  // The pinned sequence; its second half (`back`) retraces the first.
+  // The sequence; its second half (`back`) retraces the first.
   const back = p >= (S.fallen + S.rise) / 2;
-  const turn = back ? 1 - power2InOut(phase(p, S.joined, S.joined + 0.08)) : power2InOut(phase(p, S.hold, S.taken));
-  const gap = back ? 1 - power2InOut(phase(p, S.joined, 1)) : power2InOut(phase(p, S.hold, S.taken));
+  const turn = back ? 1 - power2InOut(phase(p, S.joined, S.closed)) : power2InOut(phase(p, S.hold, S.taken));
+  const gap = back ? 1 - power2InOut(phase(p, S.joined, S.closed)) : power2InOut(phase(p, S.hold, S.taken));
   const slide = SLIDE * (back ? 1 - power2InOut(phase(p, S.landed, S.joined)) : power2InOut(phase(p, S.taken, S.apart)));
   const landing = phase(p, S.apart, S.fallen);
   const f = back ? 1 - smoothstep(phase(p, S.rise, S.landed)) : Math.min(landing / 0.8, 1);
@@ -195,9 +205,11 @@ export function storyState(input: StoryInput): SceneState {
   const knot = new Vector3(0, INTRO.settle * settle, 0);
   const poses = assembled(roll(-(Math.PI / 2) * turn).multiply(q), knot, introSlide + slide * symmetry.side);
   if (f > 0) {
-    const { from, to } = FALLS[input.symmetry] ?? FALLS[0]!;
-    poses.design = fall(from.design, to.design, f);
-    poses.engineering = fall(from.engineering, to.engineering, f);
+    // From the knot as it is turned now (the approach view, or on its way back to the hero), so a fall that is undone
+    // on the way home ends where the rest of the knot is, without a jump.
+    const lying = FLOOR_POSES[input.symmetry] ?? FLOOR_POSES[0]!;
+    poses.design = fall(poses.design, lying.design, f);
+    poses.engineering = fall(poses.engineering, lying.engineering, f);
     poses.design.position.y += hop;
     poses.engineering.position.y += hop;
   }
@@ -226,7 +238,10 @@ export function storyState(input: StoryInput): SceneState {
       sharpness: crane,
       spread: lerp(1.25, 2.2, crane),
     },
-    labels: p > 0 ? (back ? phase(p, 0.93, 1) : 1 - phase(p, S.hold, S.hold + 0.08)) : phase(input.journey, 0.82, 1),
+    // The labels wait for the sequence and draw only once the knot is whole again; the words ink on the way in and stay
+    // so. The sequence plays by itself, so it can run on as the knot heads back: labels and words follow the journey.
+    labels: perRing((key) => phase(p, ...LABEL_IN[key]) * phase(input.journey, PLAY.dock - 0.1, PLAY.dock)),
+    words: perRing((key) => phase(input.journey, ...WORD_IN[key])),
     marks: { take: phase(p, S.hold, 0.24), fall: phase(p, 0.47, 0.58) },
   };
 }

@@ -6,7 +6,9 @@ import {
   NeutralToneMapping,
   PCFShadowMap,
   PerspectiveCamera,
+  Raycaster,
   Scene,
+  Vector2,
   Vector3,
   type MeshPhysicalMaterial,
   type WebGLRenderer,
@@ -48,6 +50,8 @@ export interface RingsScene {
   /** Puts rings, camera and floor into `state`, framed in `stage` (viewport pixels). */
   apply(state: SceneState, stage: Stage, viewport: Viewport, weights: Weights): void;
   render(): void;
+  /** The ring under a point of the canvas (0..1 across and down), nearest first, as of the last `apply`. */
+  pick(x: number, y: number): RingKey | null;
   dispose(): void;
 }
 
@@ -113,6 +117,9 @@ export async function createRingsScene(
   scene.add(floor.group);
 
   const camera = new PerspectiveCamera(30, 1, 0.1, 100);
+  const raycaster = new Raycaster();
+  const point = new Vector2();
+  const ringOf = new Map<Mesh, RingKey>(RING_KEYS.map((key) => [meshes[key], key]));
   let moved = true;
   let blur = -1;
 
@@ -159,6 +166,14 @@ export async function createRingsScene(
         moved = false;
       }
       renderer.render(scene, camera);
+    },
+    pick(x, y) {
+      // The view offset is part of the projection, so canvas coordinates map straight to the camera's clip space.
+      raycaster.setFromCamera(point.set(x * 2 - 1, 1 - y * 2), camera);
+      // The raycaster ignores `visible`; the green ring hides that way once it is taken away.
+      const shown = RING_KEYS.map((key) => meshes[key]).filter((mesh) => mesh.visible);
+      const hit = raycaster.intersectObjects(shown, false)[0];
+      return hit ? (ringOf.get(hit.object as Mesh) ?? null) : null;
     },
     dispose() {
       for (const ring of RING_KEYS) materials[ring].dispose();
